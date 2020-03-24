@@ -1,0 +1,47 @@
+
+ul {
+  list-style-type:none;
+}
+
+#floors #floors_list li {
+    /* display: block; */
+    height: 150px;
+    /* border: 0; */
+    border-top: 2px solid rgb(39, 36, 36);
+    /* margin-top: 150px; */
+    padding: 0;
+    text-align: end;
+  }
+  #floors #floors_list li:first-child {
+   margin-top: 150px;
+  }
+
+  #elevators #elevators_list li{
+    position: absolute;
+    left:100px;
+    top:100px;
+    width:50px;
+    height:70px;
+    background:blue;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    transition: 1s ease-in;
+  }
+  .button{
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    margin: 2px 2px;
+    cursor: pointer;
+    align-self: flex-start;
+    border-radius: 5px;
+
+  }
