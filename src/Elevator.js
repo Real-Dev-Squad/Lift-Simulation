@@ -30,46 +30,5 @@ export default class Elevator {
 		elevatorItem.setAttribute('id', this.elevatorId);
 		elevatorsList.appendChild(elevatorItem);
 	}
-	isEligible(direction, buttonFloor) {
-		if (this.direction == 0) {
-			// eligible, and return distance
-			return Math.abs(buttonFloor - this.currentFloor);
-		} else {
-			return -1;
-		}
-	}
-	moveElevator(buttonFloor) {
-		if (this.direction == 0) {
-			console.log('lift already in that floor');
-		} else {
-			const floorsListItems = document
-				.getElementById('floors_list')
-				.getElementsByTagName('li');
-			const findFloorOffsetTop =
-				floorsListItems[floorsListItems.length - 1 - buttonFloor].offsetTop;
-			const elevatorId = this.elevatorId;
-			const elevatorItem = document.getElementById(elevatorId);
-			if (this.direction === 1) {
-				elevatorItem.style.top = findFloorOffsetTop - 70 + 'px';
-			} else {
-				elevatorItem.style.top = findFloorOffsetTop - 70 + 'px';
-			}
-		}
-	}
-	assignJob(direction, buttonFloor) {
-		if (buttonFloor == this.currentFloor) {
-			this.moveElevator(buttonFloor);
-		} else {
-			this.direction = buttonFloor - this.currentFloor > 0 ? 1 : -1;
-			this.moveElevator(buttonFloor);
-			setTimeout(
-				function () {
-					this.currentFloor = buttonFloor;
-					this.direction = 0;
-					this.moveElevator(buttonFloor);
-				}.bind(this),
-				100 * Math.abs(buttonFloor - this.currentFloor)
-			);
-		}
-	}
+	
 }
