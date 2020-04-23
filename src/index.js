@@ -6,7 +6,6 @@ class LiftController {
 	constructor(noOfFloors, noOfElevators) {
 		this.floors = []; // array of noOfFloors floors
 		this.elevators = []; // array of noOfLifts elevators
-		this.queue = [];
 
 		for (let i = noOfFloors; i >= 0; i--) {
 			this.floors.push(new Floor(i, noOfFloors));
@@ -15,27 +14,22 @@ class LiftController {
 			this.elevators.push(new Elevator(i, noOfFloors, noOfElevators));
 		}
 	}
+
 	handleButtonPress(buttonType, buttonFloor) {
-		// console.log(buttonType, buttonFloor, this.elevators, 'buttonXXX');
 		const doesLiftExistAtThisFloor = this.elevators.find(
 			(ele) => ele.currentFloor === buttonFloor
 		);
 		if (doesLiftExistAtThisFloor !== undefined) {
 			alert(`Lift already exists at Floor ${buttonFloor}`);
 		} else {
-			this.queue.push({ buttonType, buttonFloor });
-			this.analyseLift();
-			// if (tempQueue !== this.queue.length) {
-			// 	newPromise.then((res) => console.log(res, 'RES'));
-			// }
+			// this.queue.push({ buttonType, buttonFloor });
+			this.analyseLift({ buttonType, buttonFloor });
 		}
 	}
 
-	analyseLift() {
-		const firstItemInQueue = this.queue[0];
-		if (!firstItemInQueue) return;
-		const btnFloor = firstItemInQueue.buttonFloor;
-		const btnType = firstItemInQueue.buttonType;
+	analyseLift({ buttonType, buttonFloor }) {
+		const btnFloor = buttonFloor;
+		const btnType = buttonType;
 
 		// top floor
 		if (btnFloor === this.floors.length - 1) {
@@ -108,33 +102,55 @@ class LiftController {
 		}
 	}
 
+	showAnimation(btnFloor, buttonType, elevator, minDistance) {
+		if (elevator.state === 0) {
+			return;
+		} else {
+			const floorsListItems = document
+				.getElementById('floors_list')
+				.getElementsByTagName('li');
+			const findFloorOffsetTop =
+				floorsListItems[floorsListItems.length - 1 - btnFloor].offsetTop;
+			const getMyElevatorFromDOM = document.getElementById(elevator.elevatorId);
+			getMyElevatorFromDOM.style.top = findFloorOffsetTop - 70 + 'px';
+			getMyElevatorFromDOM.style.top = getMyElevatorFromDOM.style.transition = `top ${
+				minDistance + 1
+			}s`;
+			// disabled button in the floor until lift is reached there
+			const getBtnsOfFloor = document.getElementsByClassName(
+				`button ${btnFloor}`
+			);
+			for (let i = 0; i < getBtnsOfFloor.length; i++) {
+				getBtnsOfFloor[i].disabled = true;
+			}
+
+			getMyElevatorFromDOM.addEventListener('transitionend', () => {
+				console.log('Transition ended!!');
+				elevator.currentFloor = btnFloor;
+				elevator.direction = buttonType;
+				elevator.state = 0;
+				//enable button when the lift has reached there
+				for (let i = 0; i < getBtnsOfFloor.length; i++) {
+					getBtnsOfFloor[i].disabled = false;
+				}
+			});
+		}
+	}
+
 	moveLift(btnFloor, buttonType, lift, minDistance) {
-		// console.log(btnFloor, buttonType, lift, minDistance, 'moveLift');
+		console.log(this.elevators, 'The elevators');
 		const liftToMoveIndex = this.elevators.findIndex(
 			(ele) => ele.elevatorId === lift.elevatorId
 		);
-		const myElevator = this.elevators[liftToMoveIndex];
-		console.log(myElevator, 'Moving lift....');
-		const floorsListItems = document
-			.getElementById('floors_list')
-			.getElementsByTagName('li');
-		const findFloorOffsetTop =
-			floorsListItems[floorsListItems.length - 1 - btnFloor].offsetTop;
-		const getMyElevatorFromDOM = document.getElementById(myElevator.elevatorId);
-		getMyElevatorFromDOM.style.top = findFloorOffsetTop - 70 + 'px';
-		getMyElevatorFromDOM.style.top = getMyElevatorFromDOM.style.transition = `top ${
-			minDistance + 1
-		}s`;
+		let myElevator = this.elevators[liftToMoveIndex];
+		// if the lift is already moving then do nothing
+		if (myElevator.state !== 0) return;
 
-		setTimeout(() => {
-			myElevator.currentFloor = btnFloor;
-			myElevator.direction = buttonType;
-			myElevator.state = 0;
-			this.queue.shift();
-		}, (minDistance + 1) * 1000);
+		myElevator.state = buttonType === 'UP' ? 1 : -1;
+		console.log(myElevator, `Moving lift ${liftToMoveIndex + 1}....`);
+		this.showAnimation(btnFloor, buttonType, myElevator, minDistance);
 	}
 	findMyLift(pressedFloor, targetLifts) {
-		console.log(pressedFloor, targetLifts, 'findMYLIFT');
 		let myLift = '';
 		let minDistance = Number.POSITIVE_INFINITY;
 		for (let liftProperty of targetLifts) {
@@ -147,10 +163,9 @@ class LiftController {
 				myLift = liftProperty;
 			}
 		}
-		// console.log(myLift, minDistance, 'findmylift');
 		const absoluteValue = Math.abs(minDistance);
 		return { myLift, minDistance: absoluteValue };
 	}
 }
 
-export const liftMachine = new LiftController(5, 4);
+export const liftMachine = new LiftController(8, 4);

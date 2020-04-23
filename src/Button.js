@@ -20,6 +20,7 @@ export default class Button {
 		let btn = document.createElement('button');
 		btn.className = 'button';
 		btn.setAttribute('id', buttonId);
+		btn.classList.add(buttonFloor);
 		btn.innerHTML = btnText;
 		if (btnText === 'Up') {
 			btn.style.backgroundColor = 'green';
@@ -31,6 +32,10 @@ export default class Button {
 		btn.onclick = function () {
 			// const liftControllerInstanceObj = new LiftController(4,4);
 			liftMachine.handleButtonPress(buttonType, buttonFloor);
+
+			// .then(function (value) {
+			// 	console.log(value, 'VALUE');
+			// });
 		};
 	}
 }
