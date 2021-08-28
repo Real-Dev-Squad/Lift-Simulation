@@ -1,0 +1,38 @@
+.flr0{
+    position: absolute;
+    bottom: 10%;
+    width: 100%;
+    left:5%;
+  }
+  
+  .flr1{
+    position: absolute;
+    bottom: 30%;
+    left: 5%;
+  
+  }
+  
+  .flr2{
+    position: absolute;
+    bottom: 50%;
+    left: 5%;
+  }
+  
+  .flr3{
+    position: absolute;
+    bottom: 70%;
+    left:5%;
+  
+  }
+  
+  #lift1{
+    position: absolute;
+    bottom: 10%;
+    background-color:coral;
+    left: 40%;
+    height: 20px;
+    border: 1px solid black;
+    transform: rotate(90deg);
+    transition-duration: 3s;
+  }
+  
