@@ -21,10 +21,24 @@ liftCount.addEventListener("change", () => {
   if (!isNaN(floorCount.value) && !isNaN(liftCount.value)) {
     flag = true;
     section.style.display = "none";
+    floorCreation();
   }
 });
 
 // 1. create floors based on input, create 1 lift on lowest floor, CSS.
+const floorCreation = () => {
+  lift_section.style.display = "block";
+  let count = floorCount.value;
+  while (count > 0) {
+    let base = document.createElement("div");
+    base.id = count;
+    base.innerHTML =
+      "_________________________________________________________________";
+    lift_section.appendChild(base);
+    count -= 1;
+  }
+};
+
 // 2. create buttons on each floor accordingly number them internally, on click the lift should vertically go there, CSS.
 // 3. Play around with up and down buttons.
 // 4. create a number display like in CG mumbai, to select which floor to go.

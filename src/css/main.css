@@ -17,9 +17,7 @@ input
     width: 50px;
 } 
 
-#lift_section
+/* .lift
 {
-    width: 200px;
-    height: 150px;
-    margin: 5px solid black;
-}
+   display: none;
+} */
