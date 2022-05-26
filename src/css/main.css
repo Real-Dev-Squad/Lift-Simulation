@@ -1,15 +1,25 @@
 body{
-    background: #5e87b8;
+    background: #fff;
     display: flex;
     box-sizing: border-box;
 }
+#intro{
+    border: 3px solid #fff;
+    padding: 10px;
+}
 
-input, input:focus
+input
 {
     background-color: transparent;
     border: none;
     border-bottom: 1px solid #CCC;
     font-size: 18px;
-    top: 50%;
     width: 50px;
+} 
+
+#lift_section
+{
+    width: 200px;
+    height: 150px;
+    margin: 5px solid black;
 }
