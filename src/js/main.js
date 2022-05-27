@@ -27,16 +27,24 @@ liftCount.addEventListener("change", () => {
 
 // 1. create floors based on input, create 1 lift on lowest floor, CSS.
 const floorCreation = () => {
-  lift_section.style.display = "block";
+  //lift_section.style.display = "block";
   let count = floorCount.value;
   while (count > 0) {
     let base = document.createElement("div");
+    base.classList.add("floor");
     base.id = count;
+
     base.innerHTML =
       "_________________________________________________________________";
     lift_section.appendChild(base);
+
     count -= 1;
   }
+  let lift = document.createElement("div");
+  lift.classList.add("lift");
+  lift.id = 1;
+  let ground = document.getElementById("1");
+  ground.prepend(lift);
 };
 
 // 2. create buttons on each floor accordingly number them internally, on click the lift should vertically go there, CSS.
