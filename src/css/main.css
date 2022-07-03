@@ -1,0 +1,144 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap');
+
+/*REST CSS*/
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+/*CSS VARIABLES*/
+
+body {
+    font-size: 1.6rem;
+}
+
+:root {
+    --PRIMARY-COLOR: #06283D;
+    --LIFT-COLOR: #1363DF;
+    --LIFT-BORDER-COLOR: #000;
+    --LIGHT_COLOR: #47B5FF;
+    --VERY-LIGHT-COLOR: #DFF6FF;
+    --COLOR-wHITE: black;
+}
+
+/*UTILITY CLASSES*/
+
+.md-1 {
+    margin: 1rem
+}
+
+.pd-1 {
+    padding: 1rem;
+}
+
+
+/*STYLING MAIN TEXT*/
+
+.main {
+    display: flex;
+    padding: 2.8rem;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+}
+
+.lift-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 50rem;
+    min-width: 24rem;
+}
+
+.heading {
+    margin: 1rem 1rem 4rem;
+    color: var(--PRIMARY-COLOR);
+}
+
+.inputs {
+    border-radius: 5px;
+    margin: 1rem;
+    width: 24rem;
+    height: 3.6rem;
+    padding: 1rem;
+}
+
+.inputs:focus {
+    background-color: var(--VERY-LIGHT-COLOR);
+    border: var(--PRIMARY-COLOR);
+}
+
+.lift-container>label {
+    font-weight: 500;
+    align-self: flex-start;
+    margin-left: 1.6rem;
+}
+
+.btn-primary,
+.btn-up,
+.btn-down {
+    background-color: var(--PRIMARY-COLOR);
+    color: var(--VERY-LIGHT-COLOR);
+    padding: 1rem;
+    border-radius: 5px;
+    margin-top: 2.4rem;
+    border: none;
+    opacity: .9;
+    cursor: pointer;
+}
+
+.btn-primary:hover,
+.btn-up:hover,
+.btn-down:hover {
+    opacity: 1;
+}
+
+.btn-up {
+    width: 8rem
+}
+
+.btn-down {
+    width: 8rem;
+    background-color: var(--LIFT-COLOR);
+}
+
+/*STYLING LIFTS*/
+
+.lift {
+    display: flex;
+    margin: 1rem;
+    align-self: start;
+}
+
+.lift-left {
+    height: 8rem;
+    width: 3.2rem;
+    background-color: var(--LIFT-COLOR);
+    border-radius: 4px 0 0 4px;
+    border: 2px solid var(--PRIMARY-COLOR);
+    animation: lift-left 2.5s;
+}
+
+.lift-right {
+    height: 8rem;
+    width: 3.2rem;
+    background-color: var(--LIFT-COLOR);
+    border-radius: 0 4px 4px 0;
+    border: 2px solid var(--PRIMARY-COLOR);
+    animation: lift-right 2.5s;
+}
+
+/*STYLING FLOORS*/
+
+.floor {
+    height: 4px;
+    width: 100%;
+    background-color: var(--PRIMARY-COLOR);
+}
