@@ -15,6 +15,7 @@ let liftStatus = {
 
 function fillLiftQueue() {
   liftQueue = [];
+  haltedQueue = [];
   for (let i = 1; i <= noOfLifts; i++) {
     let lift = {};
     lift.number = i;
