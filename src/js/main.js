@@ -22,7 +22,7 @@ function fillLiftQueue() {
     lift.currentFloor = 0;
     liftQueue.push(lift);
   }
-  // console.log("lift-queue initital ----------->", liftQueue);
+  console.log("lift-queue initital ----------->", liftQueue);
 }
 
 function insertAfter(referenceNode, newNode) {
@@ -123,7 +123,11 @@ function getNearestLift(floorNumber) {
 
 document.body.addEventListener("click", (e) => {
   console.log("running");
-  if (e.target.parentNode.className === "lift-controller") {
+  if (
+    e.target.parentNode.className === "lift-controller" &&
+    liftQueue.length > 0
+  ) {
+    console.log("inside");
     let allLifts = document.querySelectorAll(".lift");
     let floorNumber = parseInt(e.target.dataset.floor);
     let heightFromGroundFloor = getFloorsHeight(floorNumber);
