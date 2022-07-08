@@ -76,12 +76,8 @@ function generateLiftControllers(index) {
   btnDown.innerText = "DOWN";
   btnDown.setAttribute("class", "btn-down");
   btnDown.dataset.floor = index;
-  if (index !== 0) {
-    liftController.append(btnUp);
-  }
-  if (index !== noOfFloors - 1) {
-    liftController.append(btnDown);
-  }
+  liftController.append(btnUp);
+  liftController.append(btnDown);
   return liftController;
 }
 
