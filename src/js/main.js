@@ -22,7 +22,7 @@ function fillLiftQueue() {
     lift.currentFloor = 0;
     liftQueue.push(lift);
   }
-  console.log("lift-queue initital ----------->", liftQueue);
+  // console.log("lift-queue initital ----------->", liftQueue);
 }
 
 function insertAfter(referenceNode, newNode) {
@@ -98,64 +98,85 @@ function generateLift(index) {
   return lift;
 }
 
+function getNearestLift(floorNumber) {
+  let minDistance = Infinity;
+  let nearestLiftIndex;
+  let currentLiftDistance;
+
+  liftQueue.sort(
+    ({ number: liftOnePos }, { number: liftTwoPos }) => liftOnePos - liftTwoPos
+  );
+
+  for (let index = liftQueue.length - 1; index >= 0; index--) {
+    currentLiftDistance = Math.abs(liftQueue[index].currentFloor - floorNumber);
+    if (currentLiftDistance <= minDistance) {
+      nearestLiftIndex = index;
+      minDistance = currentLiftDistance;
+    }
+  }
+
+  const deletedEle = liftQueue.splice(nearestLiftIndex, 1);
+  console.log(deletedEle);
+  console.log([...liftQueue]);
+  liftQueue.unshift(deletedEle[0]);
+}
+
 document.body.addEventListener("click", (e) => {
   console.log("running");
   if (e.target.parentNode.className === "lift-controller") {
-    const allLifts = document.querySelectorAll(".lift");
-    //get floor number
-    const floorNumber = parseInt(e.target.dataset.floor);
-    let heightFromGroundFloor = getFloorsHeightForUp(floorNumber);
+    let allLifts = document.querySelectorAll(".lift");
+    let floorNumber = parseInt(e.target.dataset.floor);
+    let heightFromGroundFloor = getFloorsHeight(floorNumber);
+    getNearestLift(floorNumber);
+    console.log("nearest lift is ::", liftQueue[0]);
+    console.log("lift queue ", liftQueue);
+    let lift = allLifts[liftQueue[0].number - 1];
+    let transitionTime =
+      Math.abs(Number(floorNumber) - Number(liftQueue[0].currentFloor)) * 2;
 
-    //lift number and current floor of first lift in the queue
-    const currentLiftNumber = liftQueue[0]?.number;
-    const { currentFloor = 0 } = liftQueue[0];
-    console.log(`current floor -> ${currentFloor} `);
-
-    //Getting lift node of targeted lift
-    const lift = allLifts[currentLiftNumber - 1];
-
-    console.log(lift);
-    const transitionTime = (floorNumber - currentFloor) * 2;
-    console.log(transitionTime, "seconds");
-    if (e.target.matches(".btn-up")) {
-      console.log(lift.dataset.liftnum);
-      lift.style.transform = `translateY(${-parseInt(
-        heightFromGroundFloor
-      )}px)`;
-      lift.style.transitionDuration = `${transitionTime}s`;
-      setLiftToMoving(transitionTime, floorNumber);
-    }
-    if (e.target.matches(".btn-down")) {
-      lift.style.transform = `translateY(${-parseInt(
-        heightFromGroundFloor
-      )}px)`;
-      // const transitionTime = (floorNumber - currentFloor) * 2;
-      lift.style.transitionDuration = `${transitionTime}s`;
-      setLiftToMoving(transitionTime, floorNumber);
-    }
+    lift.style.transform = `translateY(${-parseInt(heightFromGroundFloor)}px)`;
+    lift.style.transitionDuration = `${transitionTime}s`;
+    console.log("TIME TAKEN BY LIFT:::::", transitionTime);
+    setLiftToMoving(transitionTime, floorNumber, lift);
   }
 });
 
-function setLiftToMoving(delay, floorNumber) {
+function setLiftToMoving(delay, floorNumber, currLift) {
   liftQueue = liftQueue.map((lift, index) =>
     index === 0
       ? { ...lift, status: "moving", currentFloor: floorNumber }
       : lift
   );
-
+  console.log("--------------------------------------------");
   console.log("lift-queue later ----------->", liftQueue);
   console.log(haltedQueue);
+  console.log("--------------------------------------------");
   const firstLiftInQueue = liftQueue.shift();
 
   haltedQueue.push(firstLiftInQueue);
-  setTimeout(() => {
+
+  let timerId1 = setTimeout(() => {
+    currLift.firstChild.classList.add("open-lift-left");
+    currLift.lastChild.classList.add("open-lift-right");
+  }, delay * 1000);
+
+  let timerId2 = setTimeout(() => {
+    currLift.firstChild.classList.remove("open-lift-left");
+    currLift.lastChild.classList.remove("open-lift-right");
+  }, delay * 1000 + 2500);
+
+  let timerId3 = setTimeout(() => {
     haltedQueue[0].status = "idle";
     liftQueue.push(haltedQueue[0]);
     haltedQueue.shift();
-  }, delay * 1000);
+  }, delay * 1000 + 5000);
+
+  // clearTimeout(timerId1);
+  // clearTimeout(timerId2);
+  // clearTimeout(timerId3);
 }
 
-function getFloorsHeightForUp(floorNumber) {
+function getFloorsHeight(floorNumber) {
   const floors = document.querySelectorAll(".floor");
   console.log(floorNumber, floors.length);
   let height = 0;
@@ -164,15 +185,5 @@ function getFloorsHeightForUp(floorNumber) {
     height += floors[i].offsetHeight;
   }
   console.log(height);
-
   return height;
 }
-
-// function getFloorsHeightForDown(floorNumber) {
-//   const floors = document.querySelectorAll(".floor");
-//   let height = 0;
-//   for (let i = 0; i < floors.length - 1; i++) {
-//     height += floors[i].offsetHeight;
-//     console.log(floors[i].offsetHeight);
-//   }
-// }

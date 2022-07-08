@@ -120,12 +120,10 @@ align-self: flex-end;
     margin: 0 2rem;
     background-color: var(--VERY-LIGHT-COLOR);
     transition: transform 2s ease-out;
+    overflow: hidden;
 }
 
 
-.door {
-    transition: transform 2.5s ease-out;
-}
 
 .lift-left {
     height: 9.6rem;
@@ -133,6 +131,7 @@ align-self: flex-end;
     background-color: var(--LIFT-COLOR);
     border-radius: 4px 0 0 4px;
     border: 2px solid var(--PRIMARY-COLOR);
+    transition: transform 2.5s ease-out;
 }
 
 .lift-right {
@@ -141,6 +140,7 @@ align-self: flex-end;
     background-color: var(--LIFT-COLOR);
     border-radius: 0 4px 4px 0;
     border: 2px solid var(--PRIMARY-COLOR);
+    transition: transform 2.5s ease-out;
 }
 
 .open-lift-left {
