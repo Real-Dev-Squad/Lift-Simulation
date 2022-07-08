@@ -94,6 +94,9 @@ body {
     cursor: pointer;
 }
 
+.btn-primary {
+    margin-bottom: 4rem;
+}
 .btn-primary:hover,
 .btn-up:hover,
 .btn-down:hover {
@@ -112,33 +115,58 @@ body {
 /*STYLING LIFTS*/
 
 .lift {
-    display: flex;
-    margin: 1rem;
-    align-self: start;
+display: flex;
+align-self: flex-end;
+    margin: 0 2rem;
+    background-color: var(--VERY-LIGHT-COLOR);
+    transition: transform 2s ease-out;
+}
+
+
+.door {
+    transition: transform 2.5s ease-out;
 }
 
 .lift-left {
-    height: 8rem;
+    height: 9.6rem;
     width: 3.2rem;
     background-color: var(--LIFT-COLOR);
     border-radius: 4px 0 0 4px;
     border: 2px solid var(--PRIMARY-COLOR);
-    animation: lift-left 2.5s;
 }
 
 .lift-right {
-    height: 8rem;
+    height: 9.6rem;
     width: 3.2rem;
     background-color: var(--LIFT-COLOR);
     border-radius: 0 4px 4px 0;
     border: 2px solid var(--PRIMARY-COLOR);
-    animation: lift-right 2.5s;
 }
 
+.open-lift-left {
+    transform: translateX(-100%);
+}
+
+.open-lift-right {
+    transform: translateX(100%);
+}
 /*STYLING FLOORS*/
 
-.floor {
-    height: 4px;
+.floors {
     width: 100%;
-    background-color: var(--PRIMARY-COLOR);
+    padding-bottom: 4rem;
 }
+.floor {
+width: 100%;
+height: 140px;
+    display: flex;
+    align-items: center;
+    border-bottom: 4px solid var(--PRIMARY-COLOR);
+    padding: 1rem 2rem .6rem;
+}
+.lift-controller {
+    display: flex;
+    flex-direction: column;
+}
+
+/*DOOR ANIMATION*/
