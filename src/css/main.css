@@ -22,11 +22,14 @@ body {
 :root {
     --PRIMARY-COLOR: #06283D;
     --ERROR-COLOR: #F37878;
-        --LIFT-COLOR: #FF9999;
+    --LIFT-COLOR: #FF9999;
     --LIFT-BORDER-COLOR: #000;
     --LIGHT_COLOR: #47B5FF;
     --VERY-LIGHT-COLOR: #DFF6FF;
     --COLOR-WHITE: #FFF;
+    --INPUT-SECTION-BORDER-COLOR: #979797;
+        --INPUT-SECTION-BOX-SHADOW: inset 0px 0px 4px 2px rgb(255 255 255 / 66%);
+        --INPUT-SECTION-BG-COLOR: rgba(196, 196, 196, 0.42);
 }
 
 /*UTILITY CLASSES*/
@@ -40,7 +43,7 @@ body {
 }
 
 
-/*STYLING MAIN TEXT*/
+/*STYLING MAIN*/
 
 .main {
     display: flex;
@@ -50,14 +53,16 @@ body {
         min-height: 100vh;
 }
 
-.lift-container {
+.input-container {
     margin: 0 auto;
     display: flex;
     flex-direction: column;
     align-items: center;
     max-width: 50rem;
-    min-width: 24rem;
-}
+    min-width: 30rem;
+        padding: 2rem;
+        border-radius: 5px;
+    }
 
 .heading {
     text-align: center;
@@ -65,6 +70,18 @@ body {
     color: var(--PRIMARY-COLOR);
 }
 
+.form-container {
+    width: 50vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--INPUT-SECTION-BG-COLOR);
+    border: 1px solid var(--INPUT-SECTION-BORDER-COLOR);
+    border-radius: 5px;
+    margin: 0 auto;
+    min-width: 30rem;
+    max-width: 70rem;
+}
 .inputs {
     border-radius: 5px;
     border: 2px solid var(--PRIMARY-COLOR);
@@ -79,8 +96,9 @@ body {
     border: var(--PRIMARY-COLOR);
 }
 
-.lift-container>label {
+.input-container>label {
     font-weight: 500;
+    text-align: center;
     align-self: flex-start;
     margin-left: 1.6rem;
 }
@@ -119,8 +137,8 @@ body {
 /*STYLING LIFTS*/
 
 .lift {
-display: flex;
-align-self: flex-end;
+    display: flex;
+        align-self: flex-end;
     margin: 0 2rem;
     background-color: var(--VERY-LIGHT-COLOR);
     transition: transform 2s ease-out;
@@ -152,10 +170,9 @@ align-self: flex-end;
 .open-lift-right {
     transform: translateX(100%);
 }
-/*STYLING FLOORS*/
 
+/*STYLING FLOORS*/
 .floors {
-/* min-width: calc(100vw - 10rem); */
     padding-bottom: 4rem;
     overflow-x: auto;
 }
@@ -172,7 +189,7 @@ align-self: flex-end;
     flex-direction: column;
 }
 
-/*TOAST*/
+/*STYLING ERROR DISPLAY*/
 
 .error-display {
     margin: 0 auto;
