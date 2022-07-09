@@ -2,20 +2,22 @@ const floors = document.getElementById("input-floors");
 const lifts = document.getElementById("input-lifts");
 const inputContainer = document.getElementById("input-container");
 const btnGenerateLifts = document.getElementById("btn-generate");
+const clearall = document.querySelector(".clear");
+console.log(clearall);
+
+let clearId;
 
 let noOfLifts;
 let noOfFloors;
 
 let liftQueue = [];
 let haltedQueue = [];
-
-let liftStatus = {
-  currentFloor: 0,
-};
+var requestQueue = [];
 
 function fillLiftQueue() {
   liftQueue = [];
   haltedQueue = [];
+  requestQueue = [];
   for (let i = 1; i <= noOfLifts; i++) {
     let lift = {};
     lift.number = i;
@@ -104,6 +106,8 @@ function getNearestLift(floorNumber) {
     ({ number: liftOnePos }, { number: liftTwoPos }) => liftOnePos - liftTwoPos
   );
 
+  console.log("LIFT QUEUE SORTED ", liftQueue);
+
   for (let index = liftQueue.length - 1; index >= 0; index--) {
     currentLiftDistance = Math.abs(liftQueue[index].currentFloor - floorNumber);
     if (currentLiftDistance <= minDistance) {
@@ -111,36 +115,44 @@ function getNearestLift(floorNumber) {
       minDistance = currentLiftDistance;
     }
   }
-
+  //[2,1,3]
   const deletedEle = liftQueue.splice(nearestLiftIndex, 1);
   console.log(deletedEle);
   console.log([...liftQueue]);
   liftQueue.unshift(deletedEle[0]);
 }
 
+function handleRequestQueue() {}
+
+
 document.body.addEventListener("click", (e) => {
   console.log("running");
-  if (
-    e.target.parentNode.className === "lift-controller" &&
-    liftQueue.length > 0
-  ) {
+  if (e.target.parentNode.className === "lift-controller") {
     console.log("inside");
-    let allLifts = document.querySelectorAll(".lift");
     let floorNumber = parseInt(e.target.dataset.floor);
-    let heightFromGroundFloor = getFloorsHeight(floorNumber);
-    getNearestLift(floorNumber);
-    console.log("nearest lift is ::", liftQueue[0]);
-    console.log("lift queue ", liftQueue);
-    let lift = allLifts[liftQueue[0].number - 1];
-    let transitionTime =
-      Math.abs(Number(floorNumber) - Number(liftQueue[0].currentFloor)) * 2;
-
-    lift.style.transform = `translateY(${-parseInt(heightFromGroundFloor)}px)`;
-    lift.style.transitionDuration = `${transitionTime}s`;
-    console.log("TIME TAKEN BY LIFT:::::", transitionTime);
-    setLiftToMoving(transitionTime, floorNumber, lift);
+    requestQueue.push(floorNumber);
+    if (liftQueue.length > 0) {
+      simulateLift();
+    }
   }
 });
+
+function simulateLift() {
+  let floorNumber = requestQueue[0];
+  let allLifts = document.querySelectorAll(".lift");
+  let heightFromGroundFloor = getFloorsHeight(floorNumber);
+  getNearestLift(floorNumber);
+
+  let lift = allLifts[liftQueue[0].number - 1];
+  let transitionTime =
+    Math.abs(Number(floorNumber) - Number(liftQueue[0].currentFloor)) * 2;
+
+  lift.style.transform = `translateY(${-parseInt(heightFromGroundFloor)}px)`;
+  lift.style.transitionDuration = `${transitionTime}s`;
+  console.log("TIME TAKEN BY LIFT:::::", transitionTime);
+  setLiftToMoving(transitionTime, floorNumber, lift);
+  requestQueue.splice(0, 1);
+}
 
 function setLiftToMoving(delay, floorNumber, currLift) {
   liftQueue = liftQueue.map((lift, index) =>
@@ -170,6 +182,9 @@ function setLiftToMoving(delay, floorNumber, currLift) {
     haltedQueue[0].status = "idle";
     liftQueue.push(haltedQueue[0]);
     haltedQueue.shift();
+    if (requestQueue.length > 0) {
+      simulateLift();
+    }
   }, delay * 1000 + 5000);
 
   // clearTimeout(timerId1);
@@ -185,6 +200,6 @@ function getFloorsHeight(floorNumber) {
   for (let i = floors.length - 1; i > floors.length - floorNumber - 1; i--) {
     height += floors[i].offsetHeight;
   }
-  console.log(height);
+
   return height;
 }
