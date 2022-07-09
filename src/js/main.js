@@ -4,8 +4,6 @@ const inputContainer = document.getElementById("input-container");
 const btnGenerateLifts = document.getElementById("btn-generate");
 const errorDisplay = document.querySelector(".error-display");
 
-let clearId;
-
 let noOfLifts;
 let noOfFloors;
 
@@ -13,41 +11,9 @@ let liftQueue = [];
 let haltedQueue = [];
 var requestQueue = [];
 
-function fillLiftQueue() {
-  liftQueue = [];
-  haltedQueue = [];
-  requestQueue = [];
-  for (let i = 1; i <= noOfLifts; i++) {
-    let lift = {};
-    lift.number = i;
-    lift.status = "idle";
-    lift.currentFloor = 0;
-    liftQueue.push(lift);
-  }
-  console.log("lift-queue initital ----------->", liftQueue);
-}
-
 function insertAfter(referenceNode, newNode) {
   referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 }
-
-floors.addEventListener("input", () => {
-  noOfFloors = parseInt(floors.value);
-});
-
-lifts.addEventListener("input", () => {
-  noOfLifts = parseInt(lifts.value);
-});
-
-console.log(errorDisplay);
-
-btnGenerateLifts.addEventListener("click", () => {
-  if (validateInputs()) {
-    errorDisplay.style.display = "none";
-    generateFloors();
-    fillLiftQueue();
-  }
-});
 
 function validateInputs() {
   if (!noOfFloors || !noOfLifts) {
@@ -61,6 +27,19 @@ function validateInputs() {
     return false;
   }
   return true;
+}
+
+function fillLiftQueue() {
+  liftQueue = [];
+  haltedQueue = [];
+  requestQueue = [];
+  for (let i = 1; i <= noOfLifts; i++) {
+    let lift = {};
+    lift.number = i;
+    lift.status = "idle";
+    lift.currentFloor = 0;
+    liftQueue.push(lift);
+  }
 }
 
 function generateFloors() {
@@ -123,8 +102,6 @@ function getNearestLift(floorNumber) {
     ({ number: liftOnePos }, { number: liftTwoPos }) => liftOnePos - liftTwoPos
   );
 
-  console.log("LIFT QUEUE SORTED ", liftQueue);
-
   for (let index = liftQueue.length - 1; index >= 0; index--) {
     currentLiftDistance = Math.abs(liftQueue[index].currentFloor - floorNumber);
     if (currentLiftDistance <= minDistance) {
@@ -132,27 +109,20 @@ function getNearestLift(floorNumber) {
       minDistance = currentLiftDistance;
     }
   }
-  //[2,1,3]
   const deletedEle = liftQueue.splice(nearestLiftIndex, 1);
-  console.log(deletedEle);
-  console.log([...liftQueue]);
   liftQueue.unshift(deletedEle[0]);
 }
 
-function handleRequestQueue() {}
+function getFloorsHeight(floorNumber) {
+  const floors = document.querySelectorAll(".floor");
+  let height = 0;
 
-
-document.body.addEventListener("click", (e) => {
-  console.log("running");
-  if (e.target.parentNode.className === "lift-controller") {
-    console.log("inside");
-    let floorNumber = parseInt(e.target.dataset.floor);
-    requestQueue.push(floorNumber);
-    if (liftQueue.length > 0) {
-      simulateLift();
-    }
+  for (let i = floors.length - 1; i > floors.length - floorNumber - 1; i--) {
+    height += floors[i].offsetHeight;
   }
-});
+
+  return height;
+}
 
 function simulateLift() {
   let floorNumber = requestQueue[0];
@@ -166,7 +136,7 @@ function simulateLift() {
 
   lift.style.transform = `translateY(${-parseInt(heightFromGroundFloor)}px)`;
   lift.style.transitionDuration = `${transitionTime}s`;
-  console.log("TIME TAKEN BY LIFT:::::", transitionTime);
+
   setLiftToMoving(transitionTime, floorNumber, lift);
   requestQueue.splice(0, 1);
 }
@@ -177,10 +147,6 @@ function setLiftToMoving(delay, floorNumber, currLift) {
       ? { ...lift, status: "moving", currentFloor: floorNumber }
       : lift
   );
-  console.log("--------------------------------------------");
-  console.log("lift-queue later ----------->", liftQueue);
-  console.log(haltedQueue);
-  console.log("--------------------------------------------");
   const firstLiftInQueue = liftQueue.shift();
 
   haltedQueue.push(firstLiftInQueue);
@@ -203,20 +169,31 @@ function setLiftToMoving(delay, floorNumber, currLift) {
       simulateLift();
     }
   }, delay * 1000 + 5000);
-
-  // clearTimeout(timerId1);
-  // clearTimeout(timerId2);
-  // clearTimeout(timerId3);
 }
 
-function getFloorsHeight(floorNumber) {
-  const floors = document.querySelectorAll(".floor");
-  console.log(floorNumber, floors.length);
-  let height = 0;
+floors.addEventListener("input", () => {
+  noOfFloors = parseInt(floors.value);
+});
 
-  for (let i = floors.length - 1; i > floors.length - floorNumber - 1; i--) {
-    height += floors[i].offsetHeight;
+lifts.addEventListener("input", () => {
+  noOfLifts = parseInt(lifts.value);
+});
+
+btnGenerateLifts.addEventListener("click", () => {
+  if (validateInputs()) {
+    errorDisplay.style.display = "none";
+    generateFloors();
+    fillLiftQueue();
   }
+});
 
-  return height;
-}
+document.body.addEventListener("click", (e) => {
+  console.log("running");
+  if (e.target.parentNode.className === "lift-controller") {
+    let floorNumber = parseInt(e.target.dataset.floor);
+    requestQueue.push(floorNumber);
+    if (liftQueue.length > 0) {
+      simulateLift();
+    }
+  }
+});
