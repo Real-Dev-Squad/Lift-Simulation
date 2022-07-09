@@ -21,11 +21,12 @@ body {
 
 :root {
     --PRIMARY-COLOR: #06283D;
-    --LIFT-COLOR: #1363DF;
+    --ERROR-COLOR: #F37878;
+        --LIFT-COLOR: #FF9999;
     --LIFT-BORDER-COLOR: #000;
     --LIGHT_COLOR: #47B5FF;
     --VERY-LIGHT-COLOR: #DFF6FF;
-    --COLOR-wHITE: black;
+    --COLOR-WHITE: #FFF;
 }
 
 /*UTILITY CLASSES*/
@@ -45,11 +46,12 @@ body {
     display: flex;
     padding: 2.8rem;
     flex-direction: column;
-    align-items: center;
-    height: 100vh;
+    /* align-items: center; */
+        min-height: 100vh;
 }
 
 .lift-container {
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -58,12 +60,14 @@ body {
 }
 
 .heading {
+    text-align: center;
     margin: 1rem 1rem 4rem;
     color: var(--PRIMARY-COLOR);
 }
 
 .inputs {
     border-radius: 5px;
+    border: 2px solid var(--PRIMARY-COLOR);
     margin: 1rem;
     width: 24rem;
     height: 3.6rem;
@@ -123,8 +127,6 @@ align-self: flex-end;
     overflow: hidden;
 }
 
-
-
 .lift-left {
     height: 9.6rem;
     width: 3.2rem;
@@ -153,12 +155,13 @@ align-self: flex-end;
 /*STYLING FLOORS*/
 
 .floors {
-    width: 100%;
+/* min-width: calc(100vw - 10rem); */
     padding-bottom: 4rem;
+    overflow-x: auto;
 }
+
 .floor {
-width: 100%;
-height: 140px;
+    height: 140px;
     display: flex;
     align-items: center;
     border-bottom: 4px solid var(--PRIMARY-COLOR);
@@ -169,4 +172,17 @@ height: 140px;
     flex-direction: column;
 }
 
-/*DOOR ANIMATION*/
+/*TOAST*/
+
+.error-display {
+    margin: 0 auto;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+    background-color: var(--ERROR-COLOR);
+    color: var(--COLOR-WHITE);
+    width: 36rem;
+    height: 4rem;
+    transition: al 2s ease-in;
+}

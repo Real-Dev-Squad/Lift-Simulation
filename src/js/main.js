@@ -2,8 +2,7 @@ const floors = document.getElementById("input-floors");
 const lifts = document.getElementById("input-lifts");
 const inputContainer = document.getElementById("input-container");
 const btnGenerateLifts = document.getElementById("btn-generate");
-const clearall = document.querySelector(".clear");
-console.log(clearall);
+const errorDisplay = document.querySelector(".error-display");
 
 let clearId;
 
@@ -40,10 +39,29 @@ lifts.addEventListener("input", () => {
   noOfLifts = parseInt(lifts.value);
 });
 
+console.log(errorDisplay);
+
 btnGenerateLifts.addEventListener("click", () => {
-  generateFloors();
-  fillLiftQueue();
+  if (validateInputs()) {
+    errorDisplay.style.display = "none";
+    generateFloors();
+    fillLiftQueue();
+  }
 });
+
+function validateInputs() {
+  if (!noOfFloors || !noOfLifts) {
+    errorDisplay.textContent = "Please enter all the fields";
+    errorDisplay.style.display = "flex";
+    return false;
+  }
+  if (noOfFloors < 0 || noOfLifts < 0) {
+    errorDisplay.textContent = "Please enter positive values";
+    errorDisplay.style.display = "flex";
+    return false;
+  }
+  return true;
+}
 
 function generateFloors() {
   const ele = document?.querySelector(".floors");
@@ -54,7 +72,6 @@ function generateFloors() {
   for (let i = 0; i < noOfFloors; i++) {
     const floor = document.createElement("div");
     floor.setAttribute("class", "floor");
-    // insertAfter(inputContainer, floor);
     floors.prepend(floor);
     const liftController = generateLiftControllers(i);
     floor.append(liftController);
