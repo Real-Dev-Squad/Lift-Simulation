@@ -135,15 +135,35 @@ body {
     background-color: var(--LIFT-COLOR);
 }
 
+/*STYLING FLOORS*/
+.floors {
+    padding-bottom: 4rem;
+    overflow-x: auto;
+}
+
+.floor {
+    height: 140px;
+    display: flex;
+    overflow: visible;
+    align-items: center;
+    border-bottom: 4px solid var(--PRIMARY-COLOR);
+    padding: 1rem 2rem .6rem;
+}
+
+.lift-controller {
+    display: flex;
+    flex-direction: column;
+}
 /*STYLING LIFTS*/
 
 .lift {
     display: flex;
-        align-self: flex-end;
+    align-self: flex-end;
     margin: 0 2rem;
     background-color: var(--VERY-LIGHT-COLOR);
     transition: transform 2s ease-out;
     overflow: hidden;
+    flex-shrink: 0;
 }
 
 .lift-left {
@@ -170,24 +190,6 @@ body {
 
 .open-lift-right {
     transform: translateX(100%);
-}
-
-/*STYLING FLOORS*/
-.floors {
-    padding-bottom: 4rem;
-    overflow-x: auto;
-}
-
-.floor {
-    height: 140px;
-    display: flex;
-    align-items: center;
-    border-bottom: 4px solid var(--PRIMARY-COLOR);
-    padding: 1rem 2rem .6rem;
-}
-.lift-controller {
-    display: flex;
-    flex-direction: column;
 }
 
 /*STYLING ERROR DISPLAY*/
