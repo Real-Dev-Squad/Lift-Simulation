@@ -1,0 +1,221 @@
+/* --------- */
+/* Reset CSS */
+/* --------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html,
+body {
+  block-size: 100%;
+}
+
+body {
+  line-height: 1.5;
+}
+
+img {
+  display: block;
+  max-inline-size: 100%;
+}
+
+button {
+  font: inherit;
+}
+
+.lift {
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+/* ------ */
+/* Navbar */
+/* ------ */
+
+.lift__nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  position: sticky;
+  inset-block-start: 0;
+}
+
+.navbar {
+  background-color: rgba(255, 255, 255, 0.895);
+  box-shadow: 0 0 6px rgba(0, 0, 0, 10%);
+  padding-block: 0.5rem;
+  padding-inline: 1rem;
+}
+
+.navbar__title,
+.navbar__actions {
+  margin-inline: auto;
+}
+
+.navbar__actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.navbar__title {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 1.25rem;
+}
+
+.navbar__add-lift,
+.navbar__add-floor {
+  background-color: rgb(127, 205, 231);
+  border: none;
+  padding-block: 0.5rem;
+  padding-inline: 2rem;
+  border-radius: 5px;
+  color: black;
+  cursor: pointer;
+}
+
+/* ----- */
+/* Floor */
+/* ----- */
+
+.lift__main {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 150px;
+  grid-auto-rows: 150px;
+  margin-block-start: 2rem;
+}
+
+.floor {
+  background-color: rgba(128, 128, 128, 0.111);
+  border-block-end: 1px solid rgba(75, 75, 75, 0.438);
+  padding-inline: 1rem;
+  display: grid;
+  gap: 3rem;
+  grid-template-columns: auto 1fr;
+}
+
+.floor__actions {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.floor__call-lift-up,
+.floor__call-lift-down {
+  inline-size: 60px;
+  border: 0;
+  padding-block: 0.25rem;
+  border-radius: 5px;
+}
+
+.floor__call-lift-up {
+  background-color: lightgreen;
+}
+
+.floor__call-lift-down {
+  background-color: lightpink;
+}
+
+/* --------- */
+/* Lift-door */
+/* --------- */
+
+.doors {
+  inline-size: 120px;
+  block-size: 150px;
+  background-color: black;
+  position: relative;
+  border: 1px solid black;
+  overflow: hidden;
+}
+
+.doors::before {
+  content: '';
+  display: block;
+  position: absolute;
+  block-size: 100%;
+  inset-inline-start: 0.5px;
+  inline-size: 49%;
+  background-color: grey;
+}
+
+.doors::after {
+  content: '';
+  display: block;
+  position: absolute;
+  inset-inline-end: 0.5px;
+  block-size: 100%;
+  inline-size: 49%;
+  background-color: grey;
+}
+
+.doors--stop::after {
+  animation: open-right-door 5000ms ease 2000ms;
+}
+
+.doors--stop::before {
+  animation: open-left-door 5000ms ease 2000ms;
+}
+
+.doors {
+  animation: move-lift 2000ms ease-in-out forwards;
+}
+
+@keyframes move-lift {
+  0% {
+    transform: translateY(0%);
+  }
+  100% {
+    transform: translateY(-100%);
+  }
+}
+
+@keyframes open-right-door {
+  0% {
+    transform: translateX(0%);
+  }
+  50% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes open-left-door {
+  0% {
+    transform: translateX(0%);
+  }
+  50% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+/* ------------- */
+/* Media Queries */
+/* ------------- */
+
+@media (min-width: 600px) {
+  .lift__nav {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .navbar__title,
+  .navbar__actions {
+    margin-inline: unset;
+  }
+}
