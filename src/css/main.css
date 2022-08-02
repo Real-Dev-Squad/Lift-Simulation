@@ -160,24 +160,11 @@ button {
 }
 
 .doors--stop::after {
-  animation: open-right-door 5000ms ease 2000ms;
+  animation: open-right-door 5000ms ease;
 }
 
 .doors--stop::before {
-  animation: open-left-door 5000ms ease 2000ms;
-}
-
-.doors {
-  animation: move-lift 2000ms ease-in-out forwards;
-}
-
-@keyframes move-lift {
-  0% {
-    transform: translateY(0%);
-  }
-  100% {
-    transform: translateY(-100%);
-  }
+  animation: open-left-door 5000ms ease;
 }
 
 @keyframes open-right-door {
