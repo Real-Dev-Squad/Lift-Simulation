@@ -3,13 +3,17 @@ const addFloorbtn = document.querySelector('.navbar__add-floor');
 const addLiftBtn = document.querySelector('.navbar__add-lift');
 const allFloors = document.querySelectorAll('.floor');
 const moveLiftUpBtn = document.querySelector('.floor__call-lift-up');
-const lift = document.querySelector('.doors');
 const liftsContainer = document.querySelector('.floor__lifts');
-
-let lastFloor = 1;
+let lift = document.querySelectorAll('.doors');
 
 let arr = [];
-let isLiftRunning = false;
+const liftsData = [...document.querySelectorAll('.doors')].map((element) => {
+  return {
+    element,
+    lastFloor: 1,
+    isLiftRunning: false,
+  };
+});
 
 const moveLiftUp = (e) => {
   const parentElement = e.target.parentElement.parentElement;
@@ -17,25 +21,38 @@ const moveLiftUp = (e) => {
   moveLift(floorIndex);
 };
 
+const findNonBusyLift = () => {
+  let nearestLift = {};
+  for (let i = 0; i < liftsData.length; i++) {
+    if (!liftsData[i].isLiftRunning) {
+      nearestLift = { ...liftsData[i], i };
+      break;
+    }
+  }
+  return nearestLift;
+};
+
 const moveLift = (index) => {
-  if (!isLiftRunning) {
-    isLiftRunning = true;
-    const floorDiff = lastFloor - Number(index);
-    lift.style.transform = `translateY(${-(Number(index) - 1) * 100}%)`;
-    lift.style.transition = `transform ${
+  const { i } = findNonBusyLift();
+  if (i >= 0) {
+    liftsData[i].isLiftRunning = true;
+    const floorDiff = liftsData[i].lastFloor - Number(index);
+    console.log(floorDiff);
+    lift[i].style.transform = `translateY(${-(Number(index) - 1) * 100}%)`;
+    lift[i].style.transition = `transform ${
       Math.abs(floorDiff) * 2000
     }ms ease-out`;
-    lastFloor = Number(index);
+    liftsData[i].lastFloor = Number(index);
     setTimeout(() => {
-      lift.classList.add('doors--stop');
+      lift[i].classList.add('doors--stop');
       setTimeout(() => {
-        lift.classList.remove('doors--stop');
-        isLiftRunning = false;
+        lift[i].classList.remove('doors--stop');
+        liftsData[i].isLiftRunning = false;
         if (arr.length >= 1) {
           moveLift(Number(arr.shift()));
         }
       }, 5000);
-    }, Math.abs(floorDiff) * 2000);
+    }, Math.abs(floorDiff) * 2000 + 1);
   } else {
     arr.push(index);
   }
@@ -70,9 +87,15 @@ const addNewFloor = () => {
 };
 
 const addNewLift = () => {
-  const lift = document.createElement('div');
-  lift.classList.add('doors');
-  liftsContainer.appendChild(lift);
+  const liftEl = document.createElement('div');
+  liftEl.classList.add('doors');
+  liftsContainer.appendChild(liftEl);
+  lift = document.querySelectorAll('.doors');
+  liftsData.push({
+    element: lift[lift.length - 1],
+    lastFloor: 1,
+    isLiftRunning: false,
+  });
 };
 
 moveLiftUpBtn.addEventListener('click', moveLiftUp);
