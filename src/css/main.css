@@ -126,6 +126,11 @@ button {
   background-color: lightpink;
 }
 
+.floor__lifts {
+  display: flex;
+  gap: 2rem;
+}
+
 /* --------- */
 /* Lift-door */
 /* --------- */

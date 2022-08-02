@@ -1,8 +1,10 @@
 const floors = document.querySelector('.floors');
 const addFloorbtn = document.querySelector('.navbar__add-floor');
+const addLiftBtn = document.querySelector('.navbar__add-lift');
 const allFloors = document.querySelectorAll('.floor');
 const moveLiftUpBtn = document.querySelector('.floor__call-lift-up');
 const lift = document.querySelector('.doors');
+const liftsContainer = document.querySelector('.floor__lifts');
 
 let lastFloor = 1;
 
@@ -44,20 +46,17 @@ const createFloorWithIndex = (floorIndex) => {
     floorIndex++;
     const floorContainer = document.createElement('div');
     const floorActionsContainer = document.createElement('div');
-    const floorLiftsContainer = document.createElement('div');
     const callLiftUpBtn = document.createElement('button');
     const callLiftDownBtn = document.createElement('button');
     callLiftUpBtn.addEventListener('click', moveLiftUp);
     floorContainer.classList.add('floor');
     floorActionsContainer.classList.add('floor__actions');
-    floorLiftsContainer.classList.add('floor__lifts');
     callLiftDownBtn.classList.add('floor__call-lift-down');
     callLiftUpBtn.classList.add('floor__call-lift-up');
     floorContainer.setAttribute('data-floor', floorIndex);
     callLiftDownBtn.textContent = 'Down';
     callLiftUpBtn.textContent = 'Up';
     floorContainer.appendChild(floorActionsContainer);
-    floorContainer.appendChild(floorLiftsContainer);
     floorActionsContainer.appendChild(callLiftUpBtn);
     floorActionsContainer.appendChild(callLiftDownBtn);
     return floorContainer;
@@ -70,5 +69,12 @@ const addNewFloor = () => {
   floors.insertAdjacentElement('afterbegin', createFloor());
 };
 
+const addNewLift = () => {
+  const lift = document.createElement('div');
+  lift.classList.add('doors');
+  liftsContainer.appendChild(lift);
+};
+
 moveLiftUpBtn.addEventListener('click', moveLiftUp);
 addFloorbtn.addEventListener('click', addNewFloor);
+addLiftBtn.addEventListener('click', addNewLift);
