@@ -117,6 +117,7 @@ button {
   border: 0;
   padding-block: 0.25rem;
   border-radius: 5px;
+  cursor: pointer;
 }
 
 .floor__call-lift-up {
