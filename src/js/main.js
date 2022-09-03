@@ -8,6 +8,7 @@ const liftsContainer = document.querySelector('.floor__lifts');
 let lift = document.querySelectorAll('.doors');
 
 const destinations = [];
+const currentlyServedFloors = [];
 let numOfLifts = 1;
 const liftsData = [...document.querySelectorAll('.doors')].map((element) => {
   return {
@@ -40,6 +41,7 @@ const openCloseLift = (index, floorDiff) => {
     setTimeout(() => {
       lift[index].classList.remove('doors--stop');
       liftsData[index].isLiftRunning = false;
+      currentlyServedFloors.shift();
       if (destinations.length >= 1) {
         moveLift(Number(destinations.shift()));
       }
@@ -49,8 +51,9 @@ const openCloseLift = (index, floorDiff) => {
 
 const moveLift = (index) => {
   const { i } = findFirstNonBusyLift();
-  if (i >= 0) {
+  if (i >= 0 && !currentlyServedFloors.includes(index)) {
     liftsData[i].isLiftRunning = true;
+    currentlyServedFloors.push(index);
     const floorDiff = liftsData[i].lastFloor - Number(index);
     lift[i].style.transform = `translateY(${-(Number(index) - 1) * 100}%)`;
     lift[i].style.transition = `transform ${
@@ -59,7 +62,9 @@ const moveLift = (index) => {
     liftsData[i].lastFloor = Number(index);
     openCloseLift(i, floorDiff);
   } else {
-    destinations.push(index);
+    if (!currentlyServedFloors.includes(index)) {
+      destinations.push(index);
+    }
   }
 };
 
