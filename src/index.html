@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lift Simulation</title>
+    <link rel="stylesheet" href="./css/main.css" />
+    <script src="./js/main.js"></script>
+  </head>
+  <body>
+    <div class="input-section">
+      <div>
+        <label for="floor">Number of floors</label>
+        <input type="number" name="floor" id="floor" />
+      </div>
+      <div>
+        <label for="floor">Number of lifts</label>
+        <input type="number" name="lift" id="lift" />
+      </div>
+      <button class="create-btn" onClick="handleRunSimulation()">
+        Run Simulation
+      </button>
+    </div>
+    <div class="container" id="container"></div>
+    <div id="floor-section" class="floor-container"></div>
+  </body>
+</html>

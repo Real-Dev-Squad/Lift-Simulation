@@ -1,0 +1,45 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.input-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.create-btn {
+  width: 100px;
+  height: 30px;
+}
+
+#floor-section {
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.floor-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  border-bottom: 1px solid;
+}
+
+.up-down-btn {
+  align-self: flex-start;
+}
+
+.lift {
+  height: 200px;
+  width: 200px;
+  border: solid 1px;
+}
+
+.lift-container {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+}
