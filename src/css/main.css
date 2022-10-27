@@ -1,0 +1,128 @@
+.form{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-direction: column;
+    flex-basis: content;
+}
+
+.input-group{
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.floors-generated{
+    margin: 8px;
+    display: flex;
+    flex-direction: column;
+}
+
+.floor{
+    height: 8rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    border-bottom: 1px solid black;
+}
+
+.floor-container{
+    display: flex;
+    align-items: flex-end;
+    gap: 4rem;
+    height: 100%;
+}
+
+.lift-buttons{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    gap: 4px;
+}
+
+.lift-buttons > button{
+    padding: 4px 8px;
+    border-radius: 2px;
+    font-weight: bold;
+    border: 2px transparent;
+    background-color: rgb(85, 156, 149);
+    color: black;
+}
+
+.lifts{
+    display: flex;
+    gap: 2rem;
+}
+
+.lift{
+    width: 4rem;
+    height: 5rem;
+    background-color: black;
+    border: 1px solid black;
+    position: relative;
+    overflow: hidden;
+    
+}
+
+.lift::before{
+    content: '';
+    display: block;
+    position: absolute;
+    block-size: 100%;
+    inset-inline-start: 0.5px;
+    inline-size: 49%;
+    background-color: cyan;
+}
+
+.lift::after{
+    content: '';
+    display: block;
+    position: absolute;
+    inset-inline-end: 0.5px;
+    inline-size: 48%;
+    block-size: 100%;
+    background-color: cyan;
+}
+
+.door-operation::before{
+    animation: left-door 5000ms ease;
+}
+
+.door-operation::after{
+    animation: right-door 5000ms ease;
+}
+
+@keyframes left-door{
+    0%{
+        transform: translateX(0%);
+    }
+    50%{
+        transform: translateX(-100%);
+    }
+    100%{
+        transform: translateX(0%);
+    }
+}
+
+@keyframes right-door{
+    0%{
+        transform: translateX(0%);
+    }
+    50%{
+        transform: translateX(100%);
+    }
+    100%{
+        transform:translateX(0%);
+    }
+}
+
+@media screen and (max-width:600px){
+    .lift{
+        width: 3rem;
+        height: 4rem;
+    }
+    .lifts{
+        gap: 1rem;
+    }
+}
