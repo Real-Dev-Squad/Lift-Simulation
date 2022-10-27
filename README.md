@@ -1,6 +1,7 @@
 # Lift-Simulation
 Create a web app where you can simulate lift mechanics for a client
 
+## [Resources referred](https://github.com/vikhyat187/Lift-Simulation/blob/dev/links.md)
 # UI Example
 ![Lift Simulation Example](Lift-Simulation-Example.png "Lift Simulation Example")
 
