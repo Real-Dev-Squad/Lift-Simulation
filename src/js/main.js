@@ -1,56 +1,130 @@
+let floors = [];
+let lifts = [];
+let floorsCalled = [];
+let liftsAvailable = [];
+
 const handleRunSimulation = () => {
-  let floorCount = document.getElementById('floor').value;
-  let liftCount = document.getElementById('lift').value;
-  let floorContainer = document.getElementById('floor-section');
+  let container = document.getElementById('container');
+  let inputSection = document.getElementById('input-section');
+  let floorCount = +document.getElementById('floor').value;
+  let liftCount = +document.getElementById('lift').value;
 
-  let liftPosition = 0;
+  container.innerHTML = '';
+  floors = [];
+  lifts = [];
+  floorsCalled = [];
+  liftsAvailable = [];
 
-  const createFloors = () => {
-    for (let i = floorCount; i > 0; i--) {
-      let downBtn = document.createElement('button');
-      downBtn.innerText = 'Down';
-      let upBtn = document.createElement('button');
-      upBtn.innerText = 'Up';
-      upBtn.className = 'up-down-btn';
-      upBtn.addEventListener('click', () => callLift(`${i}`));
-      downBtn.addEventListener('click', () => callLift(`${i}`));
-      downBtn.className = 'up-down-btn';
-      let floor = document.createElement('div');
-      floor.innerText = 'Floor' + ' ' + i;
-      floor.className = 'floor-item';
-      let liftContainer = document.createElement('div');
+  for (let i = 0; i < floorCount; i++) {
+    let floor = document.createElement('div');
+    floor.id = `floor-${i}`;
+    floor.className = 'floor';
+    floor.style.width = 300 * liftCount + 'px';
 
-      document.getElementById('floor-section').appendChild(floor);
-      liftContainer.id = 'lift-container';
-      liftContainer.className = 'lift-container';
-      floor.appendChild(liftContainer);
-      if (i === floorCount) {
-        floor.appendChild(downBtn);
-      } else if (i === 1) {
-        floor.appendChild(upBtn);
-      } else {
-        floor.appendChild(upBtn);
-        floor.appendChild(downBtn);
-      }
+    if (i != 0) {
+      let upButton = document.createElement('button');
+      upButton.className = 'btn';
+      upButton.id = `floor-btn-${i}`;
+      upButton.addEventListener('click', () => callLift(`${i}`));
+      floor.appendChild(upButton);
+      upButton.innerHTML = 'Up';
+    }
+
+    if (i != floorCount - 1) {
+      let downButton = document.createElement('button');
+      downButton.className = 'btn';
+      downButton.id = `floor-btn-${i}`;
+      downButton.addEventListener('click', () => callLift(`${i}`));
+      downButton.innerHTML = 'Down';
+      floor.appendChild(downButton);
+    }
+
+    container.appendChild(floor);
+    floors.push(floor);
+  }
+
+  let offset = floors[floors.length - 1].offsetTop;
+  let leftOffset = 130;
+  for (let i = 0; i < liftCount; i++) {
+    let lift = document.createElement('div');
+    lift.className = 'lift';
+    container.appendChild(lift);
+    lift.style.top = offset + 'px';
+    lift.style.left = leftOffset + 'px';
+    leftOffset += 150;
+    let door = document.createElement('div');
+    door.className = 'door';
+    lift.appendChild(door);
+    lifts.unshift(lift);
+  }
+
+  for (let lift of lifts) {
+    liftsAvailable.push(lift);
+  }
+};
+
+const callLift = (floor) => {
+  floorsCalled.push(floor);
+  moveLift();
+};
+
+const delay = (miliseconds) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, miliseconds);
+  });
+};
+
+const moveLift = () => {
+  if (liftsAvailable.length === 0 || floorsCalled.length === 0) {
+    return;
+  }
+  let doorAnimation = null;
+  let lift = liftsAvailable.pop();
+  let floor = floorsCalled.shift();
+  let door = lift.childNodes[0];
+
+  let liftPos = lift.offsetTop;
+  let floorPos = floors[floor].offsetTop;
+  let direction = liftPos > floorPos ? -1 : 1;
+
+  const updateLiftPosition = () => {
+    if (liftPos === floorPos) {
+      clearInterval(animation);
+      doorAnimation = setInterval(openDoor, 60);
+    } else {
+      liftPos += direction;
+      lift.style.top = liftPos + 'px';
     }
   };
 
-  const createLifts = () => {
-    for (let i = 0; i < liftCount; i++) {
-      let displayLift = document.createElement('div');
-      displayLift.className = 'lift';
-      liftPosition = floorCount - 1;
-      floorContainer.childNodes[liftPosition].childNodes[1].appendChild(
-        displayLift
-      );
+  const openDoor = () => {
+    let doorPos = door.offsetLeft;
+    let doorWidth = door.offsetWidth;
+    if (doorPos == 0) {
+      clearInterval(doorAnimation);
+      doorAnimation = setInterval(closeDoor, 60);
+    } else {
+      doorPos -= 1;
+      doorWidth += 2;
+      door.style.left = doorPos + 'px';
+      door.style.width = doorWidth + 'px';
     }
   };
 
-  createFloors();
-
-  createLifts();
-
-  const callLift = (floor) => {
-    liftPosition = floor;
+  const closeDoor = () => {
+    let doorPos = door.offsetLeft;
+    let doorWidth = door.offsetWidth;
+    if (doorPos == 49) {
+      clearInterval(doorAnimation);
+      liftsAvailable.push(lift);
+    } else {
+      doorPos += 1;
+      doorWidth -= 2;
+      door.style.left = doorPos + 'px';
+      door.style.width = doorWidth + 'px';
+    }
   };
+  let animation = setInterval(updateLiftPosition, 20);
 };
