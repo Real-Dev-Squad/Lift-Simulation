@@ -1,0 +1,214 @@
+:root {
+  --color-light-green: #7ed56f;
+  --color-medium-green: #55c57a;
+  --color-dark-green: #28b485;
+  --color-grey: #777;
+  --color-white: #ffffff;
+  --floors-space: 3rem;
+
+  --color-medium-pink: #ff8787;
+  --color-light-pink: #f8c4b4;
+  --color-light-green-1: #e5ebb2;
+  --color-dark-green-1: #bce29e;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-family: "Lato", sans-serif;
+  font-weight: 400;
+  line-height: 1.7;
+  background-color: var(--color-medium-pink);
+  /* background-image: linear-gradient(
+      to right bottom,
+      var(--color-light-pink),
+      var(--color-medium-pink)
+    );
+    background-repeat: no-repeat; */
+
+  /* background-image: linear-gradient(
+      to right bottom,
+      var(--color-light-green),
+      var(--color--medium-green)
+    ); */
+  padding: 3rem;
+  font-family: "Seven Segment", sans-serif;
+}
+header {
+  display: flex;
+  justify-content: center;
+}
+.main-heading {
+  text-align: center;
+  position: relative;
+  width: 35rem;
+  background-color: var(--color-light-green-1);
+  color: var(--color-dark-green);
+  margin-bottom: 2rem;
+  border-radius: 1.2rem;
+  padding: 2rem 1rem;
+  font-size: 4rem;
+  font-weight: 900;
+}
+.form-section {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+#floor-input,
+#lift-input {
+  height: 4rem;
+  width: 18rem;
+  margin-bottom: 1rem;
+  border-radius: 1rem;
+  color: var(--color-grey);
+  font-weight: 600;
+  background-color: var(--color-dark-green-1);
+  text-align: center;
+  font-size: 1.6rem;
+}
+#floor-input:focus,
+#lift-input:focus {
+  height: 5rem;
+  width: 20rem;
+}
+
+.confirm-btn {
+  padding: 1.2rem 1.5rem;
+  border-radius: 0.7rem;
+  font-weight: bold;
+  background-color: aqua;
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+.floors-container {
+  display: flex;
+  flex-direction: column-reverse;
+
+  /* display: none; */
+}
+.floor {
+  margin-top: var(--floors-space);
+
+  width: 97vw;
+  height: 15rem;
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
+  border-radius: 5%;
+  display: flex;
+  position: relative;
+  align-items: center;
+}
+/* .floor {
+    width: 95vw;
+    border: 2px solid black;
+    display: flex;
+  } */
+
+.call-btn {
+  padding: 1.2rem;
+  margin: 1.2rem 2rem 1rem 0rem;
+  background-color: aqua;
+  border-radius: 1rem;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: rgb(69, 68, 68);
+  box-shadow: 0 2rem 5rem rgba(black, 0.5);
+}
+.call-btn:hover {
+  cursor: pointer;
+  transform: translateY(-2px);
+  box-shadow: 0 2rem 5rem rgba(black, 0.5);
+}
+.btn-floor {
+  font-weight: 500;
+  font-size: 1.4rem;
+}
+/* .floor-no {
+    flex-direction: column;
+    font-size: 2rem;
+    margin: 2rem;
+  } */
+.floor-common {
+  display: flex;
+}
+.hidden {
+  display: none;
+}
+.lift {
+  background-color: rgb(168, 166, 166);
+  height: 11rem;
+  width: 8.5rem;
+  border: 2px solid black;
+  display: flex;
+  margin-right: 1.5rem;
+  justify-content: center;
+  z-index: 1;
+  overflow: hidden;
+  /* outline: 2px solid rgb(13, 13, 71);
+    outline-offset: 1rem; */
+  border-radius: 0.5rem;
+}
+/* .lift:hover {
+    transform: translateY(-20rem);
+  } */
+
+.left-door {
+  height: 100%;
+  width: 50%;
+  background-color: rgb(101, 103, 100);
+}
+.right-door {
+  height: 100%;
+  width: 50%;
+  background-color: rgb(66, 70, 66);
+}
+.left-move-open {
+  transform: translate(-100%);
+  transition-duration: 2.5s;
+  /* transition-timing-function: ease-in; */
+}
+.right-move-open {
+  transform: translate(100%);
+  transition-duration: 2.5s;
+  /* transition-timing-function: ease-in; */
+}
+.left-move-close {
+  transform: translate(0%);
+  transition-duration: 2.5s;
+  /* transition-timing-function: ease-in; */
+}
+.right-move-close {
+  transform: translate(0%);
+  transition-duration: 2.5s;
+  /* transition-timing-function: ease-in; */
+}
+
+@media screen and (max-width: 800px) {
+  html {
+    font-size: 52%;
+  }
+}
+@media screen and (max-width: 1100px) {
+  html {
+    font-size: 55%;
+  }
+}
+@media screen and (max-width: 500px) {
+  html {
+    font-size: 42%;
+  }
+}
+@media screen and (max-width: 300px) {
+  html {
+    font-size: 32%;
+  }
+}
