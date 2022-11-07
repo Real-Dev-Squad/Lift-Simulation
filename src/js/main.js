@@ -150,9 +150,9 @@ function movingLift(liftId, floorId) {
   const liftMove = document.querySelector(`#${liftId}`);
 
   liftMove.style.transform = `translateY(-${floorHeight * floorId}px)`;
-
+let singleFloorHeight=158.5;
   liftMove.style.transition = `all  ${
-    Math.abs(floorHeight / 158.5) * 5.5
+    Math.abs(floorHeight /singleFloorHeight) * 5.5
   }s linear`;
   liftMove.addEventListener("transitionend", () => doorMovement(liftId), {
     once: true,
