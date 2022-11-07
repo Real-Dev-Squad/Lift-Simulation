@@ -23,8 +23,8 @@ document.addEventListener("DOMContentLoaded", () => {
         let totalliftvalue = Number(liftValue.value);
         var x = window.matchMedia("(max-width: 750px)");
         if (x.matches) {
-          // console.log("width <750");
-          if (totalFloorvalue < 50 && totalliftvalue < 5) {
+          console.log("width <750");
+          if (totalFloorvalue < 50 && totalliftvalue < 6) {
             document.querySelector(".confirm-btn").removeAttribute("disabled");
           }
           if (totalFloorvalue < 0 && totalliftvalue < 0) {
@@ -169,7 +169,12 @@ function movingLift(liftId, floorId) {
   const liftMove = document.querySelector(`#${liftId}`);
 
   liftMove.style.transform = `translateY(-${floorHeight * floorId}px)`;
-  liftMove.style.transition = `all  ${floorId + 1 * 4}s `;
+//   console.log(floorId);
+//   console.log(floorHeight);
+//   console.log(floorHeight * floorId);
+  liftMove.style.transition = `all  ${
+    Math.abs(floorHeight / 158.5) * 5.5
+  }s linear`;
   liftMove.addEventListener("transitionend", () => doorMovement(liftId), {
     once: true,
   });
