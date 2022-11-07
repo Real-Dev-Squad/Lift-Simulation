@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/main.css">
+    <title>Lift Simulation</title>
+</head>
+<body>
+    <header>
+        <h1>Welcome to Lift Simulation</h1>
+    </header>
+    <main>
+        <section id="input-box">
+            <h2>Enter Input to start:- </h2>
+            <form id="user-input">
+                <label for="floors-input">
+                    Enter No. of floors:
+                    <input name="floors-input" id="floors-input" min="1" max="100" required type="number">
+                </label>
+                <label for="lifts-input">
+                    Enter No. of lifts:
+                    <input name="lifts-input" id="lifts-input" min="1" max="10" required type="number">
+                </label>
+                <button id="submit" type="submit">Present Simulation</button>
+            </form>
+            <h3>NOTE: <span>Floors can be from 1 - 100</span></h3>
+            <h3>NOTE: <span>Lifts can be from 1 - 10</sp></h3>
+        </section>
+        <section id="input-count">
+            <h2 id="floors-count"></h2>
+            <h2 id="lifts-count"></h2>
+        </section>
+        <section id="floors-container">
+            <!-- floors will come here and lifts will be at 0th floor initially -->
+        </section>
+    </main>
+
+    <!-- javascript -->
+    <script src="./js/main.js"></script>
+</body>
+</html>

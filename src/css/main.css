@@ -1,0 +1,17 @@
+*{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+:root {
+    --primary-color: rgb(230, 229, 163);
+    --secondary-color: rgb(169, 175, 126);
+    --hover-color: rgb(125, 143, 105);
+    --bg-color: rgb(85, 113, 83);
+}
+
+body{
+    color: var(--primary-color);
+    background-color: var(--bg-color);
+}
