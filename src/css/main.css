@@ -1,7 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600&display=swap');
+
 *{
     box-sizing: border-box;
     padding: 0;
     margin: 0;
+
+    font-family: 'Josefin Sans', sans-serif;
 }
 
 html {
@@ -11,6 +15,8 @@ html {
     --bg-color: rgb(85, 113, 83);
 
     --floor-height: 100px;
+
+    font-size: 14px;
 }
 
 body{
@@ -18,24 +24,56 @@ body{
     background-color: var(--bg-color);
 }
 
-footer{
-    width: 100%;
-    position: sticky;
-    bottom: 0;
+header{
+    padding: 2rem 0 2rem 0;
     text-align: center;
-    font-size: large;
-    padding: 0.5rem;
-    background-color: var(--bg-color);
 }
 
 #input-box{
+    height: 70vh;
     padding-left: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#input-inner-box {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+#user-input input[type=number]{
+    font-size: 1.3rem;
+    font-weight: 600;
+    height: 2rem;
+    width: 100%;
+    padding: 1rem;
+    border-radius: 10px;
+}
+
+#user-input input[type=number]:focus{
+    background-color: var(--secondary-color);
+}
+
+#user-input button[type=submit]{
+    font-size: 1.1rem;
+    padding: 0.8rem;
+    border-radius: 12px;
+    background-color: var(--secondary-color);
+}
+
+#user-input button[type=submit]:hover{
+    padding: 0.8rem;
+    border-radius: 12px;
+    transform: translateY(-2px);
+    background-color: var(--primary-color);
 }
 
 #floors-container{
+    visibility: hidden;
     overflow: auto;
     background-color: var(--primary-color);
-    border: 2px solid var(--primary-color);
 }
 
 .floor{
@@ -51,8 +89,13 @@ footer{
 
 .floor .floor-number{
     color: var(--bg-color);
-    font-size: large;
+    font-size: 1.3rem;
     font-weight: bold;
+}
+
+.floor-details{
+    margin-right: 2rem;
+    height: var(--floor-height);
 }
 
 .lift{
@@ -96,7 +139,7 @@ footer{
 
 .lift-control{
     border-radius: 10px;
-    height: 30px;
+    padding:0.5rem;
     color: var(--primary-color);
 }
 
@@ -110,4 +153,48 @@ footer{
 
 button{
     cursor: pointer;
+    
+}
+
+button.up:hover{
+    color: var(--bg-color);
+    background-color: var(--primary-color);
+}
+
+button.down:hover{
+    color: var(--bg-color);
+    background-color: var(--primary-color);
+}
+
+.floor-number{
+    font-size: 1rem;
+}
+
+.note{
+    color: rgb(240, 94, 94);
+}
+
+.flex-center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* media queries - for responsiveness */ 
+@media (width <= 380px) {
+    :root{
+        --floor-height: 60px;
+    }
+    html{
+        font-size: 10px;
+    }
+
+    .lift-control{
+        font-size: 8px;
+        padding: 2px;
+    }
+
+    p.floor-number{
+        font-size: 8px;
+    }
 }

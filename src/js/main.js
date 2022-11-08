@@ -75,7 +75,6 @@ function moveLift(floorId, liftId){
     floorLiftMap.forEach((value, key) => {
         if(key !== floorId && value === liftId){
             floorLiftMap.set(key, null);
-            console.log(floorLiftMap);
         }
     });
 
@@ -89,7 +88,7 @@ function moveLift(floorId, liftId){
     const transitionDuration = diff*2;
 
     lift.style.transform = `translateY(-${floorNumber*floorHeight}px)`;
-    lift.style.transition  = `transform ${transitionDuration}s`;
+    lift.style.transition  = `all ${transitionDuration}s`;
     setTimeout(() => {
         openAndCloseDoors(floorId, liftId);
     }, transitionDuration * 1000);  
@@ -153,6 +152,9 @@ function renderFloors(totalFloors){
     groundFloor.querySelector(".up").addEventListener("click", (event) => handleLiftCall(event));
     floorsContainer.appendChild(groundFloor);
     floorLiftMap.set("floor-0", null);
+
+    floorsContainer.style.visibility = "visible";
+    floorsContainer.style.border = `2px solid var(--primary-color)`;
 }
 
 function renderLifts(totalLifts){
