@@ -3,6 +3,8 @@ const floorHeight = parseInt(floorHeightInPx.slice(0, floorHeightInPx.length - 2
 let liftsCount, floorsCount;
 const liftsAvailabilitiy = new Map();
 const liftAt = new Map();
+const floorLiftMap = new Map();
+const pendingCalls = [];
 
 document.querySelector("button#submit").addEventListener("click", (event) => {
     event.preventDefault(); //to stop page from reloading and showing values in the url i.e. preventing default submit behaviour
@@ -36,19 +38,37 @@ document.querySelector("button#submit").addEventListener("click", (event) => {
 
 function handleLiftCall(event){
     const calledFloor = event?.path[2];
+    const floorId = calledFloor.id;
+    if(floorLiftMap.get(floorId) != null){
+        const mappedLiftId = floorLiftMap.get(floorId);
+        if(liftsAvailabilitiy.get(mappedLiftId)){
+            liftsAvailabilitiy.set(mappedLiftId, false);
+            openAndCloseDoors(floorId, mappedLiftId);
+        }
+        return;
+    }
     //search for a freeLift
     for(let liftNumber = 1; liftNumber <= liftsCount; liftNumber++){
         const liftId = `lift-${liftNumber}`;
-        if(liftsAvailabilitiy.get(liftId) === true){
-            moveLift(calledFloor.id, liftId);
+        if(liftsAvailabilitiy.get(liftId)){
+            moveLift(floorId, liftId);
             return;
         }
     }
-
-    console.log(calledFloor);
+    
+    pendingCalls.push(floorId);
 }   
 
 function moveLift(floorId, liftId){
+    liftsAvailabilitiy.set(liftId, false);
+    //unmap previous floor-lift mapping with current lift
+    floorLiftMap.forEach((value, key) => {
+        if(value === liftId){
+            floorLiftMap.set(key, null);
+            console.log(floorLiftMap);
+        }
+    });
+
     const floor = document.querySelector(`#${floorId}`);
     const lift = document.querySelector(`#${liftId}`);
     const arr = floorId.split('-');
@@ -61,13 +81,15 @@ function moveLift(floorId, liftId){
     lift.style.transform = `translateY(-${floorNumber*floorHeight}px)`;
     lift.style.transition  = `transform ${transitionDuration}s`;
     setTimeout(() => {
-        openAndCloseDoors(liftId);
+        openAndCloseDoors(floorId, liftId);
     }, transitionDuration * 1000);  
 
     liftAt.set(liftId, floorNumber);
 }
 
-function openAndCloseDoors(liftId) {
+function openAndCloseDoors(floorId, liftId) {
+    floorLiftMap.set(floorId, liftId);
+
     const lift = document.querySelector(`#${liftId}`);
     const leftDoor = lift.querySelector(".left-door");
     const rightDoor = lift.querySelector(".right-door");
@@ -76,6 +98,16 @@ function openAndCloseDoors(liftId) {
     setTimeout(() => {
         leftDoor.classList.remove("left-move");
         rightDoor.classList.remove("right-move"); 
+        //this lift will be free after 2500ms
+        setTimeout(() => {
+            if(pendingCalls.length > 0){
+                const floorIdFromRemainingCalls = pendingCalls[0];
+                pendingCalls.shift();
+                moveLift(floorIdFromRemainingCalls, liftId);
+            } else {
+                liftsAvailabilitiy.set(liftId, true);
+            }
+        }, 2500);
     }, 2500);
 }
 
@@ -84,7 +116,8 @@ function renderFloors(totalFloors){
     for(let floorNumber = totalFloors; floorNumber > 0; floorNumber--){
         const currentFloor = document.createElement("section");
         currentFloor.className = "floor";
-        currentFloor.id = `floor-${floorNumber}`;
+        const floorId = `floor-${floorNumber}`;
+        currentFloor.id = floorId;
         currentFloor.innerHTML = 
         `
                 <section class="floor-details">
@@ -97,6 +130,7 @@ function renderFloors(totalFloors){
         currentFloor.querySelector(".down").addEventListener("click", (event) => handleLiftCall(event));
 
         floorsContainer.appendChild(currentFloor);
+        floorLiftMap.set(floorId, null);
     }
     const groundFloor = document.createElement("section");
     groundFloor.className = "floor";
@@ -110,6 +144,7 @@ function renderFloors(totalFloors){
     `;
     groundFloor.querySelector(".up").addEventListener("click", (event) => handleLiftCall(event));
     floorsContainer.appendChild(groundFloor);
+    floorLiftMap.set("floor-0", null);
 }
 
 function renderLifts(totalLifts){
