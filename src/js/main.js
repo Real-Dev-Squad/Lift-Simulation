@@ -75,7 +75,6 @@ function moveLift(floorId, liftId){
     floorLiftMap.forEach((value, key) => {
         if(key !== floorId && value === liftId){
             floorLiftMap.set(key, null);
-            console.log(floorLiftMap);
         }
     });
 
