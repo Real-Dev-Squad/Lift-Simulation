@@ -54,3 +54,22 @@
     height:70px;
     background-color: grey;
 }
+.error-input-field{
+    outline: red;
+    border: 1px solid red;
+}
+.corrected-field{
+    outline: none;
+    border: 1px solid;
+}
+@media screen and (max-width:450px) {
+   *,body{
+        margin:0;
+    }
+}
+
+/* @media (min-width: 900px){
+    *,body{
+         margin:0;
+     }
+ } */
