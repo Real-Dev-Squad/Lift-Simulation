@@ -7,6 +7,16 @@ const submitHandler=(e)=>{
     const liftInput= +document.querySelector("#lifts").value;
     const floorSection=document.querySelector(".floor-section")
     let liftsAvailble=[];
+    let floorInputOutline=document.querySelector("#floors")
+    const liftInputOutline= document.querySelector("#lifts")
+    if (floorInput===0 &&liftInput===0 || floorInput<0 &&liftInput<0) {
+        alert("Enter valid floor and lift inputs and value should be greater than 0")
+        floorInputOutline.setAttribute("class","error-input-field")
+        liftInputOutline.setAttribute("class","error-input-field")
+    }else{
+        floorInputOutline.setAttribute("class","corrected-field")
+        liftInputOutline.setAttribute("class","corrected-field")
+    }
    for (let i=floorInput; i>0; i--) {
     const floors= document.createElement("div");
     floors.setAttribute("class","floor-container")
