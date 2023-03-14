@@ -28,27 +28,7 @@
   display: flex;
 }
 
-@media (min-width: 700px) {
-  .lift_container{
-    max-width: 670px;
-  }
-  .lift {
-    height: 100px;
-    width: 50px;
-    margin: 0 1%;
-  }
-}
 
-@media (min-width: 1100px) {
-  .lift_container{
-    max-width: 1070px;
-  }
-  .lift {
-    height: 100px;
-    width: 50px;
-    margin: 0 1%;
-  }
-}
 
 .door{
   width: 50%;
@@ -70,6 +50,8 @@
 
 .controls_container{
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
 }
 
@@ -94,4 +76,32 @@
 
 .btn:hover{
   background-color: powderblue;
+}
+
+@media (min-width: 700px) {
+  .lift_container{
+    max-width: 670px;
+  }
+  .lift {
+    height: 100px;
+    width: 50px;
+    margin: 0 1%;
+  }
+  .controls_container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@media (min-width: 1100px) {
+  .lift_container{
+    max-width: 1070px;
+  }
+  .lift {
+    height: 100px;
+    width: 50px;
+    margin: 0 1%;
+  }
 }
