@@ -67,3 +67,31 @@
   opacity: 0.9;
   transition: all ease-in-out 0.2s;
 }
+
+.controls_container{
+  display: flex;
+  justify-content: center;
+}
+
+.elevator_controls, .lift_controls{
+  display: flex;
+}
+
+.btn{
+  padding: 5px 10px;
+  border-radius: 3px;
+  margin: 2px 10px;
+  background-color: aliceblue;
+}
+
+.remove{
+  border: 1px solid red;
+}
+
+.add{
+  border: 1px solid midnightblue;
+}
+
+.btn:hover{
+  background-color: powderblue;
+}
