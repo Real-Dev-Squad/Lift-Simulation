@@ -5,10 +5,10 @@ const lifts = Number(searchParams.get("lifts"));
 
 if (!floors || !lifts) location.href = "/";
 
-const header = <HTMLHeadingElement>document.getElementById("header");
+const header = document.getElementById("header");
 header.innerText = `Floors: ${floors} Lifts: ${lifts}`;
 
-const app = <HTMLElement>document.getElementById("simulator");
+const app = document.getElementById("simulator");
 app.style.gridTemplateRows = `repeat(${floors},10rem)`;
 for (let i = floors; i > 0; i--) {
   const floor = document.createElement("section");
