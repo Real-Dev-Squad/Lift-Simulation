@@ -1,8 +1,15 @@
-console.log("RUNNING TYPESCRIPT");
-
 const rootEl = <HTMLBodyElement>document.getElementById("root");
-const heading = document.createElement("h1");
-heading.innerText = "Testing DOM Manipulation in JS with TS";
-rootEl.appendChild(heading);
+const inputForm = <HTMLFormElement>document.getElementById("lift-inputs");
 
-alert("TSstarted!");
+inputForm.addEventListener("submit", function (event) {
+  event.preventDefault();
+  const floorInput = <HTMLInputElement>this.elements[0],
+    liftInput = <HTMLInputElement>this.elements[1];
+
+  const params = new URLSearchParams();
+  params.append("floors", floorInput.value);
+  params.append("lifts", liftInput.value);
+  const navigateTo = `/simulator/index.html?` + params.toString();
+
+  window.location.href = navigateTo;
+});

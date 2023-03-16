@@ -1,1 +1,0 @@
-(()=>{"use strict";console.log("RUNNING TYPESCRIPT");var e=document.getElementById("root"),t=document.createElement("h1");t.innerText="Testing DOM Manipulation in JS with TS",e.appendChild(t),alert("TSstarted!")})();

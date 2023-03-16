@@ -1,13 +1,17 @@
 const path = require("path");
 module.exports = {
-  mode: "production",
-  entry: path.resolve(__dirname, "./src/index.ts"),
+  mode: process.env.DEPLOY_TO ?? "development",
+  entry: {
+    index: "/index.ts",
+    simulator: "/simulator.ts",
+  },
+  context: path.resolve(__dirname, "src"),
   module: {
     rules: [{ test: /.ts?$/, use: "ts-loader", exclude: /node_modules/ }],
   },
   resolve: { extensions: [".ts", ".js"] },
   output: {
-    filename: "script.js",
-    path: path.resolve(__dirname, "public", "static", "bundle"),
+    filename: "[name].js",
+    path: path.resolve(__dirname, "static", "bundle"),
   },
 };
