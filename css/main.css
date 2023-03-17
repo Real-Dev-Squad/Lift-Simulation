@@ -1,5 +1,41 @@
+@import url("https://fonts.googleapis.com/css2?family=Stick+No+Bills:wght@200;300;400;500;600;700;800&display=swap");
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+#root {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  height: 100vh;
+}
+
+#header {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  font-family: "Stick No Bills", sans-serif;
+}
+
+#lift-inputs {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#lift-inputs > * {
+  padding: 10px;
+  min-width: 12rem;
+}
+
+#lift-inputs > button[type="submit"] {
+  font-family: "Stick No Bills", sans-serif;
+  letter-spacing: 0.2ch;
+  font-weight: 600;
+  font-size: 1.2em;
+  border-radius: 5px;
 }

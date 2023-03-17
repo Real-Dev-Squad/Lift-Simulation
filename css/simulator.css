@@ -1,18 +1,10 @@
 @import "./main.css";
-@import url("https://fonts.googleapis.com/css2?family=Stick+No+Bills:wght@200;300;400;500;600;700;800&display=swap");
 
 #app {
   display: grid;
   grid-auto-flow: column;
   grid-template-rows: auto 1fr;
   height: 100vh;
-}
-
-#header {
-  text-align: center;
-  font-size: 1.5rem;
-  font-weight: 600;
-  font-family: "Stick No Bills", sans-serif;
 }
 
 #simulator {
@@ -60,6 +52,7 @@
   flex-direction: column;
   padding: 1rem;
   position: relative;
+  transition: all 2s linear;
 }
 .lift svg {
   flex-grow: 1;
