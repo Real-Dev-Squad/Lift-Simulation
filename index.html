@@ -9,20 +9,22 @@
     <script src="./js/index.js" defer></script>
   </head>
   <body id="root">
-    <h2>Lift Simulator</h2>
+    <h2 id="header">Lift Simulator</h2>
     <form id="lift-inputs">
       <input
         type="number"
+        min="2"
+        max="30"
         autofocus
         required
-        data-on_invalid="Please Enter no. of floors in the building"
         placeholder="Enter no. of floors"
       />
       <input
         type="number"
         required
+        min="1"
+        max="10"
         placeholder="Enter No. of Lifts"
-        data-on_invalid="Please Enter no. of floors in the building"
       />
       <button type="submit">Submit</button>
     </form>
