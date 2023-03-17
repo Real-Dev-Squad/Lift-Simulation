@@ -53,6 +53,7 @@
   padding: 1rem;
   position: relative;
   transition: all 2s linear;
+  bottom: 0px;
 }
 .lift svg {
   flex-grow: 1;
