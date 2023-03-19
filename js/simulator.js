@@ -34,7 +34,20 @@ for (let i = floors; i > 0; i--) {
   displayFloorNo.classList.add("floor_no");
   displayFloorNo.innerText = `${i}.`;
 
-  floorControlWrap.append(btnGoUp, displayFloorNo, btnGoDown);
+  // don't show up and down btn's on top and ground floor.
+  switch (i) {
+    case floors: {
+      floorControlWrap.append(displayFloorNo, btnGoDown);
+      break;
+    }
+    case 1: {
+      floorControlWrap.append(btnGoUp, displayFloorNo);
+      break;
+    }
+    default:
+      floorControlWrap.append(btnGoUp, displayFloorNo, btnGoDown);
+  }
+
   floor.append(floorControlWrap);
 
   // initially place all lifts at bottom floor
