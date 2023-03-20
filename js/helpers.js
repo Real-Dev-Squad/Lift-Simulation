@@ -8,8 +8,8 @@ export const LIFT_DIRECTION = {
   BOTTOM: "BOTTOM",
 };
 
-export const FLOOR_HEIGHT = 161;
-
+export const FLOOR_HEIGHT = 161; // px
+export const HALT_PER_FLOOR = 2000; // ms
 export const isFloorFallsInPath = (lift, requestedAt) => {
   /**
    *  Check lift's direction and curr pos,
