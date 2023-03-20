@@ -1,5 +1,8 @@
+import { onLiftRequest } from "./controls.js";
+import { LIFT_DIRECTION, LIFT_STATUS, FLOOR_HEIGHT } from "./helpers.js";
+
 const searchParams = new URLSearchParams(window.location.search);
-const FLOOR_HEIGHT = 161;
+
 const floors = Number(searchParams.get("floors"));
 const lifts = Number(searchParams.get("lifts"));
 
@@ -20,12 +23,14 @@ for (let i = floors; i > 0; i--) {
 
   // adding Controls to Floor View (Up,down Btn)
   const btnGoUp = document.createElement("button");
-  btnGoUp.onclick = () => moveLiftTo(i, "UP");
-  btnGoUp.innerText = "UP";
+  btnGoUp.onclick = () => onLiftRequest(i, LIFT_DIRECTION.UP);
+  btnGoUp.type = "button";
+  btnGoUp.innerText = LIFT_DIRECTION.UP;
 
   const btnGoDown = document.createElement("button");
-  btnGoDown.onclick = () => moveLiftTo(i, "DOWN");
-  btnGoDown.innerText = "DOWN";
+  btnGoDown.onclick = () => onLiftRequest(i, LIFT_DIRECTION.BOTTOM);
+  btnGoDown.type = "button";
+  btnGoDown.innerText = LIFT_DIRECTION.BOTTOM;
 
   const floorControlWrap = document.createElement("div");
   floorControlWrap.classList.add("controls");
@@ -58,8 +63,11 @@ for (let i = floors; i > 0; i--) {
       lift.classList.add("lift");
       lift.dataset.lift_no = `${j}`;
       lift.dataset.pos = `${i}`;
-      lift.innerHTML = ` <svg width="100%" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M20 19V5c0-1.1-.9-2-2-2h-5.25v16h-1.5V3H6c-1.1 0-2 .9-2 2v14H3v2h18v-2h-1zm-10-6H8v-2h2v2zm6 0h-2v-2h2v2z"></path></svg> <h4 class="lift_no">${j}</h4>`;
+      lift.dataset.status = LIFT_STATUS.AVAILABLE;
+      lift.dataset.floorsQueue = "";
+      lift.dataset.direction = "";
 
+      lift.innerHTML = ` <svg width="100%" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M20 19V5c0-1.1-.9-2-2-2h-5.25v16h-1.5V3H6c-1.1 0-2 .9-2 2v14H3v2h18v-2h-1zm-10-6H8v-2h2v2zm6 0h-2v-2h2v2z"></path></svg> <h4 class="lift_no">${j}</h4>`;
       floor.appendChild(lift);
     }
   }
