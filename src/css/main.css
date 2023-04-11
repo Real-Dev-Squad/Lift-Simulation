@@ -6,6 +6,10 @@
   height: 100px;
 }
 
+.main{
+  border: 2px solid red;
+}
+
 .arrow_container {
   padding: 1%;
   display: flex;
@@ -35,9 +39,6 @@
   transition: all ease-in 1s;
 }
 
-.lift:hover .door{
-  width: 0;
-}
 
 .arrow_container i:hover{
   transform: scale(1.07);
