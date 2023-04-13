@@ -49,14 +49,31 @@
 .lift {
   width: 100px;
   display: flex;
-  flex-direction: column;
-  padding: 1rem;
+  padding: 5px;
+  gap: 5px;
   position: relative;
-  transition: all 2s linear;
+  transition: inset 2s linear;
   bottom: 0px;
+  overflow: hidden;
+  background: lightgoldenrodyellow;
 }
-.lift svg {
+.lift .door {
   flex-grow: 1;
+  background: palegreen;
+  position: relative;
+  transition: inset 2.5s linear;
+}
+.lift .door.left {
+  left: 0;
+}
+.lift .door.right {
+  right: 0;
+}
+.lift.open .door.left {
+  left: -50%;
+}
+.lift.open .door.right {
+  right: -50%;
 }
 
 .lift_no {
