@@ -11,12 +11,11 @@ import {
 export const onLiftRequest = (floor_no, direction) => {
   const lifts = document.getElementsByClassName("lift");
 
-  const closestLift = [...lifts].reduceRight(isClosestReducer(floor_no), {
+  const closestLift = [...lifts].reduce(isClosestReducer(floor_no), {
     distance: Number.MAX_SAFE_INTEGER,
     lift_no: null,
     ref: null,
   });
-  debugger;
   if (closestLift.distance === 0)
     return alert("Lift is already on the current floor");
 
