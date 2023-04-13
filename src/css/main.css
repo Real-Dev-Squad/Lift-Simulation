@@ -1,0 +1,21 @@
+.center {
+    margin: auto;
+    width: 50%;
+    height: 100%;
+    text-align: center;
+    border: 3px;
+    padding: 10px;
+}
+
+.component-space{
+    margin: auto;
+    width: 50%;
+    height: 100%;
+}
+.component-space-sm {
+        padding: 10px;
+        margin: 10px 10px 10px 10px;
+}
+.header-text-color {
+    color: palevioletred;
+}

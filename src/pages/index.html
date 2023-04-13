@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>My Website</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="icon" href="./favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+    <main>
+        <div>
+            <div class="center header-text-color"> 
+                <h1>Welcome to Lift Simulator!</h1>
+                <h6 style="color: grey;">If you own a mouse, you will never turn off your computer again.</h6>
+            </div>
+            <div class="center component-space">
+                <form onsubmit="loadLiftsPage()">
+                    <label class="component-space-sm" for="floorNum">Enter the number of floors in your building</label><br>
+                    <input class="component-space-sm" type="number" id="floorNum" name="floorNum" placeholder="Eg : 5"><br>
+                    <input class="component-space-sm" type="submit" value="Submit"><br>
+                </form>
+            </div>
+        </div>
+       
+    </main>
+    <script src="../js/main.js"></script>
+</body>
+
+</html>
