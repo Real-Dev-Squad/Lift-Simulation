@@ -16,7 +16,7 @@ export const onLiftRequest = (floor_no, direction) => {
     lift_no: null,
     ref: null,
   });
-
+  debugger;
   if (closestLift.distance === 0)
     return alert("Lift is already on the current floor");
 

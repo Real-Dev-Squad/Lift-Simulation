@@ -10,6 +10,7 @@ export const LIFT_DIRECTION = {
 
 export const FLOOR_HEIGHT = 161; // px
 export const HALT_PER_FLOOR = 2000; // ms
+export const FLOOR_GAP = 1; //px
 export const isFloorFallsInPath = (lift, requestedAt) => {
   /**
    *  Check lift's direction and curr pos,
@@ -40,3 +41,17 @@ export const sortFloors = (str) => {
     .sort((a, b) => a - b);
   return queue;
 };
+
+export const isClosestReducer = (floor_no) => {
+  return (closestLift, lift) => {
+    // if lift is busy and going in direction opposite of my current position ignore it.
+    if (lift.dataset.status === LIFT_STATUS.BUSY) return closestLift;
+    debugger;
+    // distance btwin floor and currentLift
+    const distance = Math.abs(floor_no - Number(lift.dataset.pos));
+    if (distance < closestLift.distance)
+      return { ...closestLift, ref: lift, distance };
+    return closestLift;
+  };
+};
+g;
