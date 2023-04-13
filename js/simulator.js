@@ -67,7 +67,8 @@ for (let i = floors; i > 0; i--) {
       lift.dataset.floorsQueue = "";
       lift.dataset.direction = "";
 
-      lift.innerHTML = ` <svg width="100%" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M20 19V5c0-1.1-.9-2-2-2h-5.25v16h-1.5V3H6c-1.1 0-2 .9-2 2v14H3v2h18v-2h-1zm-10-6H8v-2h2v2zm6 0h-2v-2h2v2z"></path></svg> <h4 class="lift_no">${j}</h4>`;
+      lift.innerHTML = `<div class="door left"></div><div class="door right"></div>
+      `;
       floor.appendChild(lift);
     }
   }
