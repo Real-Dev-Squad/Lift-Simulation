@@ -85,12 +85,18 @@ const move = (liftRef) => {
     const queue = sortFloors(liftData.floorsQueue);
     const destination = getDestination(queue, liftData);
 
-    liftData.direction =
-      destination - floor_no > 0 ? LIFT_DIRECTION.UP : LIFT_DIRECTION.BOTTOM;
+    // liftData.direction =
+    //   destination - floor_no > 0 ? LIFT_DIRECTION.UP : LIFT_DIRECTION.BOTTOM;
 
     setTimeout(() => {
       (async () => {
-        const resp = await removeStop(queue);
+        await removeStop(queue);
+
+        liftData.direction =
+          destination - floor_no > 0
+            ? LIFT_DIRECTION.UP
+            : LIFT_DIRECTION.BOTTOM;
+
         if (destination === floor_no) {
           liftData.status = LIFT_STATUS.AVAILABLE;
           liftData.floorsQueue;
