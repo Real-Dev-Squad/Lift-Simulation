@@ -45,8 +45,6 @@ const move = (liftRef) => {
       await openDoors();
       await closeDoors();
 
-      // console.log("closed at ", liftData.pos);
-
       toggleControls(Number(liftData.pos), false);
       liftData.floorsQueue = queue.filter(
         (floor) => floor !== Number(liftData.pos)
@@ -80,10 +78,10 @@ const move = (liftRef) => {
     liftData.pos = floor_no;
     liftData.status = LIFT_STATUS.BUSY;
 
-    const queue = sortFloors(liftData.floorsQueue);
-    const destination = getDestination(queue, liftData);
-
     setTimeout(() => {
+      const queue = sortFloors(liftData.floorsQueue);
+      const destination = getDestination(queue, liftData);
+
       (async () => {
         await removeStop(queue);
 
@@ -110,7 +108,6 @@ const move = (liftRef) => {
     const floor = [...floors].find(
       (floor) => floor_no === Number(floor.parentElement.dataset.floorNo)
     );
-    // console.log(floor_no, enable, floor, floorsWaitingForLift);
     floor.childNodes.forEach((element) => {
       if (element.tagName === "BUTTON") {
         element.disabled = enable;
