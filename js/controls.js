@@ -10,7 +10,7 @@ import {
   onlyBusyAndOppositeDirectionLifts,
 } from "./helpers.js";
 
-export const onLiftRequest = (floor_no, direction) => {
+export const onLiftRequest = (floor_no) => {
   const lifts = document.getElementsByClassName("lift");
 
   const closestLift =
@@ -24,7 +24,6 @@ export const onLiftRequest = (floor_no, direction) => {
         distance: Number.MAX_SAFE_INTEGER,
         ref: null,
       });
-  console.log(closestLift);
   if (closestLift.distance === 0)
     return alert("Lift is already on the current floor");
 
@@ -39,20 +38,19 @@ export const onLiftRequest = (floor_no, direction) => {
 
 const move = (liftRef) => {
   const liftData = liftRef.dataset;
-  const floorsWaitingForLift = new Set([]);
 
   const removeStop = async (queue) => {
     if (queue.includes(Number(liftData.pos))) {
       // open nd close doors for 2.5s each,
       await openDoors();
       await closeDoors();
+
+      // console.log("closed at ", liftData.pos);
+
+      toggleControls(Number(liftData.pos), false);
       liftData.floorsQueue = queue.filter(
         (floor) => floor !== Number(liftData.pos)
       );
-      // console.log("closed at ", liftData.pos);
-      toggleControls(Number(liftData.pos), false);
-      floorsWaitingForLift.delete(Number(liftData.pos));
-
       return true;
     }
     return false;
@@ -85,9 +83,6 @@ const move = (liftRef) => {
     const queue = sortFloors(liftData.floorsQueue);
     const destination = getDestination(queue, liftData);
 
-    // liftData.direction =
-    //   destination - floor_no > 0 ? LIFT_DIRECTION.UP : LIFT_DIRECTION.BOTTOM;
-
     setTimeout(() => {
       (async () => {
         await removeStop(queue);
@@ -116,9 +111,8 @@ const move = (liftRef) => {
       (floor) => floor_no === Number(floor.parentElement.dataset.floorNo)
     );
     // console.log(floor_no, enable, floor, floorsWaitingForLift);
-
     floor.childNodes.forEach((element) => {
-      if (element.tagName === "BUTTON" && floorsWaitingForLift.has(floor_no)) {
+      if (element.tagName === "BUTTON") {
         element.disabled = enable;
       }
     });
@@ -128,7 +122,6 @@ const move = (liftRef) => {
     addStop(floor_no) {
       const queue = sortFloors(liftData.floorsQueue);
       queue.push(floor_no);
-      floorsWaitingForLift.add(Number(floor_no));
       toggleControls(floor_no, true);
       liftData.floorsQueue = queue;
       if (liftData.status !== LIFT_STATUS.BUSY)
