@@ -58,12 +58,10 @@ export const isClosestReducer = (floor_no) => {
   };
 };
 export const isClosestBusyLift = (floor_no) => {
-  console.log("isClosestBusyLift");
   return (closest, lift) => {
     const floorsQueue = sortFloors(lift.dataset.floorsQueue);
     const destination = getDestination(floorsQueue, lift.dataset);
     const distance = Math.abs(floor_no - destination);
-    debugger;
     if (distance < closest.distance) {
       return { ref: lift, distance };
     }
