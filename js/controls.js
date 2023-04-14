@@ -6,16 +6,25 @@ import {
   LIFT_STATUS,
   HALT_PER_FLOOR,
   isClosestReducer,
+  getDestination,
+  onlyBusyAndOppositeDirectionLifts,
 } from "./helpers.js";
 
 export const onLiftRequest = (floor_no, direction) => {
   const lifts = document.getElementsByClassName("lift");
 
-  const closestLift = [...lifts].reduce(isClosestReducer(floor_no), {
-    distance: Number.MAX_SAFE_INTEGER,
-    lift_no: null,
-    ref: null,
-  });
+  const closestLift =
+    [...lifts].reduce(isClosestReducer(floor_no), {
+      distance: Number.MAX_SAFE_INTEGER,
+      ref: null,
+    }) ??
+    [...lifts]
+      .filter(onlyBusyAndOppositeDirectionLifts(floor_no))
+      .reduce(isClosestBusyLift(floor_no), {
+        distance: Number.MAX_SAFE_INTEGER,
+        ref: null,
+      });
+  console.log(closestLift);
   if (closestLift.distance === 0)
     return alert("Lift is already on the current floor");
 
@@ -40,7 +49,7 @@ const move = (liftRef) => {
       liftData.floorsQueue = queue.filter(
         (floor) => floor !== Number(liftData.pos)
       );
-      console.log("closed at ", liftData.pos);
+      // console.log("closed at ", liftData.pos);
       toggleControls(Number(liftData.pos), false);
       floorsWaitingForLift.delete(Number(liftData.pos));
 
@@ -68,25 +77,13 @@ const move = (liftRef) => {
     });
   };
 
-  const getDestination = (queue) => {
-    /**
-     * Returns the extreme floor of the Lifts that's in the queue and in the lift's moving direction.
-     */
-    const destination =
-      liftData.direction === LIFT_DIRECTION.UP &&
-      Number(liftData.pos) !== Math.max(...queue)
-        ? Math.max(...queue)
-        : Math.min(...queue);
-    return destination;
-  };
-
   const to = (floor_no) => {
     liftRef.style.bottom = `${(FLOOR_HEIGHT + FLOOR_GAP) * (floor_no - 1)}px`;
     liftData.pos = floor_no;
     liftData.status = LIFT_STATUS.BUSY;
 
     const queue = sortFloors(liftData.floorsQueue);
-    const destination = getDestination(queue);
+    const destination = getDestination(queue, liftData);
 
     liftData.direction =
       destination - floor_no > 0 ? LIFT_DIRECTION.UP : LIFT_DIRECTION.BOTTOM;
@@ -94,7 +91,6 @@ const move = (liftRef) => {
     setTimeout(() => {
       (async () => {
         const resp = await removeStop(queue);
-        console.log("doors CLOSED", resp);
         if (destination === floor_no) {
           liftData.status = LIFT_STATUS.AVAILABLE;
           liftData.floorsQueue;
@@ -113,7 +109,7 @@ const move = (liftRef) => {
     const floor = [...floors].find(
       (floor) => floor_no === Number(floor.parentElement.dataset.floorNo)
     );
-    console.log(floor_no, enable, floor, floorsWaitingForLift);
+    // console.log(floor_no, enable, floor, floorsWaitingForLift);
 
     floor.childNodes.forEach((element) => {
       if (element.tagName === "BUTTON" && floorsWaitingForLift.has(floor_no)) {
