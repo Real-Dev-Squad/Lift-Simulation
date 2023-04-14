@@ -7,23 +7,24 @@ import {
   HALT_PER_FLOOR,
   isClosestReducer,
   getDestination,
-  onlyBusyAndOppositeDirectionLifts,
+  toggleControls,
 } from "./helpers.js";
+const waitingListQueue = [];
 
 export const onLiftRequest = (floor_no) => {
   const lifts = document.getElementsByClassName("lift");
 
-  const closestLift =
-    [...lifts].reduce(isClosestReducer(floor_no), {
-      distance: Number.MAX_SAFE_INTEGER,
-      ref: null,
-    }) ??
-    [...lifts]
-      .filter(onlyBusyAndOppositeDirectionLifts(floor_no))
-      .reduce(isClosestBusyLift(floor_no), {
-        distance: Number.MAX_SAFE_INTEGER,
-        ref: null,
-      });
+  let closestLift = [...lifts].reduce(isClosestReducer(floor_no), {
+    distance: Number.MAX_SAFE_INTEGER,
+    ref: null,
+  });
+  if (!closestLift.ref) {
+    // add this request to a waiting list so that whenever any lift goes free they can see the waiting list and act on it.
+    waitingListQueue.push(floor_no);
+    toggleControls(floor_no, true);
+    return;
+  }
+  console.log(closestLift);
   if (closestLift.distance === 0)
     return alert("Lift is already on the current floor");
 
@@ -91,9 +92,15 @@ const move = (liftRef) => {
             : LIFT_DIRECTION.BOTTOM;
 
         if (destination === floor_no) {
-          liftData.status = LIFT_STATUS.AVAILABLE;
-          liftData.floorsQueue;
-          return;
+          if (waitingListQueue.length === 0) {
+            liftData.status = LIFT_STATUS.AVAILABLE;
+            return;
+          } else {
+            const goTo = waitingListQueue.shift();
+            liftData.direction =
+              goTo - floor_no > 0 ? LIFT_DIRECTION.UP : LIFT_DIRECTION.BOTTOM;
+            liftData.floorsQueue = goTo;
+          }
         }
         // move one floor towards the destination floor if curr floor is not destination.
         if (liftData.direction === LIFT_DIRECTION.UP)
@@ -103,17 +110,6 @@ const move = (liftRef) => {
     }, HALT_PER_FLOOR);
   };
   //  disable current floor controls
-  const toggleControls = (floor_no, enable = true) => {
-    const floors = document.getElementsByClassName("controls");
-    const floor = [...floors].find(
-      (floor) => floor_no === Number(floor.parentElement.dataset.floorNo)
-    );
-    floor.childNodes.forEach((element) => {
-      if (element.tagName === "BUTTON") {
-        element.disabled = enable;
-      }
-    });
-  };
 
   return {
     addStop(floor_no) {

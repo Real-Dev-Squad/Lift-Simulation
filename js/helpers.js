@@ -57,17 +57,7 @@ export const isClosestReducer = (floor_no) => {
     return closestLift;
   };
 };
-export const isClosestBusyLift = (floor_no) => {
-  return (closest, lift) => {
-    const floorsQueue = sortFloors(lift.dataset.floorsQueue);
-    const destination = getDestination(floorsQueue, lift.dataset);
-    const distance = Math.abs(floor_no - destination);
-    if (distance < closest.distance) {
-      return { ref: lift, distance };
-    }
-    return closest;
-  };
-};
+
 const isOppositeDirection = (lift, floor_no) => {
   const needToGoUp = floor_no - Number(lift.dataset.pos) > 0;
   if (needToGoUp && lift.dataset.direction === LIFT_DIRECTION.UP) return false;
@@ -88,5 +78,14 @@ export const getDestination = (queue, liftData) => {
   return destination;
 };
 
-export const onlyBusyAndOppositeDirectionLifts = (requestedFloor) => (lift) =>
-  isOppositeDirection(lift, requestedFloor);
+export const toggleControls = (floor_no, enable = true) => {
+  const floors = document.getElementsByClassName("controls");
+  const floor = [...floors].find(
+    (floor) => floor_no === Number(floor.parentElement.dataset.floorNo)
+  );
+  floor.childNodes.forEach((element) => {
+    if (element.tagName === "BUTTON") {
+      element.disabled = enable;
+    }
+  });
+};
