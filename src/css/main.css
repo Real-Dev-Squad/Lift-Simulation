@@ -1,3 +1,15 @@
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 15px 20px;
+}
+.info-repo {
+    color: var(--color-text-secondary);
+    margin: 0 auto;
+    text-align: center;
+}
 .center {
     margin: auto;
     width: 50%;
@@ -6,7 +18,9 @@
     border: 3px;
     padding: 10px;
 }
-
+.body-landing-page {
+    background-color: #D3D3D3;
+}
 .component-space{
     margin: auto;
     width: 50%;
@@ -19,3 +33,62 @@
 .header-text-color {
     color: palevioletred;
 }
+
+.input-field {
+    padding: 10px 10px 10px 10px;
+    width: 40%;
+}
+
+.button-submit {
+    min-width: 10%;
+    width: 30%;
+    border-radius: 10px;
+    background-color: palevioletred;
+}
+
+.form-neon {
+    display: inline-block;
+    position: relative;
+    padding: 1em;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    background-color: #000;
+}
+
+.form-neon::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    bottom: -2px;
+    right: -2px;
+    background-image: linear-gradient(-45deg,
+            #f0f,
+            #00f,
+            #0ff,
+            #ff0,
+            #f0f);
+    z-index: -1;
+    border-radius: 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.form-neon:hover::before {
+    opacity: 1;
+}
+
+.form-neon input {
+    width: 40%;
+    text-align: center;
+    border-radius: 10px;
+    border: none;
+    
+    background-color: #222;
+    color: #fff;
+}
+
+.form-neon label {
+    color: #fff;
+}
+

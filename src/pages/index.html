@@ -10,24 +10,36 @@
     <link rel="icon" href="./favicon.ico" type="image/x-icon">
 </head>
 
-<body>
-    <main>
-        <div>
-            <div class="center header-text-color"> 
+<body class="body-landing-page">
+    <main >
+        <div >
+            <div  id = "start" class="center header-text-color"> 
                 <h1>Welcome to Lift Simulator!</h1>
                 <h6 style="color: grey;">If you own a mouse, you will never turn off your computer again.</h6>
             </div>
             <div class="center component-space">
-                <form onsubmit="loadLiftsPage()">
+                <form class="form-neon" onsubmit="loadLiftsPage(event)">
                     <label class="component-space-sm" for="floorNum">Enter the number of floors in your building</label><br>
-                    <input class="component-space-sm" type="number" id="floorNum" name="floorNum" placeholder="Eg : 5"><br>
-                    <input class="component-space-sm" type="submit" value="Submit"><br>
+                    <input class="component-space-sm input-field" value="2" min= 2 type="number" id="floorNum" name="floorNum" placeholder="Min : 2" required><br>
+                    <label class="component-space-sm" for="floorNum">Enter the number of buildings</label><br>
+                    <input class="component-space-sm input-field" min=1 max=5 value="1" type="number" id="liftNum" name="liftNum" placeholder="Range : 1 - 5" required><br>
+                    <button class="component-space-sm button-submit" type="submit">Submit</button><br>
                 </form>
             </div>
         </div>
        
     </main>
     <script src="../js/main.js"></script>
+    
 </body>
+<footer>
+    <p class="info-repo">
+        The contents of this website are deployed from this
+        <a href="https://github.com/Aryex82/Lift-Simulation" target="_blank" rel="noopener noreferrer">
+            open sourced repo
+        </a>
+    </p>
+</footer>
+
 
 </html>

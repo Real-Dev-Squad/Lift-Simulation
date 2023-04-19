@@ -1,0 +1,70 @@
+
+.building {
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color:grey;
+    padding: 10px;
+}
+
+.floor-buttons {
+    display: flex;
+    flex-direction: column;
+    margin-right: 10px;
+}
+
+.floor {
+    width: 150px;
+    margin : 10px 10px 10px 10px;
+    height: 200px;
+    background-color: #d9d9d9;
+}
+
+.up-button,
+.down-button {
+    width: 80px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    font-size: smaller;
+    
+}
+
+.up-button:hover,
+.down-button:hover {
+    background-color: #0062cc;
+}
+
+.building-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+}
+.floor-container {
+    display: flex;
+    padding-bottom: 5%;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.lift {
+    position: relative;
+    transition: top 2s ease;
+    top: 0px;
+    display: flex;
+    justify-content: space-between;
+    height: 180px;
+    padding: 10px;
+    background-color: rgb(15, 74, 110);
+}
+
+.lift-door{
+    height: 100%;
+    width: 45%;
+    background-color: aquamarine;
+}
