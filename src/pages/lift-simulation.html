@@ -13,24 +13,21 @@
         <div class="building-container">
 
         <div class="building">
-            <div class="floor-container">
+            <div id ="top-floor" class="floor-container">
+            <div class="floor-wrapper">
                 <div class="floor-buttons">
-                    <button class="down-button">Down</button>
+                    <button onclick="moveDown()" class="down-button">Down</button>
                 </div>
                 <div class="floor"></div>
-                <div class="floor"></div>
-                <div class="floor"></div>
             </div>
-            <div class="floor-container">
-                <div class="floor-buttons">
-                    <button class="up-button">Up</button>
-                    <button class="down-button">Down</button>
-                </div>
-                <div class="floor"></div>
-                <div class="floor"></div>
-                <div class="floor"></div>
-            </div>
-            <div class="floor-container">
+
+            <div class="floor-beam"></div>
+
+        </div>
+        
+        <div id ="ground-floor" class="floor-container">
+
+            <div  class="floor-wrapper">
                 <div class="floor-buttons">
                     <button onclick="moveUp()" class="up-button">Up</button>
                 </div>
@@ -40,21 +37,10 @@
                         <div class="lift-door"></div>
                     </div>
                 </div>
-                <div class="floor">
-                    <div class="lift">
-                        <div class="lift-door"></div>
-                        <div class="lift-door"></div>
-                    </div>
-                </div>
-                <div class="floor">
-                    <div class="lift">
-                        <div class="lift-door"></div>
-                        <div class="lift-door"></div>
-                    </div>
-                </div>
             </div>
-            
-            
+
+            <div class="floor-beam"></div>
+        </div>
         </div>
 
 </div>
