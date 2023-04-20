@@ -20,9 +20,9 @@
             <div class="center component-space">
                 <form class="form-neon" onsubmit="loadLiftsPage(event)">
                     <label class="component-space-sm" for="floorNum">Enter the number of floors in your building</label><br>
-                    <input class="component-space-sm input-field" value="2" min= 2 type="number" id="floorNum" name="floorNum" placeholder="Min : 2" required><br>
+                    <input class="component-space-sm input-field" value="2" min= 2 max=30 type="number" id="floorNum" name="floorNum" placeholder="Min : 2" required><br>
                     <label class="component-space-sm" for="floorNum">Enter the number of buildings</label><br>
-                    <input class="component-space-sm input-field" min=1 max=5 value="1" type="number" id="liftNum" name="liftNum" placeholder="Range : 1 - 5" required><br>
+                    <input class="component-space-sm input-field" min=1 max=20 value="1" type="number" id="liftNum" name="liftNum" placeholder="Min : 1" required><br>
                     <button class="component-space-sm button-submit" type="submit">Submit</button><br>
                 </form>
             </div>
