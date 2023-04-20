@@ -64,6 +64,7 @@ document.addEventListener("DOMContentLoaded", function(event){
 function findNearestLift(floor){
     let nearestLift = null;
     let nearestLiftDistance = undefined;
+    let minAvailableTime = Number.MAX_VALUE;
     for(let i = 0; i < liftPositions.length; i++){
         let distance = Math.abs(liftPositions[i].position - floor);
         if(liftPositions[i].availableFrom < Date.now()){
@@ -72,9 +73,14 @@ function findNearestLift(floor){
                 nearestLift = liftPositions[i];
             }
         }
+        minAvailableTime = Math.min(minAvailableTime,liftPositions[i].availableFrom);
     }
 
-    if(nearestLift == null) findNearestLift(floor);
+    if(nearestLift == null) {
+        setTimeout(() => {console.log("Waited for lift");
+            getLift(floor)}, minAvailableTime - Date.now());
+    }
+
     else nearestLift.availableFrom = Date.now() + (TIME_PER_FLOOR * nearestLiftDistance) + (TIME_DOOR * 2);
     console.log(nearestLift);
     console.log(liftPositions);
@@ -87,8 +93,13 @@ function findNearestLift(floor){
 function getLift(floor){
     console.log(floor);
     let lift = findNearestLift(floor);
-    moveLift(lift.id,Math.abs(lift.position - floor), (lift.position - floor) < 0);
-    lift.position = floor;
+
+    if(lift != null)
+    {
+        moveLift(lift.id,Math.abs(lift.position - floor), (lift.position - floor) < 0);
+        lift.position = floor;
+    }
+    
 }
 
     const floorBeam = document.getElementsByClassName("floor-beam")[0];
