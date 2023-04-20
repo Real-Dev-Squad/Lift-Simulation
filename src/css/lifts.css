@@ -6,8 +6,7 @@
     justify-content: space-evenly;
     align-items: center;
     background-color:grey;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding: 20px 20px 20px 20px;
 }
 
 .floor-buttons {
@@ -28,16 +27,52 @@
 .down-button {
     width: 80px;
     padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    cursor: pointer;
-    font-size: smaller;
+    background-color: rgb(184, 211, 231);
+        /* Green background */
+        border: none;
+        /* Remove default border */
+        color: black;
+        /* Text color */
+        /* Button size */
+        /* Center text */
+        /* Remove underline */
+        display: inline-block;
+
+        /* Display as inline-block */
+        /* Text size */
+        border-radius: 50px;
+        /* Make button round */
+        box-shadow: 0px 5px 10px rgba(12, 18, 209, 0.3);
+        /* Add box shadow */
+        transition: all 0.2s ease-in-out;
+        /* Add transition effect */
+        margin-bottom: 10px;
     
 }
 
 .up-button:hover,
 .down-button:hover {
-    background-color: #0062cc;
+        transform: translateY(-3px);
+            /* Move button up on hover */
+            box-shadow: 0px 5px 10px rgba(162, 23, 23, 0.3);
+}
+.up-button:active,
+.down-button:active {
+    transform: translateY(0px);
+        /* Reset button position on click */
+        box-shadow: 0px 5px 10px rgba(7, 22, 118, 0.3);
+        /* Add box shadow */
+        color: red;
+}
+
+
+.up-button:disabled,
+.down-button:disabled {
+    color: red;
+    opacity: 0.5;
+    transform: translateY(0px);
+    box-shadow: 0px 5px 10px rgba(7, 22, 118, 0.3);
+
 }
 
 .building-container {

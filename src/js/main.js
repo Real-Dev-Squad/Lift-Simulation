@@ -40,10 +40,10 @@ liftPositions.push({position : 0, availableFrom : Date.now(), id : "lift-0" });
     
 
     // downButton.removeAttribute("onclick");
-    downButton.setAttribute("onclick", "getLift("+(floors-1)+")");
+    downButton.setAttribute("onclick", "getLift("+(floors-1)+",event)");
     for(var i = floors - 2; i >0 ; i--){
         var topClone = topFloorDom.cloneNode(true);
-        const liftMethod = "getLift("+i+")";
+        const liftMethod = "getLift("+i+",event)";
         var upButtonClone =  upButton.cloneNode(true)
         upButtonClone.setAttribute("onclick", liftMethod);
         topClone.getElementsByClassName("down-button")[0].setAttribute("onclick",liftMethod);
@@ -90,14 +90,25 @@ function findNearestLift(floor){
 
 
 
-function getLift(floor){
+function getLift(floor,event){
+    console.log(event);
+
     console.log(floor);
+    const button = event.target;
+    console.log(button)
+    button.disabled = true;
+    console.log(button.classList)
+
     let lift = findNearestLift(floor);
 
     if(lift != null)
     {
         moveLift(lift.id,Math.abs(lift.position - floor), (lift.position - floor) < 0);
         lift.position = floor;
+        setTimeout(()=> {button.disabled = false;
+        },2500)
+        // button.disabled = false;
+        // button.classList.remove('button-active');
     }
     
 }
