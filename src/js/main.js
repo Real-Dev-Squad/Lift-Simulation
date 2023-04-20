@@ -99,7 +99,7 @@ function moveLift(id,floors,isUp){
 
     var travelPerFloor = (floor.clientHeight + floorBeam.clientHeight) * floors;
     objImage.style.transitionDuration = ((floors * TIME_PER_FLOOR ) /1000)+ "s";
-    setTimeout(doorsAnimation, (floors * TIME_PER_FLOOR ));
+    setTimeout(() => {doorsAnimation(objImage)}, (floors * TIME_PER_FLOOR ));
     console.log(objImage);
     if(objImage.style.top ==="") objImage.style.top = "0px";
         
@@ -110,8 +110,7 @@ function moveLift(id,floors,isUp){
     }
 }
 
-function doorsAnimation(id){
-        const objImage = document.getElementById(id);
+function doorsAnimation(objImage){
         const liftDoor1 = objImage.getElementsByClassName("lift-door")[0];
         const liftDoor2 = objImage.getElementsByClassName("lift-door")[1];
         var width = liftDoor1.clientWidth;
