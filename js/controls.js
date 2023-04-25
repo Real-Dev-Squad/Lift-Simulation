@@ -24,9 +24,11 @@ export const onLiftRequest = (floor_no) => {
     toggleControls(floor_no, true);
     return;
   }
-  console.log(closestLift);
-  if (closestLift.distance === 0)
-    return alert("Lift is already on the current floor");
+
+  if (closestLift.distance === 0) {
+    // simulate doors
+    return move(closestLift.ref).simulate();
+  }
 
   closestLift.ref.dataset.direction =
     floor_no - Number(closestLift.ref.dataset.pos) > 0
@@ -121,6 +123,13 @@ const move = (liftRef) => {
         if (liftData.direction === LIFT_DIRECTION.UP)
           return to(Number(liftData.pos) + 1);
         else return to(Number(liftData.pos) - 1);
+    },
+    async simulate() {
+      liftData.status = LIFT_STATUS.BUSY;
+      await openDoors();
+      await closeDoors();
+      liftData.status = LIFT_STATUS.AVAILABLE;
+      return true;
     },
   };
 };
