@@ -1,41 +1,67 @@
+html,
+body {
+  height: 100%;
+  margin: 5px;
+  padding: 0;
+}
+
+#floors {
+  display: flex;
+  flex-direction: column;
+  height: 80%;
+  justify-content: space-between;
+}
+
+#lift-section{
+    padding: 0px;
+}
+
 .floor {
-    position: relative;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    height: 40px;
-    padding: 0 10px;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    flex-grow: 1; /* Occupy remaining vertical space */
   }
+.floor .floor-number {
+  font-weight: bold;
+}
+
+.floor .floor-buttons {
+  display: flex;
+  align-items: center;
+}
+
+.floor .floor-buttons button {
+  margin: 0 5px;
+}
   
-  .floor span {
-    flex-grow: 1;
-  }
-  
-  .floor .floor-button {
-    margin-left: 10px;
+.lifts-container {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex; /* Add this line to make lifts-container a flex container */
   }
   
   .lift {
     position: absolute;
-    top: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 40px;
-    height: 40px;
-    background-color: #e91e63;
-    border-radius: 50%;
-    z-index: 1;
+    width: 60px;
+    height: 80px;
+    background-color: gray;
+    bottom: 0;
+    transition: bottom 2s;
   }
   
-  .lift::before {
-    content: "";
+  .lift.open .door {
+    width: 30px;
+  }
+  
+  .door {
     position: absolute;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 20px;
-    height: 20px;
-    background-color: #fff;
-    border-radius: 50%;
+    width: 0;
+    height: 80px;
+    background-color: black;
+    transition: width 0.5s;
   }
   
