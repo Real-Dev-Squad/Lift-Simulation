@@ -28,6 +28,7 @@ const dataStore = {
     // Set the status of a floor button to indicate it's pressed
     pressFloorButton(floor) {
       this.floorButtons[floor - 1] = true; // Floors are 1-indexed
+      console.log(`Button pressed on Floor ${floor}`);
     },
   
     // Get the current position of a specific lift
@@ -46,15 +47,11 @@ const dataStore = {
     },
   };
   
-  
   // Initialize the data store with the desired number of floors and lifts
-  dataStore.initialize(2, 2);
-
-
-  // Assuming the data store object is already defined and initialized
-
-// Define the JS Engine for lift control
-const liftControlEngine = {
+  dataStore.initialize(5, 3);
+  
+  // Define the JS Engine for lift control
+  const liftControlEngine = {
     allocateLift(floor, direction) {
       const liftPositions = dataStore.liftPositions;
       const liftDirections = dataStore.liftDirections;
@@ -85,6 +82,12 @@ const liftControlEngine = {
         dataStore.updateLiftPosition(closestLiftIndex, floor);
         dataStore.updateLiftDirection(closestLiftIndex, direction);
   
+        // Get the current position of the allocated lift
+        const currentLiftPosition = dataStore.getLiftPosition(closestLiftIndex);
+  
+        // Animate the lift movement from the current position to the requested floor
+        animateLift(closestLiftIndex, currentLiftPosition, floor);
+  
         // Return the index of the allocated lift
         return closestLiftIndex;
       }
@@ -94,31 +97,8 @@ const liftControlEngine = {
     },
   };
   
-
-// Function to update the UI with the latest lift positions
-// function updateUI() {
-//     const liftPositions = dataStore.liftPositions;
-  
-//     for (let i = 0; i < liftPositions.length; i++) {
-//       const liftPositionElement = document.getElementById(`lift${i + 1}Position`);
-//       liftPositionElement.textContent = liftPositions[i];
-//     }
-//   }
-  
-//   // Function to request a lift when a floor button is clicked
-  function requestLift(floor, direction) {
-    const allocatedLiftIndex = liftControlEngine.allocateLift(floor, direction);
-    console.log(`Lift ${allocatedLiftIndex + 1} allocated to go to floor ${floor} in ${direction} direction`);
-  
-    // Update the UI after allocating the lift
-    updateUI();
-  }
-
-
-  // Assuming the data store object and lift control engine are already defined
-
-// Function to create the floors dynamically based on the number of floors in the data store
-function createFloors() {
+  // Function to create the floors dynamically based on the number of floors in the data store
+  function createFloors() {
     const floorsContainer = document.getElementById('floors');
     floorsContainer.innerHTML = '';
   
@@ -132,12 +112,20 @@ function createFloors() {
       floorNumberElement.textContent = `Floor ${i}`;
   
       const upButtonElement = document.createElement('button');
-      upButtonElement.textContent = 'UP';
-      upButtonElement.addEventListener('click', () => requestLift(i, 'up'));
+      upButtonElement.textContent = '▲';
+      upButtonElement.addEventListener('click', () => {
+        requestLift(i, 'up');
+        console.log(`Requested lift to Floor ${i} going up`);
+      });
+      upButtonElement.classList.add('floor-button', 'up-button'); // Add classes to the button
   
       const downButtonElement = document.createElement('button');
-      downButtonElement.textContent = 'DOWN';
-      downButtonElement.addEventListener('click', () => requestLift(i, 'down'));
+      downButtonElement.textContent = '▼';
+      downButtonElement.addEventListener('click', () => {
+        requestLift(i, 'down');
+        console.log(`Requested lift to Floor ${i} going down`);
+      });
+      downButtonElement.classList.add('floor-button', 'down-button'); // Add classes to the button
   
       floorElement.appendChild(floorNumberElement);
       floorElement.appendChild(upButtonElement);
@@ -147,9 +135,8 @@ function createFloors() {
     }
   }
   
-  // Update the UI with the latest lift positions and directions
-// Update the UI with the latest lift positions and directions
-function updateUI() {
+  // Function to update the UI with the latest lift positions and directions
+  function updateUI() {
     const liftPositions = dataStore.liftPositions;
     const liftDirections = dataStore.liftDirections;
     const floorButtons = dataStore.floorButtons;
@@ -164,17 +151,18 @@ function updateUI() {
   
       const floorElement = floorElements[floorIndex];
   
-      // Remove existing lift status element
-      const existingLiftStatusElement = floorElement.querySelector('.lift-status');
-      if (existingLiftStatusElement) {
-        existingLiftStatusElement.remove();
+      // Remove existing lift element
+      const existingLiftElement = document.getElementById(`lift-${i}`);
+      if (existingLiftElement) {
+        existingLiftElement.remove();
       }
   
-      // Add lift status element
-      const liftStatusElement = document.createElement('span');
-      liftStatusElement.classList.add('lift-status');
-      liftStatusElement.textContent = `Lift ${i + 1}`;
-      floorElement.appendChild(liftStatusElement);
+      // Create new lift element
+      const liftElement = document.createElement('div');
+      liftElement.classList.add('lift');
+      liftElement.id = `lift-${i}`;
+      liftElement.style.top = `${floorIndex * 20 + 30}px`; // Adjust the position based on floor height
+      floorsContainer.appendChild(liftElement);
   
       // Update lift direction class
       floorElement.classList.remove('lift-up', 'lift-down');
@@ -187,18 +175,52 @@ function updateUI() {
       // Update floor buttons
       const upButtonElement = floorElement.querySelector('.up-button');
       const downButtonElement = floorElement.querySelector('.down-button');
-      upButtonElement.disabled = floorButtons[floorIndex];
-      downButtonElement.disabled = floorButtons[floorIndex];
+
     }
   }
   
+  // Function to animate lift movement from the current floor to the destination floor
+  function animateLift(liftIndex, currentFloor, destinationFloor) {
+    const liftElement = document.getElementById(`lift-${liftIndex}`);
+    const floorHeight = 20; // Height of each floor in pixels
+    const animationDuration = 1000; // Duration of the animation in milliseconds
   
-  // Initialize the UI
+    const distance = Math.abs(destinationFloor - currentFloor);
+    const direction = destinationFloor > currentFloor ? 1 : -1;
+  
+    const targetPosition = (dataStore.numFloors - destinationFloor) * floorHeight;
+  
+    liftElement.style.transition = `top ${animationDuration}ms`;
+    liftElement.style.top = `${targetPosition}px`;
+  
+    setTimeout(() => {
+      // Animation completed
+      liftElement.style.transition = '';
+      dataStore.updateLiftPosition(liftIndex, destinationFloor);
+      dataStore.updateLiftDirection(liftIndex, null);
+      updateUI();
+      // Re-enable the floor button for the requested floor after the lift reaches the destination
+      dataStore.floorButtons[destinationFloor - 1] = false;
+    }, animationDuration);
+  
+    // Disable the floor button for the requested floor
+    dataStore.floorButtons[destinationFloor - 1] = true;
+    updateUI();
+  }
+  
+  
+  // Function to request a lift to a specific floor with a given direction
+  function requestLift(floor, direction) {
+    const allocatedLiftIndex = liftControlEngine.allocateLift(floor, direction);
+  
+    if (allocatedLiftIndex !== -1) {
+      console.log(`Lift ${allocatedLiftIndex} allocated for Floor ${floor}`);
+    } else {
+      console.log(`No available lifts for Floor ${floor}`);
+    }
+  }
+  
+  // Initialize the UI and update it with the initial state
   createFloors();
   updateUI();
-  
-  
-  // Update the UI initially
-  updateUI();
-  
   

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lift Simulation</title>
+  <style>
+    /* CSS styles for the lift simulation UI */
+    .building {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      height: 400px;
+      padding: 10px;
+    }
+
+    .floor {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      width: 100px;
+      background-color: #f2f2f2;
+      border: 1px solid #ccc;
+      padding: 10px;
+      position: relative;
+    }
+
+    .floor span {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .floor-button {
+      margin-top: 10px;
+    }
+
+    .lift {
+      width: 80px;
+      height: 20px;
+      background-color: #333;
+      position: absolute;
+      bottom: 0;
+    }
+
+    .lift-up {
+      background-color: #00c853;
+    }
+
+    .lift-down {
+      background-color: #ff1744;
+    }
+  </style>
+</head>
+<body>
+  <div class="building" id="building"></div>
+
+  <script>
+    // Create the data store object
+    const dataStore = {
+      numFloors: 0,
+      numLifts: 0,
+      liftPositions: [],
+      liftDirections: [],
+      floorButtons: [],
+
+      initialize(numFloors, numLifts) {
+        this.numFloors = numFloors;
+        this.numLifts = numLifts;
+        this.liftPositions = Array(numLifts).fill(1);
+        this.liftDirections = Array(numLifts).fill(null);
+        this.floorButtons = Array(numFloors).fill(false);
+      },
+
+      updateLiftPosition(liftIndex, floor) {
+        this.liftPositions[liftIndex] = floor;
+      },
+
+      updateLiftDirection(liftIndex, direction) {
+        this.liftDirections[liftIndex] = direction;
+      },
+
+      pressFloorButton(floor) {
+        this.floorButtons[floor - 1] = true;
+      },
+
+      getLiftPosition(liftIndex) {
+        return this.liftPositions[liftIndex];
+      },
+
+      getLiftDirection(liftIndex) {
+        return this.liftDirections[liftIndex];
+      },
+
+      getFloorButtonStatus(floor) {
+        return this.floorButtons[floor - 1];
+      },
+    };
+
+    // Initialize the data store with the desired number of floors and lifts
+    dataStore.initialize(5, 3);
+
+    // Define the JS Engine for lift control
+    const liftControlEngine = {
+      allocateLift(floor, direction) {
+        const liftPositions = dataStore.liftPositions;
+        const liftDirections = dataStore.liftDirections;
+
+        const availableLifts = [];
+        for (let i = 0; i < liftPositions.length; i++) {
+          if (liftDirections[i] === null || liftDirections[i] === direction) {
+            availableLifts.push(i);
+          }
+        }
+
+        if (availableLifts.length > 0) {
+          let closestLiftIndex = availableLifts[0];
+          let minDistance = Math.abs(liftPositions[closestLiftIndex] - floor);
+
+          for (let i = 1; i < availableLifts.length; i++) {
+            const liftIndex = availableLifts[i];
+            const distance = Math.abs(liftPositions[liftIndex] - floor);
+            if (distance < minDistance) {
+              minDistance = distance;
+              closestLiftIndex = liftIndex;
+            }
+          }
+
+          dataStore.updateLiftPosition(closestLiftIndex, floor);
+          dataStore.updateLiftDirection(closestLiftIndex, direction);
+
+          const currentLiftPosition = dataStore.getLiftPosition(closestLiftIndex);
+          animateLift(closestLiftIndex, currentLiftPosition, floor);
+
+          return closestLiftIndex;
+        }
+
+        return -1;
+      },
+    };
+
+    function createFloors() {
+      const buildingElement = document.getElementById('building');
+      buildingElement.innerHTML = '';
+
+      const numFloors = dataStore.numFloors;
+
+      for (let i = numFloors; i > 0; i--) {
+        const floorElement = document.createElement('div');
+        floorElement.classList.add('floor');
+
+        const floorNumberElement = document.createElement('span');
+        floorNumberElement.textContent = `Floor ${i}`;
+
+        const upButtonElement = document.createElement('button');
+        upButtonElement.textContent = '▲';
+        upButtonElement.addEventListener('click', () => requestLift(i, 'up'));
+        upButtonElement.classList.add('floor-button', 'up-button');
+
+        const downButtonElement = document.createElement('button');
+        downButtonElement.textContent = '▼';
+        downButtonElement.addEventListener('click', () => requestLift(i, 'down'));
+        downButtonElement.classList.add('floor-button', 'down-button');
+
+        floorElement.appendChild(floorNumberElement);
+        floorElement.appendChild(upButtonElement);
+        floorElement.appendChild(downButtonElement);
+
+        buildingElement.appendChild(floorElement);
+      }
+    }
+
+    function updateUI() {
+      const liftPositions = dataStore.liftPositions;
+      const liftDirections = dataStore.liftDirections;
+      const floorButtons = dataStore.floorButtons;
+
+      const buildingElement = document.getElementById('building');
+      const floorElements = buildingElement.getElementsByClassName('floor');
+
+      for (let i = 0; i < liftPositions.length; i++) {
+        const liftPosition = liftPositions[i];
+        const liftDirection = liftDirections[i];
+        const floorIndex = dataStore.numFloors - liftPosition;
+
+        const floorElement = floorElements[floorIndex];
+
+        const existingLiftElement = floorElement.querySelector('.lift');
+        if (existingLiftElement) {
+          existingLiftElement.remove();
+        }
+
+        const liftElement = document.createElement('div');
+        liftElement.classList.add('lift');
+        liftElement.style.top = `${(floorIndex * 40) + 20}px`;
+        floorElement.appendChild(liftElement);
+
+        floorElement.classList.remove('lift-up', 'lift-down');
+        if (liftDirection === 'up') {
+          floorElement.classList.add('lift-up');
+        } else if (liftDirection === 'down') {
+          floorElement.classList.add('lift-down');
+        }
+
+        const upButtonElement = floorElement.querySelector('.up-button');
+        const downButtonElement = floorElement.querySelector('.down-button');
+        upButtonElement.disabled = floorButtons[floorIndex];
+        downButtonElement.disabled = floorButtons[floorIndex];
+      }
+    }
+
+    function animateLift(liftIndex, currentFloor, destinationFloor) {
+      const liftElement = document.createElement('div');
+      liftElement.classList.add('lift');
+      const floorHeight = 40;
+
+      const distance = Math.abs(destinationFloor - currentFloor) * floorHeight;
+      const direction = currentFloor < destinationFloor ? 1 : -1;
+
+      liftElement.style.transform = `translateY(${direction * distance}px)`;
+      liftElement.style.transition = 'transform 0.5s';
+
+      const currentLiftElement = document.getElementById(`lift-${liftIndex}`);
+      const floorElement = currentLiftElement.parentElement;
+      floorElement.removeChild(currentLiftElement);
+      floorElement.appendChild(liftElement);
+      liftElement.id = `lift-${liftIndex}`;
+
+      setTimeout(() => {
+        dataStore.updateLiftPosition(liftIndex, destinationFloor);
+        dataStore.updateLiftDirection(liftIndex, null);
+        liftElement.style.transform = '';
+
+        const floorIndex = dataStore.numFloors - destinationFloor;
+        const floorButtons = floorElement.getElementsByClassName('floor-button');
+        floorButtons[floorIndex].disabled = false;
+
+        updateUI();
+      }, 500);
+    }
+
+    function requestLift(floor, direction) {
+      const allocatedLiftIndex = liftControlEngine.allocateLift(floor, direction);
+      if (allocatedLiftIndex !== -1) {
+        const floorIndex = dataStore.numFloors - floor;
+        const floorButtons = document.getElementsByClassName('floor-button');
+        floorButtons[floorIndex].disabled = true;
+
+        updateUI();
+      }
+    }
+
+    createFloors();
+    updateUI();
+  </script>
+</body>
+
+</html>

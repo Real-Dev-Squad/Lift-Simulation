@@ -1,49 +1,41 @@
-#building {
-    width: 300px;
-    margin: 0 auto;
-  }
-  
-  #floors {
+.floor {
+    position: relative;
     display: flex;
-    flex-direction: column-reverse;
-  }
-  
-  .floor {
-    height: 40px;
-    background-color: #f2f2f2;
-    border-bottom: 1px solid #ccc;
-    display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 8px;
+    justify-content: space-between;
+    height: 40px;
+    padding: 0 10px;
   }
   
-  .floor:nth-child(even) {
-    background-color: #e6e6e6;
+  .floor span {
+    flex-grow: 1;
   }
   
-  .floor button {
-    margin: 0 4px;
-  }
-  
-  .lifts {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
+  .floor .floor-button {
+    margin-left: 10px;
   }
   
   .lift {
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
     width: 40px;
     height: 40px;
-    background-color: #0066cc;
-    color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 4px;
+    background-color: #e91e63;
+    border-radius: 50%;
+    z-index: 1;
   }
   
-  .lift span {
-    font-size: 12px;
+  .lift::before {
+    content: "";
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 20px;
+    background-color: #fff;
+    border-radius: 50%;
   }
   
