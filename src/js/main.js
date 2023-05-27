@@ -9,7 +9,7 @@ const dataStore = {
   initialize(numFloors, numLifts) {
     this.numFloors = numFloors;
     this.numLifts = numLifts;
-    this.liftPositions = Array(numLifts).fill(1); // Initialized to 1st floor
+    this.liftPositions = Array(numLifts).fill(0); // Initialized to 1st floor
     this.liftDirections = Array(numLifts).fill(null); // No direction initially
     this.isLiftBusy = Array(numLifts).fill(false); // Buttons not pressed initially
   },
@@ -55,7 +55,7 @@ function createFloors() {
     const floorElement = document.createElement('div');
     floorElement.classList.add('floor');
     floorElement.id = `floor-${i}`;
-    floorElement.style.height = '80px'
+    floorElement.style.height = '80px' // floor height goes here
 
     const floorNumberElement = document.createElement('span');
     floorNumberElement.classList.add('floor-number');
@@ -103,7 +103,6 @@ function createLifts() {
     liftElement.style.left = `${spacing + i * liftWidth}px`; // Set the left position of each lift
 
     // Set the initial position to floor 1
-    liftElement.style.bottom = '0';
 
     const liftDoorsElement = document.createElement('div');
     const leftDoorElement = document.createElement('div');
@@ -157,29 +156,32 @@ function allocateLift(floor, direction) {
 }
 
 function requestLift(floor, direction) {
-  console.log("Lift requested on floor", floor, " which is going ", direction)
-  const allocatedLift = allocateLift(floor, direction)
-  dataStore.isLiftBusy[allocatedLift] = true;
-  console.log("lift", allocatedLift, "has been allocated")
-  console.log(dataStore.isLiftBusy)
-  if (allocateLift) {
-    animateLift(allocatedLift, floor, direction)
+  const allLiftsAreBusy = dataStore.isLiftBusy.every((value) => value === true);
+  if(!allLiftsAreBusy){
+    console.log("Lift requested on floor", floor, " which is going ", direction)
+    const allocatedLift = allocateLift(floor, direction)
+    dataStore.isLiftBusy[allocatedLift] = true;
+    console.log("lift", allocatedLift, "has been allocated")
+    console.log(dataStore.isLiftBusy)
+    if (allocateLift) {
+      animateLift(allocatedLift, floor, direction)
+    }
+  } else {
+    console.log("ALL LIFTS ARE BUSY!!")
   }
+  
 }
 
 function animateLift(liftNumber, targetFloor, direction) {
   const liftElement = document.getElementById(`lift-${liftNumber}`);
   const currentFloor = dataStore.liftPositions[liftNumber];
   const floorHeight = document.getElementById('floor-1').clientHeight + 1; // Height of each floor in pixels
-  console.log("FLOOR HEIGHT",floorHeight)
   // Calculate the correct distance to travel based on the current and target floor
-  const distanceToTravel = Math.abs(currentFloor - targetFloor) * floorHeight;
+  const distanceToTravel = Math.abs(targetFloor) * floorHeight;
 
   // Calculate the duration of the animation based on the number of floors to travel
   const duration = Math.abs(currentFloor - targetFloor) * 2500; // Delay of 1s per floor
 
-  // Adjust the lift direction based on the target floor
-  console.log(distanceToTravel)
   liftElement.style.transition = `transform ${duration / 1000}s linear`;
   liftElement.style.transform = `translateY(-${distanceToTravel}px)`;
 
@@ -188,12 +190,10 @@ function animateLift(liftNumber, targetFloor, direction) {
     setTimeout(() => {
       // Close the lift doors after 2.5 seconds
       liftElement.classList.remove('open');
-
       setTimeout(() => {
         dataStore.isLiftBusy[liftNumber] = false;
         dataStore.liftDirections[liftNumber] = null;
         dataStore.updateLiftPosition(liftNumber, targetFloor);
-        console.log('lift open close')
       }, 2500);
     }, 2500);
   }, duration);
