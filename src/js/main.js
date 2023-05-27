@@ -51,7 +51,7 @@ function createFloors() {
 
   const numFloors = dataStore.numFloors;
 
-  for (let i = numFloors; i > 0; i--) {
+  for (let i = numFloors-1; i >= 0; i--) {
     const floorElement = document.createElement('div');
     floorElement.classList.add('floor');
     floorElement.id = `floor-${i}`;
@@ -64,7 +64,7 @@ function createFloors() {
     const floorButtonsElement = document.createElement('div');
     floorButtonsElement.classList.add('floor-buttons');
 
-    if(numFloors !== i){
+    if(numFloors-1 !== i){
       const upButtonElement = document.createElement('button');
       upButtonElement.textContent = '▲';
       upButtonElement.addEventListener('click', () => {
@@ -73,7 +73,7 @@ function createFloors() {
       floorButtonsElement.appendChild(upButtonElement);
     }
 
-    if( i !== 1){
+    if( i !== 0){
       const downButtonElement = document.createElement('button');
       downButtonElement.textContent = '▼';
       downButtonElement.addEventListener('click', () => {
@@ -90,6 +90,7 @@ function createFloors() {
 function createLifts() {
   const numLifts = dataStore.numLifts;
   const liftsContainer = document.getElementById('lift-section');
+  const startingFloor = document.getElementById('floor-0');
   liftsContainer.innerHTML = '';
   const liftWidth = 80; // Width of each lift including margins
   const containerWidth = liftsContainer.offsetWidth;
@@ -100,7 +101,7 @@ function createLifts() {
     const liftElement = document.createElement('div');
     liftElement.classList.add('lift');
     liftElement.id = `lift-${i}`;
-    liftElement.style.left = `${spacing + i * liftWidth}px`; // Set the left position of each lift
+    liftElement.style.left = `${260 + i * liftWidth}px`; // Set the left position of each lift
 
     // Set the initial position to floor 1
 
@@ -114,7 +115,7 @@ function createLifts() {
 
     liftElement.appendChild(liftDoorsElement);
 
-    liftsContainer.appendChild(liftElement);
+    startingFloor.appendChild(liftElement);
   }
 }
 
