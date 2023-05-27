@@ -9,7 +9,7 @@ const dataStore = {
   initialize(numFloors, numLifts) {
     this.numFloors = numFloors;
     this.numLifts = numLifts;
-    this.liftPositions = Array(numLifts).fill(0); // Initialized to 1st floor
+    this.liftPositions = Array(numLifts).fill(1); // Initialized to 1st floor
     this.liftDirections = Array(numLifts).fill(null); // No direction initially
     this.isLiftBusy = Array(numLifts).fill(false); // Buttons not pressed initially
   },
@@ -101,7 +101,10 @@ function createLifts() {
     liftElement.classList.add('lift');
     liftElement.id = `lift-${i}`;
     liftElement.style.left = `${spacing + i * liftWidth}px`; // Set the left position of each lift
-    
+
+    // Set the initial position to floor 1
+    liftElement.style.bottom = '0';
+
     const liftDoorsElement = document.createElement('div');
     const leftDoorElement = document.createElement('div');
     const rightDoorElement = document.createElement('div');
@@ -115,6 +118,7 @@ function createLifts() {
     liftsContainer.appendChild(liftElement);
   }
 }
+
 
 function allocateLift(floor, direction) {
   const liftPositions = dataStore.liftPositions;
@@ -169,7 +173,7 @@ function animateLift(liftNumber, targetFloor, direction) {
   const floorHeight = document.getElementById('floor-1').clientHeight + 1; // Height of each floor in pixels
   console.log("FLOOR HEIGHT",floorHeight)
   // Calculate the correct distance to travel based on the current and target floor
-  const distanceToTravel = (targetFloor) * floorHeight;
+  const distanceToTravel = Math.abs(currentFloor - targetFloor) * floorHeight;
 
   // Calculate the duration of the animation based on the number of floors to travel
   const duration = Math.abs(currentFloor - targetFloor) * 2500; // Delay of 1s per floor
@@ -220,6 +224,13 @@ function handleFormSubmit(event) {
     alert('Please enter valid values for number of lifts and number of floors.');
     return;
   }
+
+  if (numLifts < 2 || numFloors < 2 || numLifts > 10 || numFloors > 10) {
+    event.preventDefault();
+    alert("Please enter at least 2 and maximum 10 for both floors and lifts.");
+  }
+
+
 
   dataStore.initialize(numFloors, numLifts);
   createFloors();
