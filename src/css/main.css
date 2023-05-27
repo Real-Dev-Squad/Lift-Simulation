@@ -12,17 +12,14 @@ body {
   justify-content: space-between;
 }
 
-#lift-section{
-    padding: 0px;
+.floor {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  flex-grow: 1; /* Occupy remaining vertical space */
 }
 
-.floor {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    border-bottom: 1px solid #ccc;
-    flex-grow: 1; /* Occupy remaining vertical space */
-  }
 .floor .floor-number {
   font-weight: bold;
 }
@@ -35,33 +32,46 @@ body {
 .floor .floor-buttons button {
   margin: 0 5px;
 }
-  
+
 .lifts-container {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex; /* Add this line to make lifts-container a flex container */
-  }
-  
-  .lift {
+  display: flex;
+  justify-content: center;
+  margin-top: auto;
+}
+
+.lift {
     position: absolute;
     width: 60px;
     height: 80px;
     background-color: gray;
-    bottom: 0;
-    transition: bottom 2s;
+    background-image: linear-gradient(black, black);
   }
   
-  .lift.open .door {
-    width: 30px;
+  .lift.open .door-left {
+    width: 50%;
+    background-color: red;
   }
   
-  .door {
-    position: absolute;
-    width: 0;
-    height: 80px;
-    background-color: black;
-    transition: width 0.5s;
+  .lift.open .door-right {
+    width: 50%;
+    background-color: red;
+  }
+  
+  .door-left{
+    background: black;
+    width: 50%;
+    height: 100%;
+    border-right: 0.5px solid #fff;
+    transition: transform 2.5s linear;
+    z-index: 2;
+  }
+  
+  .door-right {
+    background: black;
+    border-left: 0.5px solid #fff;
+    width: 50%;
+    height: 100%;
+    transition: transform 2.5s linear;
+    z-index: 2;
   }
   

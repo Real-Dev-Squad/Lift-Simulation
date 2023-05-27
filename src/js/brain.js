@@ -128,8 +128,6 @@ const dataStore = {
 
 dataStore.initialize(5, 5);
 const liftControlEngine = {
-  // ...existing code...
-
   allocateLift(floor, direction) {
     const liftPositions = dataStore.liftPositions;
     const liftDirections = dataStore.liftDirections;
