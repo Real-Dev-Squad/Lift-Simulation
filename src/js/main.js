@@ -55,6 +55,7 @@ function createFloors() {
     const floorElement = document.createElement('div');
     floorElement.classList.add('floor');
     floorElement.id = `floor-${i}`;
+    floorElement.style.height = '80px'
 
     const floorNumberElement = document.createElement('span');
     floorNumberElement.classList.add('floor-number');
@@ -63,24 +64,25 @@ function createFloors() {
     const floorButtonsElement = document.createElement('div');
     floorButtonsElement.classList.add('floor-buttons');
 
-    const upButtonElement = document.createElement('button');
-    upButtonElement.textContent = '▲';
-    upButtonElement.addEventListener('click', () => {
-      requestLift(i, 'up');
-    });
+    if(numFloors !== i){
+      const upButtonElement = document.createElement('button');
+      upButtonElement.textContent = '▲';
+      upButtonElement.addEventListener('click', () => {
+        requestLift(i, 'up');
+      });
+      floorButtonsElement.appendChild(upButtonElement);
+    }
 
-    const downButtonElement = document.createElement('button');
-    downButtonElement.textContent = '▼';
-    downButtonElement.addEventListener('click', () => {
-      requestLift(i, 'down');
-    });
-
-    floorButtonsElement.appendChild(upButtonElement);
-    floorButtonsElement.appendChild(downButtonElement);
-
+    if( i !== 1){
+      const downButtonElement = document.createElement('button');
+      downButtonElement.textContent = '▼';
+      downButtonElement.addEventListener('click', () => {
+        requestLift(i, 'down');
+      });
+      floorButtonsElement.appendChild(downButtonElement);
+    }
     floorElement.appendChild(floorNumberElement);
     floorElement.appendChild(floorButtonsElement);
-
     floorsContainer.appendChild(floorElement);
   }
 }
@@ -100,11 +102,15 @@ function createLifts() {
     liftElement.id = `lift-${i}`;
     liftElement.style.left = `${spacing + i * liftWidth}px`; // Set the left position of each lift
     
-    const liftDoorElement = document.createElement('div');
-    liftDoorElement.classList.add('door-right');
-    liftDoorElement.classList.add('door-left');
+    const liftDoorsElement = document.createElement('div');
+    const leftDoorElement = document.createElement('div');
+    const rightDoorElement = document.createElement('div');
+    leftDoorElement.classList.add('door-left');
+    rightDoorElement.classList.add('door-right');
+    liftDoorsElement.appendChild(leftDoorElement);
+    liftDoorsElement.appendChild(rightDoorElement);
 
-    liftElement.appendChild(liftDoorElement);
+    liftElement.appendChild(liftDoorsElement);
 
     liftsContainer.appendChild(liftElement);
   }
@@ -160,13 +166,13 @@ function requestLift(floor, direction) {
 function animateLift(liftNumber, targetFloor, direction) {
   const liftElement = document.getElementById(`lift-${liftNumber}`);
   const currentFloor = dataStore.liftPositions[liftNumber];
-  const floorHeight = 133; // Height of each floor in pixels
-
+  const floorHeight = document.getElementById('floor-1').clientHeight + 1; // Height of each floor in pixels
+  console.log("FLOOR HEIGHT",floorHeight)
   // Calculate the correct distance to travel based on the current and target floor
   const distanceToTravel = (targetFloor) * floorHeight;
 
   // Calculate the duration of the animation based on the number of floors to travel
-  const duration = Math.abs(currentFloor - targetFloor) * 1000; // Delay of 1s per floor
+  const duration = Math.abs(currentFloor - targetFloor) * 2500; // Delay of 1s per floor
 
   // Adjust the lift direction based on the target floor
   console.log(distanceToTravel)
@@ -174,44 +180,61 @@ function animateLift(liftNumber, targetFloor, direction) {
   liftElement.style.transform = `translateY(-${distanceToTravel}px)`;
 
   setTimeout(() => {
-    
     liftElement.classList.add('open');
     setTimeout(() => {
-      dataStore.isLiftBusy[liftNumber] = false;
-      dataStore.liftDirections[liftNumber] = null;
-      dataStore.updateLiftPosition(liftNumber, targetFloor);
-      // Close the lift doors by removing the 'open' class after 2.5 seconds
+      // Close the lift doors after 2.5 seconds
       liftElement.classList.remove('open');
+
+      setTimeout(() => {
+        dataStore.isLiftBusy[liftNumber] = false;
+        dataStore.liftDirections[liftNumber] = null;
+        dataStore.updateLiftPosition(liftNumber, targetFloor);
+        console.log('lift open close')
+      }, 2500);
     }, 2500);
-
-    // Logging for debugging purposes
-    console.log("lift element", document.getElementById(`lift-${liftNumber}`))
-    console.log("lift directions", dataStore.liftDirections)
-    console.log("is lift busy", dataStore.isLiftBusy)
-    console.log("lift positions", dataStore.liftPositions)
   }, duration);
-
-  console.log(
-    'liftElement:',
-    liftElement,
-    'currentFloor:',
-    currentFloor,
-    'targetFloor:',
-    targetFloor,
-    'floorHeight:',
-    floorHeight,
-    'distance:',
-    distanceToTravel,
-    'duration:',
-    duration
-  );
 }
 
 
 function init() {
-  dataStore.initialize(5, 5)
+  dataStore.initialize(5, 2)
   createFloors()
   createLifts()
 }
 
-init()
+function init() {
+  const form = document.getElementById('input-form');
+  form.addEventListener('submit', handleFormSubmit);
+}
+
+function handleFormSubmit(event) {
+  event.preventDefault(); // Prevent form submission
+
+  const numLiftsInput = document.getElementById('num-lifts');
+  const numFloorsInput = document.getElementById('num-floors');
+
+  const numLifts = parseInt(numLiftsInput.value);
+  const numFloors = parseInt(numFloorsInput.value);
+
+  if (isNaN(numLifts) || isNaN(numFloors) || numLifts <= 0 || numFloors <= 0) {
+    alert('Please enter valid values for number of lifts and number of floors.');
+    return;
+  }
+
+  dataStore.initialize(numFloors, numLifts);
+  createFloors();
+  createLifts();
+
+  // Hide the form
+  const formContainer = document.getElementById('form-container');
+  const liftFloorContainer = document.getElementById('lift-floor-container');
+  formContainer.style.display = 'none';
+  liftFloorContainer.style.display = 'block';
+
+
+  // Clear form inputs
+  numLiftsInput.value = '';
+  numFloorsInput.value = '';
+}
+
+init();

@@ -8,14 +8,12 @@ body {
 #floors {
   display: flex;
   flex-direction: column;
-  height: 80%;
   justify-content: space-between;
 }
 
 .floor {
   display: flex;
   align-items: center;
-  padding: 10px;
   border-bottom: 1px solid #ccc;
   flex-grow: 1; /* Occupy remaining vertical space */
 }
@@ -35,8 +33,10 @@ body {
 
 .lifts-container {
   display: flex;
-  justify-content: center;
+  position: relative;
+  left: 300px;
   margin-top: auto;
+
 }
 
 .lift {
@@ -44,34 +44,91 @@ body {
     width: 60px;
     height: 80px;
     background-color: gray;
-    background-image: linear-gradient(black, black);
+    background-image: linear-gradient(rgb(112, 53, 53), rgb(28, 15, 39));
+    --lift-color: gray;
+    overflow: hidden; /* Hide the overflow of the doors */
+    transition: all 2.5s linear; /* Add transition for smooth opening and closing */
   }
   
   .lift.open .door-left {
-    width: 50%;
-    background-color: red;
+    transform: translateX(-50%);
   }
   
   .lift.open .door-right {
-    width: 50%;
-    background-color: red;
+    transform: translateX(50%);
   }
   
-  .door-left{
-    background: black;
-    width: 50%;
+  .door-left,
+  .door-right {
     height: 100%;
-    border-right: 0.5px solid #fff;
-    transition: transform 2.5s linear;
-    z-index: 2;
+    width: 50%;
+    border: 0.5px solid white;
+    position: absolute;
+    transition: transform 2.5s linear; /* Add transition for smooth opening and closing */
+  }
+  
+  .door-left {
+    left: 0;
+    border-right: 0.5px solid white;
+    background-color: cadetblue; /* Color the left door */
+    transform-origin: left;
   }
   
   .door-right {
-    background: black;
-    border-left: 0.5px solid #fff;
-    width: 50%;
-    height: 100%;
-    transition: transform 2.5s linear;
-    z-index: 2;
+    right: 0;
+    border: 0.5px solid white;
+    background-color: cadetblue; /* Color the right door */
+    transform-origin: right;
   }
   
+  
+  
+
+  #form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  #input-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f2f2f2;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  label {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+  
+  input {
+    padding: 8px;
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  
+  button {
+    padding: 8px 16px;
+    background-color: #1877F2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0F65D9;
+  }
+  
+
+  .welcome-heading {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }

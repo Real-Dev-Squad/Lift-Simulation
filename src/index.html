@@ -8,12 +8,22 @@
 </head>
 <body>
   
-  <h1>Welcome to Lift Simulation!</h1>
-  <div id="floors" class="floors"></div>
-  <div id="lift-section" class="lifts-container"></div>
-
-
-  
+  <div id="form-container">
+    <form id="input-form">
+      <label for="num-lifts">Number of Lifts:</label>
+      <input type="number" id="num-lifts" required />
+      <br />
+      <label for="num-floors">Number of Floors:</label>
+      <input type="number" id="num-floors" required />
+      <br />
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+  <div id="lift-floor-container" style="display: none;">
+    <h1 class="welcome-heading">Welcome to Lift Simulation</h1>
+    <div id="floors" class="floors"></div>
+    <div id="lift-section" class="lifts-container"></div>
+  </div>
   
   <script src="js/main.js"></script>
 </body>
