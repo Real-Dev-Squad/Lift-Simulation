@@ -3,17 +3,17 @@ const dataStore = {
   numLifts: 0, // Total number of lifts in the building
   liftPositions: [], // Current floor position of each lift
   liftDirections: [], // Current direction of each lift
-  isLiftBusy: [],
-  floorButtons: [], // Status of buttons on each floor
+  isLiftBusy: [], // Status of all the lifts
+  liftRequestQueue: [], // Queue to store lift requests
 
   // Initialize the data store with the given number of floors and lifts
   initialize(numFloors, numLifts) {
     this.numFloors = numFloors;
     this.numLifts = numLifts;
-    this.liftPositions = Array(numLifts).fill(1); // Initialized to 1st floor
+    this.liftPositions = Array(numLifts).fill(0); // Initialized to 1st floor
     this.liftDirections = Array(numLifts).fill(null); // No direction initially
-    this.floorButtons = Array(numFloors).fill(false); // Buttons not pressed initially
     this.isLiftBusy = Array(numLifts).fill(false); // Buttons not pressed initially
+    this.liftRequestQueue = []; // Initialize the lift request queue
   },
 
   // Update lift position for a specific lift
@@ -21,28 +21,14 @@ const dataStore = {
     this.liftPositions[liftIndex] = floor;
   },
 
-  // Update lift direction for a specific lift
-  updateLiftDirection(liftIndex, direction) {
-    this.liftDirections[liftIndex] = direction;
-  },
-
-  updateLiftStatus(liftIndex, status) {
-    this.isLiftBusy[liftIndex] = status;
-  },
-
-  liftBusyStatus(liftIndex) {
-    return this.isLiftBusy[liftIndex];
-  },
-
-  // Set the status of a floor button to indicate it's pressed
-  pressFloorButton(floor) {
-    this.floorButtons[floor - 1] = true; // Floors are 1-indexed
-    console.log(`Button pressed on Floor ${floor}`);
-  },
-
   // Get the current position of a specific lift
   getLiftPosition(liftIndex) {
     return this.liftPositions[liftIndex];
+  },
+
+  // Update lift direction for a specific lift
+  updateLiftDirection(liftIndex, direction) {
+    this.liftDirections[liftIndex] = direction;
   },
 
   // Get the current direction of a specific lift
@@ -50,225 +36,102 @@ const dataStore = {
     return this.liftDirections[liftIndex];
   },
 
-  // Get the status of a floor button
-  getFloorButtonStatus(floor) {
-    return this.floorButtons[floor - 1]; // Floors are 1-indexed
-  },
-  getDataStore() {
-    return [this.liftPositions, this.liftDirections];
-  },
-  // Animate the movement of a specific lift
-  // Animate the movement of a specific lift
-  animateLift(liftIndex) {
-    const liftElement = document.getElementById(`lift-${liftIndex}`);
-    const currentFloor = this.liftPositions[liftIndex];
-    const targetFloor = this.getLiftPosition(liftIndex);
-    const floorHeight = 160; // Height of each floor in pixels
-    const distance = Math.abs(targetFloor - currentFloor);
-    const duration = distance * 2000; // Delay of 2s per floor
-    console.log('=====ANIMATE LIFT BEING CALLED=========');
-    console.log(
-      'liftElement:',
-      liftElement,
-      'currentFloor:',
-      currentFloor,
-      'targetFloor:',
-      targetFloor,
-      'floorHeight:',
-      floorHeight,
-      'distance:',
-      distance,
-      'duration:',
-      duration
-    );
-
-    const direction = targetFloor > currentFloor ? 'up' : 'down';
-    const transitionProperty = `bottom ${duration}ms`;
-
-    liftElement.style.transition = transitionProperty;
-    liftElement.style.bottom = `${(targetFloor - 1) * floorHeight}px`; // Adjust the position of the lift
-
-    // Update the lift position after the animation completes
-    setTimeout(() => {
-      this.liftPositions[liftIndex] = targetFloor;
-
-      // Update the lift visuals in the user interface
-      liftElement.style.transition = '';
-      liftElement.style.bottom = `${(targetFloor - 1) * floorHeight}px`; // Set the final position of the lift
-
-      dataStore.updateLiftStatus(liftIndex, true);
-    }, duration);
-
-    // Update the lift direction visual indicator
-    setTimeout(() => {
-      liftElement.style.transition = `transform 0.5s`;
-      liftElement.style.transform =
-        direction === 'up' ? 'rotate(180deg)' : 'rotate(0deg)';
-    }, 0);
+  // Update lift status for a specific lift
+  updateLiftStatus(liftIndex, status) {
+    this.isLiftBusy[liftIndex] = status;
   },
 
-  // Open and close lift doors with a delay
-  animateLiftDoors(liftIndex) {
-    const liftElement = document.getElementById(`lift-${liftIndex}`);
-    const liftDoorElement = liftElement.querySelector('.door');
-
-    // Open the doors with a delay
-    setTimeout(() => {
-      liftElement.classList.add('open');
-    }, 2500);
-
-    // Close the doors after a delay of 0.5s
-    setTimeout(() => {
-      dataStore.updateLiftDirection(liftIndex, null);
-      liftElement.classList.remove('open');
-    }, 4000);
-    dataStore.updateLiftStatus(liftIndex, false);
+  // Get the busy status of a specific lift
+  getLiftBusyStatus(liftIndex) {
+    return this.isLiftBusy[liftIndex];
   },
-};
 
-dataStore.initialize(5, 5);
-const liftControlEngine = {
-  allocateLift(floor, direction) {
-    const liftPositions = dataStore.liftPositions;
-    const liftDirections = dataStore.liftDirections;
+  // Add a lift request to the queue
+  addLiftRequest(floor, direction) {
+    this.liftRequestQueue.push({ floor, direction });
+  },
 
-    // Find the available lifts
-    const availableLifts = [];
-    for (let i = 0; i < liftPositions.length; i++) {
-      if (!dataStore.liftBusyStatus(i)) {
-        if (liftDirections[i] === null) {
-          availableLifts.push(i);
-        } else if (direction === 'up' && liftPositions[i] < floor) {
-          availableLifts.push(i);
-        } else if (direction === 'down' && liftPositions[i] > floor) {
-          availableLifts.push(i);
-        }
-      }
-    }
+  // Get the next lift request from the queue
+  getNextLiftRequest() {
+    return this.liftRequestQueue.shift();
+  },
 
-    // If there are available lifts, find the closest one
-    if (availableLifts.length > 0) {
-      let closestLiftIndex = availableLifts[0];
-      let minDistance = Math.abs(liftPositions[closestLiftIndex] - floor);
-
-      for (let i = 1; i < availableLifts.length; i++) {
-        const liftIndex = availableLifts[i];
-        const distance = Math.abs(liftPositions[liftIndex] - floor);
-        if (distance < minDistance) {
-          minDistance = distance;
-          closestLiftIndex = liftIndex;
-        }
-      }
-
-      // Update the lift position and direction in the data store
-      dataStore.updateLiftPosition(closestLiftIndex, floor);
-      dataStore.updateLiftDirection(closestLiftIndex, direction);
-
-      // Animate the lift movement after updating the position
-      dataStore.animateLift(closestLiftIndex);
-      dataStore.animateLiftDoors(closestLiftIndex);
-
-      // Get the current position of the allocated lift
-      const currentLiftPosition = dataStore.getLiftPosition(closestLiftIndex);
-
-      // Return the index of the allocated lift
-      return closestLiftIndex;
-    }
-
-    // If no available lifts, return -1
-    return -1;
+  // Check if the lift request queue is empty
+  isLiftRequestQueueEmpty() {
+    return this.liftRequestQueue.length === 0;
   },
 };
 
 function createFloors() {
-  const floorsContainer = document.getElementById('floors');
-  floorsContainer.innerHTML = '';
-
-  const numFloors = dataStore.numFloors;
-
-  for (let i = numFloors; i > 0; i--) {
-    const floorElement = document.createElement('div');
-    floorElement.classList.add('floor');
-    floorElement.id = `lift-${i}`;
-
-    const floorNumberElement = document.createElement('span');
-    floorNumberElement.classList.add('floor-number');
-    floorNumberElement.textContent = `Floor ${i}`;
-
-    const floorButtonsElement = document.createElement('div');
-    floorButtonsElement.classList.add('floor-buttons');
-
-    const upButtonElement = document.createElement('button');
-    upButtonElement.textContent = '▲';
-    upButtonElement.addEventListener('click', () => {
-      requestLift(i, 'up');
-      console.log(`Requested lift to Floor ${i} going up`);
-      console.log(dataStore.getDataStore());
-    });
-
-    const downButtonElement = document.createElement('button');
-    downButtonElement.textContent = '▼';
-    downButtonElement.addEventListener('click', () => {
-      requestLift(i, 'down');
-      console.log(`Requested lift to Floor ${i} going down`);
-      console.log(dataStore.getDataStore());
-    });
-
-    floorButtonsElement.appendChild(upButtonElement);
-    floorButtonsElement.appendChild(downButtonElement);
-
-    floorElement.appendChild(floorNumberElement);
-    floorElement.appendChild(floorButtonsElement);
-
-    floorsContainer.appendChild(floorElement);
-  }
+  // Existing code...
 }
 
 function createLifts() {
-  const numLifts = dataStore.numLifts;
-  const liftsContainer = document.getElementById('lift-section');
-  liftsContainer.innerHTML = '';
-  const liftWidth = 80; // Width of each lift including margins
-  const containerWidth = liftsContainer.offsetWidth;
-  const totalWidth = liftWidth * numLifts;
-  const spacing = (containerWidth - totalWidth) / (numLifts + 1); // Calculate the spacing between lifts
+  // Existing code...
+}
 
-  for (let i = 0; i < numLifts; i++) {
-    const liftElement = document.createElement('div');
-    liftElement.classList.add('lift');
-    liftElement.id = `lift-${i}`;
-    liftElement.style.bottom = '0'; // Initialize the bottom position to 0
-    liftElement.style.left = `${spacing + i * liftWidth}px`; // Set the left position of each lift
-
-    const liftDoorElement = document.createElement('div');
-    liftDoorElement.classList.add('door');
-    liftElement.appendChild(liftDoorElement);
-
-    liftsContainer.appendChild(liftElement);
-  }
+function allocateLift(floor, direction) {
+  // Existing code...
 }
 
 function requestLift(floor, direction) {
-  const allocatedLiftIndex = liftControlEngine.allocateLift(floor, direction);
+  const allLiftsAreBusy = dataStore.isLiftBusy.every((value) => value === true);
 
-  if (allocatedLiftIndex !== -1) {
-    console.log(`Lift ${allocatedLiftIndex} allocated for Floor ${floor}`);
+  if (!allLiftsAreBusy) {
+    console.log("Lift requested on floor", floor, " which is going ", direction)
+    const allocatedLift = allocateLift(floor, direction)
+    dataStore.isLiftBusy[allocatedLift] = true;
+    console.log("Lift", allocatedLift, "has been allocated")
+    console.log(dataStore.isLiftBusy)
+
+    if (allocatedLift !== -1) {
+      animateLift(allocatedLift, floor, direction)
+    }
   } else {
-    console.log(`No available lifts for Floor ${floor}`);
+    console.log("ALL LIFTS ARE BUSY!!")
+    dataStore.addLiftRequest(floor, direction); // Add the lift request to the queue
+    console.log("Lift request added to the queue:", dataStore.liftRequestQueue);
   }
 }
 
-createFloors();
-createLifts();
 
-function getDivHeightRelativeToBody(divElement) {
-  let height = 0;
-  let element = divElement;
+function animateLift(liftNumber, targetFloor, direction) {
+  const liftElement = document.getElementById(`lift-${liftNumber}`);
+  const currentFloor = dataStore.liftPositions[liftNumber];
+  const floorHeight = document.getElementById('floor-1').clientHeight + 1; // Height of each floor in pixels
+  // Calculate the correct distance to travel based on the current and target floor
+  const distanceToTravel = Math.abs(targetFloor) * floorHeight;
 
-  while (element) {
-    height += element.offsetHeight;
-    element = element.offsetParent;
-  }
+  // Calculate the duration of the animation based on the number of floors to travel
+  const duration = Math.abs(currentFloor - targetFloor) * 2500; // Delay of 1s per floor
 
-  return height;
+  liftElement.style.transition = `transform ${duration / 1000}s linear`;
+  liftElement.style.transform = `translateY(-${distanceToTravel}px)`;
+
+  setTimeout(() => {
+    liftElement.classList.add('open');
+    setTimeout(() => {
+      // Close the lift doors after 2.5 seconds
+      liftElement.classList.remove('open');
+      setTimeout(() => {
+        dataStore.isLiftBusy[liftNumber] = false;
+        dataStore.liftDirections[liftNumber] = null;
+        dataStore.updateLiftPosition(liftNumber, targetFloor);
+
+        // Check if there are pending lift requests in the queue
+        if (liftRequestQueue.length > 0) {
+          const nextRequest = liftRequestQueue.shift(); // Get the next request from the queue
+          const { floor, direction } = nextRequest;
+          requestLift(floor, direction); // Process the next request
+        }
+      }, 2500);
+    }, 2500);
+  }, duration + 5000); // Add a delay of 5 seconds before processing the next request
 }
+
+
+function init() {
+  // Existing code...
+}
+
+init();

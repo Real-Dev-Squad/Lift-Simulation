@@ -3,7 +3,8 @@ const dataStore = {
   numLifts: 0, // Total number of lifts in the building
   liftPositions: [], // Current floor position of each lift
   liftDirections: [], // Current direction of each lift
-  isLiftBusy: [], // status of all the lifts
+  isLiftBusy: [], // Status of all the lifts
+  liftRequestQueue: [], // Queue to store lift requests
 
   // Initialize the data store with the given number of floors and lifts
   initialize(numFloors, numLifts) {
@@ -12,6 +13,7 @@ const dataStore = {
     this.liftPositions = Array(numLifts).fill(0); // Initialized to 1st floor
     this.liftDirections = Array(numLifts).fill(null); // No direction initially
     this.isLiftBusy = Array(numLifts).fill(false); // Buttons not pressed initially
+    this.liftRequestQueue = []; // Initialize the lift request queue
   },
 
   // Update lift position for a specific lift
@@ -34,14 +36,30 @@ const dataStore = {
     return this.liftDirections[liftIndex];
   },
 
-
+  // Update lift status for a specific lift
   updateLiftStatus(liftIndex, status) {
     this.isLiftBusy[liftIndex] = status;
   },
 
-  getliftBusyStatus(liftIndex) {
+  // Get the busy status of a specific lift
+  getLiftBusyStatus(liftIndex) {
     return this.isLiftBusy[liftIndex];
-  }
+  },
+
+  // Add a lift request to the queue
+  addLiftRequest(floor, direction) {
+    this.liftRequestQueue.push({ floor, direction });
+  },
+
+  // Get the next lift request from the queue
+  getNextLiftRequest() {
+    return this.liftRequestQueue.shift();
+  },
+
+  // Check if the lift request queue is empty
+  isLiftRequestQueueEmpty() {
+    return this.liftRequestQueue.length === 0;
+  },
 };
 
 
@@ -158,19 +176,21 @@ function allocateLift(floor, direction) {
 
 function requestLift(floor, direction) {
   const allLiftsAreBusy = dataStore.isLiftBusy.every((value) => value === true);
-  if(!allLiftsAreBusy){
+
+  if (!allLiftsAreBusy) {
     console.log("Lift requested on floor", floor, " which is going ", direction)
     const allocatedLift = allocateLift(floor, direction)
     dataStore.isLiftBusy[allocatedLift] = true;
-    console.log("lift", allocatedLift, "has been allocated")
-    console.log(dataStore.isLiftBusy)
-    if (allocateLift) {
+    console.log("Lift", allocatedLift, "has been allocated")
+
+    if (allocatedLift !== -1) {
       animateLift(allocatedLift, floor, direction)
     }
   } else {
     console.log("ALL LIFTS ARE BUSY!!")
+    dataStore.addLiftRequest(floor, direction); // Add the lift request to the queue
+    console.log("Lift request added to the queue:", dataStore.liftRequestQueue);
   }
-  
 }
 
 function animateLift(liftNumber, targetFloor, direction) {
@@ -182,7 +202,7 @@ function animateLift(liftNumber, targetFloor, direction) {
 
   // Calculate the duration of the animation based on the number of floors to travel
   const duration = Math.abs(currentFloor - targetFloor) * 2000; // Delay of 1s per floor
-  console.log("DURATION FOR LIFT",duration)
+
   liftElement.style.transition = `transform ${duration / 1000}s linear`;
   liftElement.style.transform = `translateY(-${distanceToTravel}px)`;
 
@@ -195,10 +215,18 @@ function animateLift(liftNumber, targetFloor, direction) {
         dataStore.isLiftBusy[liftNumber] = false;
         dataStore.liftDirections[liftNumber] = null;
         dataStore.updateLiftPosition(liftNumber, targetFloor);
-      }, 2500);
-    }, 2500);
-  }, duration);
+
+        // Check if there are pending lift requests in the queue
+        if (dataStore.liftRequestQueue.length > 0) {
+          const nextRequest = dataStore.liftRequestQueue.shift(); // Get the next request from the queue
+          const { floor, direction } = nextRequest;
+          requestLift(floor, direction); // Process the next request
+        }
+      }, 2500); // lifts door closed
+    }, 2500); // lifts door open
+  }, duration); // Add a delay of 5 seconds before processing the next request
 }
+
 
 
 function init() {
@@ -250,3 +278,8 @@ function handleFormSubmit(event) {
 }
 
 init();
+
+
+// 1. Add a queue (disable the button)
+// 2. add a back button
+// 3. mobile responsiveness
