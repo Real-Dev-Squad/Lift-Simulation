@@ -226,7 +226,7 @@ function handleFormSubmit(event) {
     return;
   }
 
-  if (numLifts < 2 || numFloors < 2 || numLifts > 10 || numFloors > 10) {
+  if (numLifts < 1 || numFloors < 2 || numLifts > 10 || numFloors > 10) {
     event.preventDefault();
     alert("Please enter at least 2 and maximum 10 for both floors and lifts.");
   }
