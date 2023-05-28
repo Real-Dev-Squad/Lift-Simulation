@@ -181,8 +181,8 @@ function animateLift(liftNumber, targetFloor, direction) {
   const distanceToTravel = Math.abs(targetFloor) * floorHeight;
 
   // Calculate the duration of the animation based on the number of floors to travel
-  const duration = Math.abs(currentFloor - targetFloor) * 2500; // Delay of 1s per floor
-
+  const duration = Math.abs(currentFloor - targetFloor) * 2000; // Delay of 1s per floor
+  console.log("DURATION FOR LIFT",duration)
   liftElement.style.transition = `transform ${duration / 1000}s linear`;
   liftElement.style.transform = `translateY(-${distanceToTravel}px)`;
 
