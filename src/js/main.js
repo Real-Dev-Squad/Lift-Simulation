@@ -85,6 +85,7 @@ function createFloors() {
     if(numFloors-1 !== i){
       const upButtonElement = document.createElement('button');
       upButtonElement.textContent = '▲';
+      upButtonElement.classList.add('up-button')
       upButtonElement.addEventListener('click', () => {
         requestLift(i, 'up');
       });
@@ -94,6 +95,7 @@ function createFloors() {
     if( i !== 0){
       const downButtonElement = document.createElement('button');
       downButtonElement.textContent = '▼';
+      downButtonElement.classList.add('down-button')
       downButtonElement.addEventListener('click', () => {
         requestLift(i, 'down');
       });
@@ -185,12 +187,32 @@ function requestLift(floor, direction) {
 
     if (allocatedLift !== -1) {
       animateLift(allocatedLift, floor, direction)
+      // Disable the floor buttons
+      disableLiftButton(floor,direction)
+
     }
   } else {
     console.log("ALL LIFTS ARE BUSY!!")
     dataStore.addLiftRequest(floor, direction); // Add the lift request to the queue
+    disableLiftButton(floor,direction)
     console.log("Lift request added to the queue:", dataStore.liftRequestQueue);
   }
+}
+
+function disableLiftButton(floor, direction){
+  let floorButtonsElement = document.getElementById(`floor-${floor}`).querySelector('.down-button');
+  if (direction === 'up') {
+    floorButtonsElement = document.getElementById(`floor-${floor}`).querySelector('.up-button');
+  }
+  floorButtonsElement.disabled = true;
+}
+
+function enableLiftButton(floor, direction){
+  let floorButtonsElement = document.getElementById(`floor-${floor}`).querySelector('.down-button');
+  if(direction === 'up'){
+    floorButtonsElement = document.getElementById(`floor-${floor}`).querySelector('.up-button');
+  }
+  floorButtonsElement.disabled = false;
 }
 
 function animateLift(liftNumber, targetFloor, direction) {
@@ -215,6 +237,8 @@ function animateLift(liftNumber, targetFloor, direction) {
         dataStore.isLiftBusy[liftNumber] = false;
         dataStore.liftDirections[liftNumber] = null;
         dataStore.updateLiftPosition(liftNumber, targetFloor);
+
+        enableLiftButton(targetFloor, direction);
 
         // Check if there are pending lift requests in the queue
         if (dataStore.liftRequestQueue.length > 0) {
@@ -277,9 +301,11 @@ function handleFormSubmit(event) {
   numFloorsInput.value = '';
 }
 
+function goBack() {
+  location.reload()
+}
+
 init();
 
 
-// 1. Add a queue (disable the button)
-// 2. add a back button
 // 3. mobile responsiveness
