@@ -47,15 +47,14 @@ body {
     background-image: linear-gradient(rgb(112, 53, 53), rgb(28, 15, 39));
     --lift-color: gray;
     overflow: hidden; /* Hide the overflow of the doors */
-    transition: all 2.5s linear; /* Add transition for smooth opening and closing */
-  }
+    transition: all 2.5s linear; /* Add transition for smooth opening and closing */}
   
   .lift.open .door-left {
-    transform: translateX(-50%);
+    transform: translateX(-100%);
   }
   
   .lift.open .door-right {
-    transform: translateX(50%);
+    transform: translateX(100%);
   }
   
   .door-left,
