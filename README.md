@@ -6,7 +6,7 @@ Create a web app where you can simulate lift mechanics for a client
 
 # Requirements
   1. Have a page where you input the number of floors and lifts from the user
-  2. An interactive UI is generated, where we have visual depictons of lifts and buttons on floors
+  2. An interactive UI is generated, where we have visual depictions of lifts and buttons on floors
   3. Upon clicking a particular button on the floor, a lift goes to that floor
 
   Milestone 1:
