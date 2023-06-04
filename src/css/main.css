@@ -1,0 +1,46 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+section {
+    margin: 2rem 1rem;
+}
+
+section:first-child {
+    margin-top: 7rem;
+}
+
+.lift-container {
+    display: flex;
+}
+
+.lift-buttons .button {
+    display: block;
+    margin-bottom: .5rem;
+    cursor: pointer;
+}
+
+.lift-car {
+    width: 75px;
+    height: 150px;
+    background-color: silver;
+    margin: 0 3rem;
+}
+
+.lift-car.move {
+    transform: translateY(-200px);
+    transition: transform ease-in-out 2.5s .5s;
+}
+
+.floor {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.floor-bottom {    
+    height: 2px;
+    background-color: black;
+    flex: auto;
+}

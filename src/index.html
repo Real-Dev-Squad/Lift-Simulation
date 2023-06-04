@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <hea>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lift Simulation</title>
+    <link rel="stylesheet" href="./css/main.css" />
+  </hea>
+  <body>
+    <main class="main">
+      <!-- Input number of floors and lifts -->
+      <dialog open class="input-form">
+        <p>Lift Simulation</p>
+        <form method="dialog">
+          <label for="floors">Number of Floors</label>
+          <input type="number" id="floors" />
+
+          <label for="lifts">Number of Elevator</label>
+          <input type="number" id="lifts" />
+
+          <button type="submit">Submit</button>
+        </form>
+      </dialog>
+
+      <section class="floor-section">
+        <div class="lift-container">
+          <div class="lift-buttons">
+            <button class="button up-btn">Up</button>
+            <button class="button down-btn">Down</button>
+          </div>
+          <div class="lift-car"></div>
+        </div>
+        <div class="floor">
+          <div class="floor-bottom"></div>
+          <p class="floor-number">Floor 0</p>
+        </div>
+      </section>
+    </main>
+    <script src="./js/main.js"></script>
+  </body>
+</html>
