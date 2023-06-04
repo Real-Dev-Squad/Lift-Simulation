@@ -32,7 +32,11 @@ function renderFloorSection() {
   for (let i = 0; i < numberOfFloors; i++) {
     const floorSectionCloned = floorSection.cloneNode(true);
     const floorCount = floorSectionCloned.querySelector('.floor-number');
+    const elevatorCar = floorSectionCloned.querySelector('.lift-car ');
 
+    if (i === 0) {
+      elevatorCar.style.visibility = 'visible';
+    }
     floorCount.textContent = `Floor ${i}`;
     floorSectionContainer.insertBefore(
       floorSectionCloned,

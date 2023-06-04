@@ -30,6 +30,7 @@ section:first-child {
   height: 150px;
   background-color: silver;
   margin: 0 3rem;
+  visibility: hidden;
 }
 
 .lift-car.move {
