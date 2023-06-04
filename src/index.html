@@ -8,21 +8,31 @@
     <link rel="stylesheet" href="./css/main.css" />
   </hea>
   <body>
+    <!-- Input number of floors and lifts -->
+    <dialog role="dialog" class="formDialog">
+      <button
+        formmethod="dialog"
+        class="closeDialog"
+        value="cancel"
+        aria-label="close"
+        formnovalidate
+      >
+        X
+      </button>
+      <p>Lift Simulation</p>
+      <form method="dialog" class="inputForm">
+        <label for="floors">Number of Floors</label>
+        <input type="number" id="floors" min="2" value="5" />
+
+        <label for="lifts">Number of Elevator</label>
+        <input type="number" id="lifts" min="1" value="3" />
+
+        <button class="dialogBtn" value="default">Submit</button>
+      </form>
+    </dialog>
+
     <main class="main">
-      <!-- Input number of floors and lifts -->
-      <dialog open class="input-form">
-        <p>Lift Simulation</p>
-        <form method="dialog">
-          <label for="floors">Number of Floors</label>
-          <input type="number" id="floors" />
-
-          <label for="lifts">Number of Elevator</label>
-          <input type="number" id="lifts" />
-
-          <button type="submit">Submit</button>
-        </form>
-      </dialog>
-
+      <button class="showDialog">Back</button>
       <section class="floor-section">
         <div class="lift-container">
           <div class="lift-buttons">

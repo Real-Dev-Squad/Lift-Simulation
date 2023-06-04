@@ -1,32 +1,52 @@
-const liftCar = document.querySelector('.lift-car')
-const upButton  = document.querySelector('.up-btn');
+const liftCar = document.querySelector('.lift-car');
+const upButton = document.querySelector('.up-btn');
+const floorSectionContainer = document.querySelector('.main');
+const floorSection = document.querySelector('.floor-section');
+const formDialog = document.querySelector('.formDialog');
+const inputForm = document.querySelector('.inputForm');
+const dialogBtn = document.querySelector('.dialogBtn');
+const closeDialog = document.querySelector('.closeDialog');
+const showDialog = document.querySelector('.showDialog');
+const numberOfFloors = document.querySelector('#floors').value;
+const numberOfLifts = document.querySelector('#lifts').value;
 
-const floorSectionContainer = document.querySelector('.main')
-const floorSection = document.querySelector('.floor-section')
-const sectionCount = 3;
+formDialog.showModal();
 
+closeDialog.addEventListener('click', () => {
+  formDialog.close('floorOrLiftNotChosen');
+  floorSectionContainer.style.display = 'block';
+});
 
-const renderFloorSection = () => {
-    floorSectionContainer.innerHTML = '';
-    for (let i = 0; i < sectionCount; i++) {
-        const floorSectionCloned = floorSection.cloneNode(true)
-        const floorCount = floorSectionCloned.querySelector('.floor-number')
+showDialog.addEventListener('click', () => {
+  floorSectionContainer.style.display = 'none';
+  formDialog.showModal();
+});
 
-        floorCount.textContent = `Floor ${i}`
-        floorSectionContainer.insertBefore(floorSectionCloned, floorSectionContainer.firstChild)
-        floorSection.classList.remove('.floor-section')
-    }
+dialogBtn.addEventListener('click', () => {
+  floorSectionContainer.style.display = 'block';
+  renderFloorSection();
+});
+
+function renderFloorSection() {
+  floorSectionContainer.innerHTML = '';
+  for (let i = 0; i < numberOfFloors; i++) {
+    const floorSectionCloned = floorSection.cloneNode(true);
+    const floorCount = floorSectionCloned.querySelector('.floor-number');
+
+    floorCount.textContent = `Floor ${i}`;
+    floorSectionContainer.insertBefore(
+      floorSectionCloned,
+      floorSectionContainer.firstChild
+    );
+    floorSection.classList.remove('.floor-section');
+  }
 }
-
-
 
 const handleUpBtnClick = () => {
-    console.log('up btn clicked ')
-    liftCar.classList.add('move')
-}
+  console.log('up btn clicked ');
+  liftCar.classList.add('move');
+};
 
 // renderFloorSection()
 
-
-
-upButton.addEventListener('click', handleUpBtnClick)
+upButton.addEventListener('click', handleUpBtnClick);
