@@ -10,15 +10,6 @@
   <body>
     <!-- Input number of floors and lifts -->
     <dialog role="dialog" class="formDialog">
-      <button
-        formmethod="dialog"
-        class="closeDialog"
-        value="cancel"
-        aria-label="close"
-        formnovalidate
-      >
-        X
-      </button>
       <p>Lift Simulation</p>
       <form method="dialog" class="inputForm">
         <label for="floors">Number of Floors</label>
@@ -31,8 +22,9 @@
       </form>
     </dialog>
 
+    <!-- Lift Simulation -->
+    <button class="showDialog">Back</button>
     <main class="main">
-      <button class="showDialog">Back</button>
       <section class="floor-section">
         <div class="lift-container">
           <div class="lift-buttons">
