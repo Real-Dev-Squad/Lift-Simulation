@@ -1,0 +1,72 @@
+body {
+ font-family: Arial, sans-serif;
+ text-align: center;
+}
+
+h1 {
+ margin-top: 20px;
+}
+
+form {
+ margin-top: 40px;
+}
+
+label {
+ display: block;
+ margin-bottom: 10px;
+}
+
+input[type="number"] {
+ width: 50px;
+ padding: 5px;
+}
+
+button[type="submit"] {
+ margin-top: 10px;
+ padding: 10px 20px;
+}
+
+#liftButtons {
+ margin-top: 40px;
+}
+
+.liftContainer {
+ display: inline-block;
+ margin: 5px;
+ text-align: center;
+}
+
+.liftButton {
+ display: inline-block;
+ margin: 5px;
+ padding: 10px;
+ border: 1px solid #ccc;
+ border-radius: 5px;
+ cursor: pointer;
+}
+
+.floorButtons {
+ margin-top: 20px;
+}
+
+.floorButtons button {
+ display: inline-block;
+ margin: 5px;
+ padding: 10px;
+ border: 1px solid #ccc;
+ border-radius: 5px;
+ cursor: pointer;
+}
+
+#liftDialog {
+ display: none;
+}
+
+#liftDialog h2 {
+ margin-top: 10px;
+}
+
+#liftDialog button {
+ margin-top: 20px;
+ padding: 10px 20px;
+}
