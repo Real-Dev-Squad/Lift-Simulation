@@ -40,7 +40,7 @@ function makingFloor() {
                     <button class="up" id="up${i}">Up</button>
                     <button class="down" id="down${i}">Down</button>
                 </div>
-                <div id="liftSection"></div>
+                <div class ="mainLift"></div>
             </div>
                 <div class="hrfloorName">
                     <hr>
@@ -51,12 +51,12 @@ function makingFloor() {
         document.querySelector(".secondPage").appendChild(floordiv)
     }
 
-    let mainLift = document.createElement('div')
-    mainLift.className = 'mainLift'
+    let mainLift = document.querySelectorAll('.mainLift')
 
     for (let j = 1; j <= liftInput; j++) {
-        mainLift.innerHTML += `
+        mainLift[floorInput - 1].innerHTML += `
     <div class="lift" id="lift${j}" flag="free">
+        <p>${j}</p>
         <div class="gates" id="gates">
             <div class="gate1"></div>
             <div class="gate2"></div>
@@ -68,7 +68,6 @@ function makingFloor() {
 
 
     let allFloors = document.querySelectorAll(".mainLift")
-    document.querySelectorAll("#liftSection")[floorInput - 1].appendChild(mainLift)
     document.querySelector("#down1").style.display = "none"
     document.querySelector(`#up${floorInput}`).style.display = "none"
 
@@ -78,7 +77,7 @@ function makingFloor() {
 
     let currentFloor = new Array(allLifts.length).fill(1)
 
-    console.log(allFloors)
+
 
     upButtons.forEach((upbtn, i) => {
         let floorValue = upButtons.length - i;
@@ -86,18 +85,51 @@ function makingFloor() {
             event.preventDefault()
             // console.log(allFloors[floorInput - currentFloor[0]])
             for (let j = 0; j < allLifts.length; j++) {
-                if (allLifts[j].getAttribute('flag') == "free") {
+                if (allLifts[j].getAttribute('flag') == "free"  & distanceCalculator(currentFloor, floorValue) == j) {
+                    allLifts[j].setAttribute('flag', "busy")
                     moveLift(allLifts[j], allFloors[floorInput - currentFloor[j]], allFloors[floorInput - floorValue],)
+                    currentFloor[j] = floorValue
+                    console.log(currentFloor)
                     break
                 }
             }
         })
     })
 
+    downButtons.forEach((downbtn, i) => {
+        let floorValue = downButtons.length - i;
+        downbtn.addEventListener("click", (event) => {
+            event.preventDefault()
+            // console.log(allFloors[floorInput - currentFloor[0]])
+            for (let j = 0; j < allLifts.length; j++ & distanceCalculator(currentFloor, floorValue) == j) {
+                if (allLifts[j].getAttribute('flag') == "free") {
+                    allLifts[j].setAttribute('flag', "busy")
+                    moveLift(allLifts[j], allFloors[floorInput - currentFloor[j]], allFloors[floorInput - floorValue],)
+                    currentFloor[j] = floorValue
+                    break
+                }
+
+            }
+        })
+    })
+
+}
+function distanceCalculator(liftsPositionArray, destinationFloor) {
+    let liftDisatnce = [...liftsPositionArray].map((position) => {
+        return Math.abs(position - destinationFloor)
+    })
+    return liftDisatnce.indexOf(Math.min(...liftDisatnce))
 }
 
-
 function moveLift(lift, currentFloor, destinationFloor) {
-    // currentFloor.removeChild(lift);
-console.log(lift, currentFloor, destinationFloor)
+    setTimeout(() => {
+        currentFloor.removeChild(lift);
+        setTimeout(() => {
+            destinationFloor.appendChild(lift)
+            lift.setAttribute('flag', "free")
+
+        }, 2000)
+
+    }, 2000);
+    console.log(lift, currentFloor, destinationFloor)
 }
