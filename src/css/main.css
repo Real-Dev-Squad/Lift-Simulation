@@ -151,7 +151,6 @@ label {
   transform: translateX(100%);
 }
 
-/* second page ko none krh de rha hai */
 .secondPage {
   display: none;
   margin: 4% auto;

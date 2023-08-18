@@ -2,7 +2,7 @@ let simulate = document.querySelector('.createLiftFloorButton');
 
 
 
-simulate.addEventListener('click', function (e) {
+simulate.addEventListener('click', e => {
     e.preventDefault();
     const floorInputValue = document.getElementById('floorNumber').value;
     const liftInputValue = document.getElementById('liftNumber').value;
@@ -24,10 +24,32 @@ simulate.addEventListener('click', function (e) {
 )
 
 
-function makingFloor () {
+function makingFloor() {
 
     let floorInput = document.querySelector('#floorNumber').value
     let liftInput = document.querySelector('#liftNumber').value
+
+    for (let i = floorInput; i > 0; i--) {
+
+        let floordiv = document.createElement('div');
+        floordiv.className = 'box';
+
+        floordiv.innerHTML = `
+            <div class="buttonLift">
+                <div class="button">
+                    <button class="up" id="up${i}">Up</button>
+                    <button class="down" id="down${i}">Down</button>
+                </div>
+                <div id="liftSection"></div>
+            </div>
+                <div class="hrfloorName">
+                    <hr>
+                <span>Floor ${i}</span>
+            </div>
+            `
+
+        document.querySelector(".secondPage").appendChild(floordiv)
+    }
 
     let mainLift = document.createElement('div')
     mainLift.className = 'mainLift'
@@ -45,68 +67,37 @@ function makingFloor () {
 
 
 
+    let allFloors = document.querySelectorAll(".mainLift")
+    document.querySelectorAll("#liftSection")[floorInput - 1].appendChild(mainLift)
+    document.querySelector("#down1").style.display = "none"
+    document.querySelector(`#up${floorInput}`).style.display = "none"
 
+    const upButtons = document.querySelectorAll(".up")
+    const downButtons = document.querySelectorAll(".down")
+    const allLifts = document.querySelectorAll(".lift")
 
+    let currentFloor = new Array(allLifts.length).fill(1)
 
-    for (let i = floorInput; i > 0; i--) {
+    console.log(allFloors)
 
-        let floordiv = document.createElement('div');
-        floordiv.className = 'box';
-
-        if (i == 1) {
-            floordiv.appendChild(mainLift);
-        }
-        let buttonLift = document.createElement('div');
-        buttonLift.className = 'buttonLift';
-
-        let buttondiv1 = document.createElement('div');
-        buttondiv1.className = 'button';
-
-        let button1 = document.createElement("button");
-        let text1 = document.createTextNode("Up");
-        button1.className = "up";
-        button1.setAttribute('id', `up${i}`);
-        button1.appendChild(text1);
-
-        let button2 = document.createElement("button");
-        let text2 = document.createTextNode("Down");
-        button2.className = "down";
-        button2.setAttribute('id', `down${i}`);
-        button2.appendChild(text2);
-
-        buttondiv1.appendChild(button1);
-        buttondiv1.appendChild(button2);
-
-        buttonLift.appendChild(buttondiv1);
-
-        floordiv.appendChild(buttonLift);
-
-        let hrdiv = document.createElement('div');
-        hrdiv.className = 'hrfloorName';
-
-
-        let hr = document.createElement('hr');
-
-        let spanFloorNo = document.createElement('span');
-        spanFloorNo.innerText = `Floor ${i}`;
-
-        hrdiv.appendChild(hr);
-
-
-        hrdiv.appendChild(spanFloorNo);
-
-        floordiv.appendChild(hrdiv);
-
-        document.querySelector('.secondPage').appendChild(floordiv);
-        if (i == floorInput) {
-            button1.style.display = 'none';
-        }
-        if (i == 1) {
-            button2.style.display = 'none'
-        }
-    }
-
-
+    upButtons.forEach((upbtn, i) => {
+        let floorValue = upButtons.length - i;
+        upbtn.addEventListener("click", (event) => {
+            event.preventDefault()
+            // console.log(allFloors[floorInput - currentFloor[0]])
+            for (let j = 0; j < allLifts.length; j++) {
+                if (allLifts[j].getAttribute('flag') == "free") {
+                    moveLift(allLifts[j], allFloors[floorInput - currentFloor[j]], allFloors[floorInput - floorValue],)
+                    break
+                }
+            }
+        })
+    })
 
 }
 
+
+function moveLift(lift, currentFloor, destinationFloor) {
+    // currentFloor.removeChild(lift);
+console.log(lift, currentFloor, destinationFloor)
+}
