@@ -56,7 +56,7 @@ function makingFloor() {
     for (let j = 1; j <= liftInput; j++) {
         mainLift[floorInput - 1].innerHTML += `
     <div class="lift" id="lift${j}" flag="free">
-        <p>${j}</p>
+
         <div class="gates" id="gates">
             <div class="gate1"></div>
             <div class="gate2"></div>
@@ -87,7 +87,9 @@ function makingFloor() {
             distanceCalculator(currentFloor, floorValue).every((liftNo, i) => {
                 if (allLifts[liftNo].getAttribute('flag') == "free") {
                     allLifts[liftNo].setAttribute('flag', "busy")
-                    moveLift(allLifts[liftNo], allFloors[floorInput - currentFloor[liftNo]], allFloors[floorInput - floorValue],)
+                    // moveLift(allLifts[liftNo], allFloors[floorInput - currentFloor[liftNo]], allFloors[floorInput - floorValue],)
+                    moveLift(allLifts[liftNo], floorValue, currentFloor[liftNo])
+
                     currentFloor[liftNo] = floorValue
                     console.log(allLifts[liftNo])
                     return false
@@ -103,7 +105,8 @@ function makingFloor() {
             distanceCalculator(currentFloor, floorValue).every((liftNo, i) => {
                 if (allLifts[liftNo].getAttribute('flag') == "free") {
                     allLifts[liftNo].setAttribute('flag', "busy")
-                    moveLift(allLifts[liftNo], allFloors[floorInput - currentFloor[liftNo]], allFloors[floorInput - floorValue],)
+                    // moveLift(allLifts[liftNo], allFloors[floorInput - currentFloor[liftNo]], allFloors[floorInput - floorValue],)
+                    moveLift(allLifts[liftNo], floorValue, currentFloor[liftNo])
                     currentFloor[liftNo] = floorValue
                     console.log(allLifts[liftNo])
                     return false
@@ -118,25 +121,26 @@ function distanceCalculator(liftsPositionArray, destinationFloor) {
         return { distance: Math.abs(position - destinationFloor), index: i }
     })
     return liftDisatnce.sort((a, b) => a.distance - b.distance).map((e) => e.index)
-    // .indexOf(Math.min(...liftDisatnce))
+
 }
 
-function moveLift(lift, currentFloor, destinationFloor) {
+function moveLift(lift, destinationFloor, currentFloor) {
 
-    // liftno.style.transform = `translateY(${-95 * (floorNo - 1)}px)`;
+    lift.style.transform = `translateY(${-95 * (destinationFloor - 1)}px)`;
 
-    // add styling transition-duration to particular lift i.e. we do this because Lift moving at 2s per floor 
-    // let prev= `${2 * Math.abs(floorNo - oldFloorValue)}s`
-    // liftno.style.transitionDuration = prev;
+
+    let prev = `${2 * Math.abs(destinationFloor - currentFloor)}s`
+    lift.style.transitionDuration = prev;
 
     setTimeout(() => {
-        currentFloor.removeChild(lift);
-        setTimeout(() => {
-            destinationFloor.appendChild(lift)
-            lift.setAttribute('flag', "free")
-        }, 2000)
+        //     currentFloor.removeChild(lift);
+        //     setTimeout(() => {
+        //         destinationFloor.appendChild(lift)
+        lift.setAttribute('flag', "free")
+    }, 2000)
 
-    }, 2000);
+    // }, 2000);
     // console.log(lift, currentFloor, destinationFloor)
 
 }
+
