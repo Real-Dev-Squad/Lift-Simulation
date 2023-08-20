@@ -1,4 +1,4 @@
-let simulate = document.querySelector('.createLiftFloorButton');
+const simulate = document.querySelector('.createLiftFloorButton');
 
 
 
@@ -6,7 +6,6 @@ simulate.addEventListener('click', e => {
     e.preventDefault();
     const floorInputValue = document.getElementById('floorNumber').value;
     const liftInputValue = document.getElementById('liftNumber').value;
-    console.log(floorInputValue, liftInputValue)
 
     if (floorInputValue == "" || liftInputValue == "") {
         alert('please enter the value')
@@ -24,14 +23,14 @@ simulate.addEventListener('click', e => {
 )
 
 
-function makingFloor() {
+const makingFloor = () => {
 
-    let floorInput = document.querySelector('#floorNumber').value
-    let liftInput = document.querySelector('#liftNumber').value
+    const floorInput = document.querySelector('#floorNumber').value
+    const liftInput = document.querySelector('#liftNumber').value
 
     for (let i = floorInput; i > 0; i--) {
 
-        let floordiv = document.createElement('div');
+        const floordiv = document.createElement('div');
         floordiv.className = 'box';
 
         floordiv.innerHTML = `
@@ -51,7 +50,7 @@ function makingFloor() {
         document.querySelector(".secondPage").appendChild(floordiv)
     }
 
-    let mainLift = document.querySelectorAll('.mainLift')
+    const mainLift = document.querySelectorAll('.mainLift')
 
     for (let j = 1; j <= liftInput; j++) {
         mainLift[floorInput - 1].innerHTML += `
@@ -66,7 +65,7 @@ function makingFloor() {
 
 
 
-    let allFloors = document.querySelectorAll(".mainLift")
+    const allFloors = document.querySelectorAll(".mainLift")
     document.querySelector("#down1").style.display = "none"
     document.querySelector(`#up${floorInput}`).style.display = "none"
 
@@ -74,20 +73,20 @@ function makingFloor() {
     const downButtons = document.querySelectorAll(".down")
     const allLifts = document.querySelectorAll(".lift")
 
-    let currentFloor = new Array(allLifts.length).fill(1)
+    let liftCurrentFloor = new Array(allLifts.length).fill(1)
 
 
 
     upButtons.forEach((upbtn, i) => {
-        let floorValue = upButtons.length - i;
+        const floorValue = upButtons.length - i;
         upbtn.addEventListener("click", (event) => {
             event.preventDefault()
-            distanceCalculator(currentFloor, floorValue).every((liftNo, i) => {
+            distanceCalculator(liftCurrentFloor, floorValue).every((liftNo, i) => {
                 if (allLifts[liftNo].getAttribute('flag') == "free") {
                     allLifts[liftNo].setAttribute('flag', "busy")
-                    // moveLift(allLifts[liftNo], allFloors[floorInput - currentFloor[liftNo]], allFloors[floorInput - floorValue],)
-                    moveLift(allLifts[liftNo], floorValue, currentFloor[liftNo])
-                    currentFloor[liftNo] = floorValue
+                    // moveLift(allLifts[liftNo], allFloors[floorInput - liftCurrentFloor[liftNo]], allFloors[floorInput - floorValue],)
+                    moveLift(allLifts[liftNo], floorValue, liftCurrentFloor[liftNo])
+                    liftCurrentFloor[liftNo] = floorValue
                     return false
                 } else return true
             })
@@ -95,14 +94,14 @@ function makingFloor() {
     })
 
     downButtons.forEach((downbtn, i) => {
-        let floorValue = downButtons.length - i;
+        const floorValue = downButtons.length - i;
         downbtn.addEventListener("click", (event) => {
-            distanceCalculator(currentFloor, floorValue).every((liftNo, i) => {
+            distanceCalculator(liftCurrentFloor, floorValue).every((liftNo, i) => {
                 if (allLifts[liftNo].getAttribute('flag') == "free") {
                     allLifts[liftNo].setAttribute('flag', "busy")
-                    // moveLift(allLifts[liftNo], allFloors[floorInput - currentFloor[liftNo]], allFloors[floorInput - floorValue],)
-                    moveLift(allLifts[liftNo], floorValue, currentFloor[liftNo])
-                    currentFloor[liftNo] = floorValue
+                    // moveLift(allLifts[liftNo], allFloors[floorInput - liftCurrentFloor[liftNo]], allFloors[floorInput - floorValue],)
+                    moveLift(allLifts[liftNo], floorValue, liftCurrentFloor[liftNo])
+                    liftCurrentFloor[liftNo] = floorValue
                     return false
                 } else return true
             })
@@ -110,30 +109,28 @@ function makingFloor() {
     })
 
 }
-function distanceCalculator(liftsPositionArray, destinationFloor) {
-    let liftDisatnce = [...liftsPositionArray].map((position, i) => {
+distanceCalculator = (liftsPositionArray, destinationFloor) => {
+    const liftDisatnce = [...liftsPositionArray].map((position, i) => {
         return { distance: Math.abs(position - destinationFloor), index: i }
     })
     return liftDisatnce.sort((a, b) => a.distance - b.distance).map((e) => e.index)
 }
 
-function moveLift(lift, destinationFloor, currentFloor) {
+const moveLift = (lift, destinationFloor, liftCurrentFloor) => {
     lift.style.transform = `translateY(${-95 * (destinationFloor - 1)}px)`;
-    let prev = `${2 * Math.abs(destinationFloor - currentFloor)}s`
+    const prev = `${2 * Math.abs(destinationFloor - liftCurrentFloor)}s`
     lift.style.transitionDuration = prev;
 
     setTimeout(() => {
         openCloseGates(lift);
         setTimeout(() => {
             lift.setAttribute('flag', 'free')
-        }, 5500);
-        console.log(lift.getAttribute('flag'))
-    }, 2 * Math.abs(destinationFloor - currentFloor) * 1000)
+        }, 4500);
+    }, 2 * Math.abs(destinationFloor - liftCurrentFloor) * 1000)
 }
 
-function openCloseGates(lift) {
-    let gates = lift.children[0].children
-    console.log(gates[0])
+const openCloseGates = (lift) => {
+    const gates = lift.children[0].children
     setTimeout(() => {
         gates[0].style.width = '3px';
         gates[1].style.width = '3px';
@@ -143,5 +140,4 @@ function openCloseGates(lift) {
         gates[0].style.width = '25px';
         gates[1].style.width = '25px';
     }, 3500)
-
 }
