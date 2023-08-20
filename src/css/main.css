@@ -72,13 +72,6 @@ label {
   transition: var(--base-transition);
 }
 
-.social {
-  margin-top: 15px;
-}
-.social a {
-  margin: 0px 10px;
-  color: blue;
-}
 
 .buttonLift {
   display: flex;

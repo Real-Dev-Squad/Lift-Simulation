@@ -56,7 +56,6 @@ function makingFloor() {
     for (let j = 1; j <= liftInput; j++) {
         mainLift[floorInput - 1].innerHTML += `
     <div class="lift" id="lift${j}" flag="free">
-
         <div class="gates" id="gates">
             <div class="gate1"></div>
             <div class="gate2"></div>
@@ -83,15 +82,12 @@ function makingFloor() {
         let floorValue = upButtons.length - i;
         upbtn.addEventListener("click", (event) => {
             event.preventDefault()
-            console.log(distanceCalculator(currentFloor, floorValue))
             distanceCalculator(currentFloor, floorValue).every((liftNo, i) => {
                 if (allLifts[liftNo].getAttribute('flag') == "free") {
                     allLifts[liftNo].setAttribute('flag', "busy")
                     // moveLift(allLifts[liftNo], allFloors[floorInput - currentFloor[liftNo]], allFloors[floorInput - floorValue],)
                     moveLift(allLifts[liftNo], floorValue, currentFloor[liftNo])
-
                     currentFloor[liftNo] = floorValue
-                    console.log(allLifts[liftNo])
                     return false
                 } else return true
             })
@@ -101,14 +97,12 @@ function makingFloor() {
     downButtons.forEach((downbtn, i) => {
         let floorValue = downButtons.length - i;
         downbtn.addEventListener("click", (event) => {
-            console.log(distanceCalculator(currentFloor, floorValue))
             distanceCalculator(currentFloor, floorValue).every((liftNo, i) => {
                 if (allLifts[liftNo].getAttribute('flag') == "free") {
                     allLifts[liftNo].setAttribute('flag', "busy")
                     // moveLift(allLifts[liftNo], allFloors[floorInput - currentFloor[liftNo]], allFloors[floorInput - floorValue],)
                     moveLift(allLifts[liftNo], floorValue, currentFloor[liftNo])
                     currentFloor[liftNo] = floorValue
-                    console.log(allLifts[liftNo])
                     return false
                 } else return true
             })
@@ -121,26 +115,33 @@ function distanceCalculator(liftsPositionArray, destinationFloor) {
         return { distance: Math.abs(position - destinationFloor), index: i }
     })
     return liftDisatnce.sort((a, b) => a.distance - b.distance).map((e) => e.index)
-
 }
 
 function moveLift(lift, destinationFloor, currentFloor) {
-
     lift.style.transform = `translateY(${-95 * (destinationFloor - 1)}px)`;
-
-
     let prev = `${2 * Math.abs(destinationFloor - currentFloor)}s`
     lift.style.transitionDuration = prev;
 
     setTimeout(() => {
-        //     currentFloor.removeChild(lift);
-        //     setTimeout(() => {
-        //         destinationFloor.appendChild(lift)
-        lift.setAttribute('flag', "free")
-    }, 2000)
-
-    // }, 2000);
-    // console.log(lift, currentFloor, destinationFloor)
-
+        openCloseGates(lift);
+        setTimeout(() => {
+            lift.setAttribute('flag', 'free')
+        }, 5500);
+        console.log(lift.getAttribute('flag'))
+    }, 2 * Math.abs(destinationFloor - currentFloor) * 1000)
 }
 
+function openCloseGates(lift) {
+    let gates = lift.children[0].children
+    console.log(gates[0])
+    setTimeout(() => {
+        gates[0].style.width = '3px';
+        gates[1].style.width = '3px';
+    }, 1000)
+
+    setTimeout(() => {
+        gates[0].style.width = '25px';
+        gates[1].style.width = '25px';
+    }, 3500)
+
+}
