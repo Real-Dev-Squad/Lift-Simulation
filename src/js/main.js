@@ -25,7 +25,7 @@ form.onsubmit = (e) => {
   if (state.noOfLifts <= maxLifts) {
     initializeSimulation();
   } else {
-    alert(isDesktopDevice ? "Desktop devices should have 10 lifts." : "Mobile devices have a maximum of 7 lifts.");
+    alert(isDesktopDevice ? "Desktop devices should have 8 lifts." : "Mobile devices have a maximum of 6 lifts.");
   }
 };
 function initializeSimulation() {
