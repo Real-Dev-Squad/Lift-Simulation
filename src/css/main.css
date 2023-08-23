@@ -8,7 +8,7 @@
   background-color: #818181;
   width: auto;
   display: flex;
-  margin: 4rem 4rem;
+  margin: 2rem;
   display: grid;
   grid-template-areas: "overflow";
 }
@@ -17,43 +17,41 @@
 .lift-container {
   background-color: rgb(255, 255, 133);
   width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column-reverse;
-  margin: 0% 10%;
   position: relative;
   min-height: max-content;
   grid-area: overflow;
+  overflow: hidden; /* Prevent scrolling */
 }
 
 .lift-container {
   background-color: transparent;
 }
 
-
 .floor-divider {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  padding: 0.8rem;
+  padding: 0.5rem;
   border: 2px solid #cdcdcd;
   border-left: none;
   border-right: none;
 }
 
-.floor-divider>button {
+.floor-divider > button {
   padding: 5px 8px;
   z-index: 2;
 }
 
 .lift {
-position: absolute;
-  bottom: 0%;
-  left: 20%;
-  transform: translate(-50%);
-  width: 100px;
-  height: 100px;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 60px;
   background-color: #715050;
   border-radius: 8px;
   transition: bottom 3s ease;
@@ -72,74 +70,56 @@ position: absolute;
 
 @keyframes doorOpen {
   0% {
-    transform: translate(-50%) scaleY(1);
+    transform: translateX(-50%) scaleX(1);
   }
   50% {
-    transform: translate(-50%) scaleY(0.1);
+    transform: translateX(-50%) scaleX(0.5);
   }
   100% {
-    transform: translate(-50%) scaleY(0.1);
+    transform: translateX(-50%) scaleX(0.5);
   }
 }
 
 @keyframes doorClose {
   0% {
-    transform: translate(-50%) scaleY(0.1);
+    transform: translateX(-50%) scaleX(0.5);
   }
   50% {
-    transform: translate(-50%) scaleY(1);
+    transform: translateX(-50%) scaleX(1);
   }
   100% {
-    transform: translate(-50%) scaleY(1);
+    transform: translateX(-50%) scaleX(1);
   }
 }
 
-
-.lift {
-position: absolute;
-  bottom: 0%;
-  left: 20%;
-  transform: translate(-50%);
-  width: 100px;
-  height: 100px;
-  background-color: #715050;
-  border-radius: 8px;
-  transition: bottom 3s ease;
-  animation-duration: 2.5s;
-  animation-timing-function: ease;
-  animation-fill-mode: forwards;
-}
-.door-open {
-  animation-name: doorOpen;
-}
-
-.door-close {
-  animation-name: doorClose;
-}
-
-@keyframes doorOpen {
-  0% {
-    transform: translate(-50%, 0) scaleX(1);
+/* Media query for screens up to 768px width */
+@media (max-width: 768px) {
+  .container {
+    margin: 1rem;
   }
-  50% {
-    transform: translate(-50%, 0) scaleX(0);
+
+  .floor-divider {
+    padding: 0.3rem;
+    display: flex;
+    justify-content: start;
   }
-  100% {
-    transform: translate(-50%, 0) scaleX(0);
+
+  .lift {
+    width: 40px; 
+    height: 40px;
+    left: 10%; 
+  }
+
+   .container {
+    margin: 1rem;
+  }
+
+  .floor-divider {
+    padding: 0.3rem;
+  }
+
+  .floor-divider button {
+    font-size: 10px;
+    padding: 3px 6px;
   }
 }
-
-@keyframes doorClose {
-  0% {
-    transform: translate(-50%, 0) scaleX(0);
-  }
-  50% {
-    transform: translate(-50%, 0) scaleX(1);
-  }
-  100% {
-    transform: translate(-50%, 0) scaleX(1);
-  }
-}
-
-
-

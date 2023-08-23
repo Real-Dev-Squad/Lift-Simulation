@@ -17,9 +17,17 @@ form.onsubmit = (e) => {
   let formData = new FormData(e.target);
   state.noOfFloors = parseInt(formData.get("floor_input"));
   state.noOfLifts = parseInt(formData.get("lift_input"));
-  initializeSimulation();
-};
 
+  // Check if the device is desktop
+  const isDesktopDevice = window.innerWidth > 768;
+ const maxLifts = isDesktopDevice ? 8 : 6;
+
+  if (state.noOfLifts <= maxLifts) {
+    initializeSimulation();
+  } else {
+    alert(isDesktopDevice ? "Desktop devices should have 10 lifts." : "Mobile devices have a maximum of 7 lifts.");
+  }
+};
 function initializeSimulation() {
   floorContainer.innerHTML = "";
   liftContainer.innerHTML = "";
@@ -32,6 +40,7 @@ function render() {
     floor.classList.add("floor-divider");
     floor_heading = document.createElement("h4");
     floor_heading.innerText = `Floor ${index + 1}`;
+    const liftLeftPosition = (index + 1) * 10; 
     
     // Call button for going up
     floor_button_up = document.createElement("button");
@@ -54,6 +63,7 @@ function render() {
 
   for (let index = 0; index < state.noOfLifts; index++) {
     let lift = document.createElement("div");
+     const liftLeftPosition = (index + 1) * 12;
     lift.classList.add("lift");
     let lift_state = { id: index, state: "free" };
     lift.classList.add(`lift-${lift_state.id}`);
@@ -62,14 +72,14 @@ function render() {
     lift.setAttribute("data-id", lift_state.id);
     lift.setAttribute("data-state", lift_state.state);
 
-    lift.style.left = `${(index + 1) * state.leftMarginEachLift}px`;
+    lift.style.left = `${liftLeftPosition}%`;
     liftContainer.append(lift);
   }
 }
 
 function callLift(floor, isGoingDown = false) {
   const availableLift = state.lifts.find(lift => lift.state === "free");
-  
+
   if (availableLift) {
     availableLift.state = "occupied";
     const liftElement = document.querySelector(`.lift-${availableLift.id}`);
@@ -80,30 +90,26 @@ function callLift(floor, isGoingDown = false) {
       liftElement.classList.add("door-close");
       setTimeout(() => {
         liftElement.classList.remove("door-close");
-        //  direction and target floor
+        // Determine direction and target floor
         const targetFloorPosition = (floor - 1) * state.heightOfEachFloor + 30;
-        if (isGoingDown) {
-          const transitionDuration = isGoingDown
-            ? `${2 * Math.abs(state.noOfFloors - floor)}s`
-            : `${2 * floor}s`;
-          liftElement.style.transitionDuration = transitionDuration;
-          liftElement.style.bottom = `${targetFloorPosition}px`;
-        } else {
-          const transitionDuration = `${2 * floor}s`;
-          liftElement.style.transitionDuration = transitionDuration;
-          liftElement.style.bottom = `${targetFloorPosition}px`;
-        }
+        const transitionDuration = isGoingDown
+          ? `${2 * Math.abs(floor - 1)}s`
+          : `${2 * floor}s`;
         
+        liftElement.style.transitionDuration = transitionDuration;
+        liftElement.style.bottom = `${targetFloorPosition}px`;
+
         setTimeout(() => {
           availableLift.state = "free";
           liftElement.setAttribute("data-state", availableLift.state);
-        }, Math.max(2 * floor, 2 * Math.abs(state.noOfFloors - floor)) * 1000);
+        }, Math.max(2 * floor, 2 * Math.abs(floor - 1)) * 1000);
       }, 2500); 
     }, 2500); 
   } else {
     alert("All lifts are busy. Please wait.");
   }
 }
+
 
 
 
