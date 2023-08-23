@@ -141,3 +141,6 @@ const openCloseGates = (lift) => {
         gates[1].style.width = '25px';
     }, 3500)
 }
+
+
+//code by rahulsharmaah
