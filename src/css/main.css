@@ -48,7 +48,7 @@
 }
 
 .lift {
-  position: absolute;
+position: absolute;
   bottom: 0%;
   left: 20%;
   transform: translate(-50%);
@@ -57,4 +57,89 @@
   background-color: #715050;
   border-radius: 8px;
   transition: bottom 3s ease;
+  animation-duration: 2.5s;
+  animation-timing-function: ease;
+  animation-fill-mode: forwards;
 }
+
+.door-open {
+  animation-name: doorOpen;
+}
+
+.door-close {
+  animation-name: doorClose;
+}
+
+@keyframes doorOpen {
+  0% {
+    transform: translate(-50%) scaleY(1);
+  }
+  50% {
+    transform: translate(-50%) scaleY(0.1);
+  }
+  100% {
+    transform: translate(-50%) scaleY(0.1);
+  }
+}
+
+@keyframes doorClose {
+  0% {
+    transform: translate(-50%) scaleY(0.1);
+  }
+  50% {
+    transform: translate(-50%) scaleY(1);
+  }
+  100% {
+    transform: translate(-50%) scaleY(1);
+  }
+}
+
+
+.lift {
+position: absolute;
+  bottom: 0%;
+  left: 20%;
+  transform: translate(-50%);
+  width: 100px;
+  height: 100px;
+  background-color: #715050;
+  border-radius: 8px;
+  transition: bottom 3s ease;
+  animation-duration: 2.5s;
+  animation-timing-function: ease;
+  animation-fill-mode: forwards;
+}
+.door-open {
+  animation-name: doorOpen;
+}
+
+.door-close {
+  animation-name: doorClose;
+}
+
+@keyframes doorOpen {
+  0% {
+    transform: translate(-50%, 0) scaleX(1);
+  }
+  50% {
+    transform: translate(-50%, 0) scaleX(0);
+  }
+  100% {
+    transform: translate(-50%, 0) scaleX(0);
+  }
+}
+
+@keyframes doorClose {
+  0% {
+    transform: translate(-50%, 0) scaleX(0);
+  }
+  50% {
+    transform: translate(-50%, 0) scaleX(1);
+  }
+  100% {
+    transform: translate(-50%, 0) scaleX(1);
+  }
+}
+
+
+

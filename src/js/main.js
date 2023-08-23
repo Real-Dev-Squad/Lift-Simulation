@@ -32,13 +32,22 @@ function render() {
     floor.classList.add("floor-divider");
     floor_heading = document.createElement("h4");
     floor_heading.innerText = `Floor ${index + 1}`;
-    floor_button = document.createElement("button");
-    floor_button.innerText = `Call`;
-    floor_button.onclick = () => {
-      console.log("hello");
+    
+    // Call button for going up
+    floor_button_up = document.createElement("button");
+    floor_button_up.innerText = `Up`;
+    floor_button_up.onclick = () => {
       callLift(index + 1);
     };
-    floor.append(floor_heading, floor_button);
+    
+    // Call button for going down
+    floor_button_down = document.createElement("button");
+    floor_button_down.innerText = `Down`;
+    floor_button_down.onclick = () => {
+      callLift(index + 1, true);
+    };
+    
+    floor.append(floor_heading, floor_button_up, floor_button_down);
     floor.style.height = `${state.heightOfEachFloor + 5}px`;
     floorContainer.append(floor);
   }
@@ -56,25 +65,47 @@ function render() {
     lift.style.left = `${(index + 1) * state.leftMarginEachLift}px`;
     liftContainer.append(lift);
   }
-  function callLift(floor) {
-    const availableLift = state.lifts.find(lift => lift.state === "free");
+}
 
-    if (availableLift) {
-      availableLift.state = "occupied";
-      const liftElement = document.querySelector(`.lift-${availableLift.id}`);
-      liftElement.setAttribute("data-state", availableLift.state);
-
-      liftElement.style.transitionDuration = `${2 * floor}s`;
-      liftElement.style.bottom = `${(floor - 1) * state.heightOfEachFloor + 30}px`;
+function callLift(floor, isGoingDown = false) {
+  const availableLift = state.lifts.find(lift => lift.state === "free");
+  
+  if (availableLift) {
+    availableLift.state = "occupied";
+    const liftElement = document.querySelector(`.lift-${availableLift.id}`);
+    liftElement.setAttribute("data-state", availableLift.state);
+    liftElement.classList.add("door-open");
+    setTimeout(() => {
+      liftElement.classList.remove("door-open");
+      liftElement.classList.add("door-close");
       setTimeout(() => {
-        availableLift.state = "free";
-        liftElement.setAttribute("data-state", availableLift.state);
-      }, 2 * floor * 1000);
-    } else {
-      alert("All lifts are busy. Please wait.");
-    }
+        liftElement.classList.remove("door-close");
+        //  direction and target floor
+        const targetFloorPosition = (floor - 1) * state.heightOfEachFloor + 30;
+        if (isGoingDown) {
+          const transitionDuration = isGoingDown
+            ? `${2 * Math.abs(state.noOfFloors - floor)}s`
+            : `${2 * floor}s`;
+          liftElement.style.transitionDuration = transitionDuration;
+          liftElement.style.bottom = `${targetFloorPosition}px`;
+        } else {
+          const transitionDuration = `${2 * floor}s`;
+          liftElement.style.transitionDuration = transitionDuration;
+          liftElement.style.bottom = `${targetFloorPosition}px`;
+        }
+        
+        setTimeout(() => {
+          availableLift.state = "free";
+          liftElement.setAttribute("data-state", availableLift.state);
+        }, Math.max(2 * floor, 2 * Math.abs(state.noOfFloors - floor)) * 1000);
+      }, 2500); 
+    }, 2500); 
+  } else {
+    alert("All lifts are busy. Please wait.");
   }
 }
+
+
 
 
 initializeSimulation();
