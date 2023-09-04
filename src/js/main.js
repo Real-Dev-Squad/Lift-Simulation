@@ -12,22 +12,49 @@ const floorContainer = document.querySelector(".floor-container");
 const liftContainer = document.querySelector(".lift-container");
 
 const form = document.querySelector("form");
+
 form.onsubmit = (e) => {
   e.preventDefault();
   let formData = new FormData(e.target);
-  state.noOfFloors = parseInt(formData.get("floor_input"));
-  state.noOfLifts = parseInt(formData.get("lift_input"));
+  const floorInput = formData.get("floor_input");
+  const liftInput = formData.get("lift_input");
+
+  if (!floorInput || !liftInput) {
+    alert("Both inputs must be filled.");
+    return;
+  }
+
+  const numFloors = parseInt(floorInput);
+  const numLifts = parseInt(liftInput);
+
+  if (isNaN(numFloors) || isNaN(numLifts)) {
+    alert("Inputs must be valid numbers.");
+    return;
+  }
+
+  // Check if the number of lifts is not greater than the number of floors
+  if (numLifts > numFloors) {
+    alert("Number of lifts cannot be greater than the number of floors.");
+    return;
+  }
 
   // Check if the device is desktop
   const isDesktopDevice = window.innerWidth > 768;
- const maxLifts = isDesktopDevice ? 8 : 6;
+  const maxLifts = isDesktopDevice ? 8 : 6;
 
-  if (state.noOfLifts <= maxLifts) {
+  if (numLifts <= maxLifts) {
+    state.noOfFloors = numFloors;
+    state.noOfLifts = numLifts;
     initializeSimulation();
   } else {
-    alert(isDesktopDevice ? "Desktop devices should have 8 lifts." : "Mobile devices have a maximum of 6 lifts.");
+    alert(
+      isDesktopDevice
+        ? "Desktop devices should have 8 lifts."
+        : "Mobile devices have a maximum of 6 lifts."
+    );
   }
 };
+
 function initializeSimulation() {
   floorContainer.innerHTML = "";
   liftContainer.innerHTML = "";
@@ -81,6 +108,7 @@ function callLift(floor, isGoingDown = false) {
   const availableLift = state.lifts.find((lift) => lift.state === "free");
 
   if (availableLift) {
+    // Mark the lift as occupied
     availableLift.state = "occupied";
     const liftElement = document.querySelector(`.lift-${availableLift.id}`);
     liftElement.setAttribute("data-state", availableLift.state);
@@ -102,20 +130,33 @@ function callLift(floor, isGoingDown = false) {
       // Show the door animation for 2.5 seconds
       setTimeout(() => {
         liftElement.classList.remove("door-open");
-        // liftElement.classList.add("door-close");
 
         // Wait for the door animation to finish
         setTimeout(() => {
-          liftElement.classList.remove("door-close");
-          availableLift.state = "free";
-          liftElement.setAttribute("data-state", availableLift.state);
+          liftElement.classList.add("door-close");
+          setTimeout(() => {
+            liftElement.classList.remove("door-close");
+            availableLift.state = "free";
+            liftElement.setAttribute("data-state", availableLift.state);
+
+            // Check if there are pending requests
+            if (state.requests.length > 0) {
+              // Get the next requested floor from the queue
+              const nextRequest = state.requests.shift();
+              // Call the lift to the next requested floor
+              callLift(nextRequest.floor, nextRequest.isGoingDown);
+            }
+          }, 2500);
         }, 2500);
       }, 2500);
     }, parseInt(transitionDuration) * 1000);
   } else {
-    alert("All lifts are busy. Please wait.");
+    // If all lifts are busy, add the request to the queue
+    state.requests.push({ floor, isGoingDown });
   }
 }
+
+initializeSimulation();
 
 
 

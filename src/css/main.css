@@ -86,7 +86,6 @@
   }
 }
 
-/* Media query for screens up to 768px width */
 @media (max-width: 768px) {
   .container {
     margin: 1rem;
