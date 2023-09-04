@@ -53,7 +53,7 @@ function render() {
     floor_button_down = document.createElement("button");
     floor_button_down.innerText = `Down`;
     floor_button_down.onclick = () => {
-      callLift(index + 1, true);
+      callLift(index + 1);
     };
     
     floor.append(floor_heading, floor_button_up, floor_button_down);
@@ -78,37 +78,45 @@ function render() {
 }
 
 function callLift(floor, isGoingDown = false) {
-  const availableLift = state.lifts.find(lift => lift.state === "free");
+  const availableLift = state.lifts.find((lift) => lift.state === "free");
 
   if (availableLift) {
     availableLift.state = "occupied";
     const liftElement = document.querySelector(`.lift-${availableLift.id}`);
     liftElement.setAttribute("data-state", availableLift.state);
-    liftElement.classList.add("door-open");
-    setTimeout(() => {
-      liftElement.classList.remove("door-open");
-      liftElement.classList.add("door-close");
-      setTimeout(() => {
-        liftElement.classList.remove("door-close");
-        // Determine direction and target floor
-        const targetFloorPosition = (floor - 1) * state.heightOfEachFloor + 30;
-        const transitionDuration = isGoingDown
-          ? `${2 * Math.abs(floor - 1)}s`
-          : `${2 * floor}s`;
-        
-        liftElement.style.transitionDuration = transitionDuration;
-        liftElement.style.bottom = `${targetFloorPosition}px`;
 
+    // Determine direction and target floor
+    const targetFloorPosition = (floor - 1) * state.heightOfEachFloor + 30;
+    const transitionDuration = isGoingDown
+      ? `${2 * Math.abs(floor - 1)}s`
+      : `${2 * floor}s`;
+
+    // Move the lift to the target floor
+    liftElement.style.transitionDuration = transitionDuration;
+    liftElement.style.bottom = `${targetFloorPosition}px`;
+
+    // Wait for the lift to reach the target floor
+    setTimeout(() => {
+      liftElement.classList.add("door-open");
+
+      // Show the door animation for 2.5 seconds
+      setTimeout(() => {
+        liftElement.classList.remove("door-open");
+        // liftElement.classList.add("door-close");
+
+        // Wait for the door animation to finish
         setTimeout(() => {
+          liftElement.classList.remove("door-close");
           availableLift.state = "free";
           liftElement.setAttribute("data-state", availableLift.state);
-        }, Math.max(2 * floor, 2 * Math.abs(floor - 1)) * 1000);
-      }, 2500); 
-    }, 2500); 
+        }, 2500);
+      }, 2500);
+    }, parseInt(transitionDuration) * 1000);
   } else {
     alert("All lifts are busy. Please wait.");
   }
 }
+
 
 
 
