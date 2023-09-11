@@ -95,9 +95,10 @@ function render() {
     liftContainer.append(lift);
   }
 }
+
 function callLift(floor, isGoingDown = false) {
   const availableLift = state.lifts.find((lift) => lift.state === "free");
-  console.log(state);
+  console.log(state)
 
   if (availableLift) {
     // Mark the lift as occupied
@@ -105,12 +106,14 @@ function callLift(floor, isGoingDown = false) {
     const liftElement = document.querySelector(`.lift-${availableLift.id}`);
     liftElement.setAttribute("data-state", availableLift.state);
 
+    // Update the current floor for the lift
+    // availableLift.currentFloor = floor;
+
     // Determine direction and target floor
-    const targetFloor = floor;
-   const targetFloorPosition = (floor - 1) * state.heightOfEachFloor + 30;
+    const targetFloorPosition = (floor - 1) * state.heightOfEachFloor + 30;
     const transitionDuration = isGoingDown
-      ? `${2 * Math.abs(targetFloor - availableLift.currentFloor)}s`
-      : `${2 * Math.abs(targetFloor - availableLift.currentFloor)}s`;
+      ? `${2 * Math.abs(floor - 1)}s`
+      : `${2 * floor}s`;
 
     // Move the lift to the target floor
     liftElement.style.transitionDuration = transitionDuration;
@@ -126,11 +129,10 @@ function callLift(floor, isGoingDown = false) {
 
         // Wait for the door animation to finish
         setTimeout(() => {
-          liftElement.classList.add("door-close");
+          // liftElement.classList.add("door-close");
           setTimeout(() => {
-            liftElement.classList.remove("door-close");
+            // liftElement.classList.remove("door-close");
             availableLift.state = "free";
-            availableLift.currentFloor = targetFloor; // Update the current floor
             liftElement.setAttribute("data-state", availableLift.state);
 
             // Check if there are pending requests
@@ -149,8 +151,5 @@ function callLift(floor, isGoingDown = false) {
     state.requests.push({ floor, isGoingDown });
   }
 }
-
-
-
 
 initializeSimulation();
