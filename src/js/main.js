@@ -7,7 +7,6 @@ const state = {
   lifts: [],
 };
 
-
 const floorContainer = document.querySelector(".floor-container");
 const liftContainer = document.querySelector(".lift-container");
 
@@ -32,13 +31,6 @@ form.onsubmit = (e) => {
     return;
   }
 
-  // Check if the number of lifts is not greater than the number of floors
-  if (numLifts > numFloors) {
-    alert("Number of lifts cannot be greater than the number of floors.");
-    return;
-  }
-
-  // Check if the device is desktop
   const isDesktopDevice = window.innerWidth > 768;
   const maxLifts = isDesktopDevice ? 8 : 6;
 
@@ -67,22 +59,22 @@ function render() {
     floor.classList.add("floor-divider");
     floor_heading = document.createElement("h4");
     floor_heading.innerText = `Floor ${index + 1}`;
-    const liftLeftPosition = (index + 1) * 10; 
-    
+    const liftLeftPosition = (index + 1) * 10;
+
     // Call button for going up
     floor_button_up = document.createElement("button");
     floor_button_up.innerText = `Up`;
     floor_button_up.onclick = () => {
       callLift(index + 1);
     };
-    
+
     // Call button for going down
     floor_button_down = document.createElement("button");
     floor_button_down.innerText = `Down`;
     floor_button_down.onclick = () => {
       callLift(index + 1);
     };
-    
+
     floor.append(floor_heading, floor_button_up, floor_button_down);
     floor.style.height = `${state.heightOfEachFloor + 5}px`;
     floorContainer.append(floor);
@@ -90,9 +82,9 @@ function render() {
 
   for (let index = 0; index < state.noOfLifts; index++) {
     let lift = document.createElement("div");
-     const liftLeftPosition = (index + 1) * 12;
+    const liftLeftPosition = (index + 1) * 12;
     lift.classList.add("lift");
-    let lift_state = { id: index, state: "free" };
+    let lift_state = { id: index, state: "free", currentFloor: 1 };
     lift.classList.add(`lift-${lift_state.id}`);
     state.lifts.push(lift_state);
 
@@ -103,9 +95,9 @@ function render() {
     liftContainer.append(lift);
   }
 }
-
 function callLift(floor, isGoingDown = false) {
   const availableLift = state.lifts.find((lift) => lift.state === "free");
+  console.log(state);
 
   if (availableLift) {
     // Mark the lift as occupied
@@ -114,10 +106,11 @@ function callLift(floor, isGoingDown = false) {
     liftElement.setAttribute("data-state", availableLift.state);
 
     // Determine direction and target floor
-    const targetFloorPosition = (floor - 1) * state.heightOfEachFloor + 30;
+    const targetFloor = floor;
+   const targetFloorPosition = (floor - 1) * state.heightOfEachFloor + 30;
     const transitionDuration = isGoingDown
-      ? `${2 * Math.abs(floor - 1)}s`
-      : `${2 * floor}s`;
+      ? `${2 * Math.abs(targetFloor - availableLift.currentFloor)}s`
+      : `${2 * Math.abs(targetFloor - availableLift.currentFloor)}s`;
 
     // Move the lift to the target floor
     liftElement.style.transitionDuration = transitionDuration;
@@ -137,6 +130,7 @@ function callLift(floor, isGoingDown = false) {
           setTimeout(() => {
             liftElement.classList.remove("door-close");
             availableLift.state = "free";
+            availableLift.currentFloor = targetFloor; // Update the current floor
             liftElement.setAttribute("data-state", availableLift.state);
 
             // Check if there are pending requests
@@ -155,10 +149,6 @@ function callLift(floor, isGoingDown = false) {
     state.requests.push({ floor, isGoingDown });
   }
 }
-
-initializeSimulation();
-
-
 
 
 
