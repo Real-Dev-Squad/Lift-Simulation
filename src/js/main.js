@@ -95,8 +95,17 @@ function render() {
   
   // Create the first span element
   let span1 = document.createElement("span");
+  span1.classList.add("left-door");
+  // span1.innerText = "Span 1 Text"; // You can set the text as needed
   lift.appendChild(span1);
-  span1.classList.add("door-close");
+
+  // Create the second span element
+  let span2 = document.createElement("span");
+  span2.classList.add("right-door");
+
+  // span2.innerText = "Span 2 Text"; // You can set the text as needed
+  lift.appendChild(span2);
+
   liftContainer.append(lift);
 }
 }
@@ -128,11 +137,11 @@ console.log(transitionDuration, floor - 1, floor)
     const doorOpenTimeout = parseInt(transitionDuration) * 1000
 
     setTimeout(() => {
-      span1.classList.add("door-open");
+      liftElement.classList.add("door-open");
     }, doorOpenTimeout);
     setTimeout(() => {
       console.log(1, "dusra")
-      span1.classList.remove("door-open");
+      liftElement.classList.remove("door-open");
   
 },
 doorOpenTimeout + 1000);
