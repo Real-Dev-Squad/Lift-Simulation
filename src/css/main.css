@@ -58,15 +58,30 @@
   animation-duration: 2.5s;
   animation-timing-function: ease;
   animation-fill-mode: forwards;
+  display: flex;
+  margin: 2px;
 }
 
-.door-open {
+.door-close{
+  background-color: red;
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+}
+
+.door-open{
+  /* width: 0px; */
+  width: 0px;
+  background-color: aqua;
+}
+
+/* .door-open {
   animation-name: doorOpen;
 }
 
 .door-close {
   animation-name: doorClose;
-}
+} */
 
 @keyframes doorOpen {
   0% {
