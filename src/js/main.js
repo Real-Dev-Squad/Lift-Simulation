@@ -23,16 +23,20 @@ form.onsubmit = (e) => {
     return;
   }
 
-  if(!floorInput || !liftInput<0){
-        alert("Inputs cannot be");
-    return;
-  }
-
   const numFloors = parseInt(floorInput);
   const numLifts = parseInt(liftInput);
 
   if (isNaN(numFloors) || isNaN(numLifts)) {
     alert("Inputs must be valid numbers.");
+    return;
+  }
+
+  if (numFloors < 0) {
+    alert("Inputs cannot be negative.");
+    return;
+  }
+  if (numLifts < 0) {
+    alert("Inputs cannot be negative.");
     return;
   }
 
@@ -44,7 +48,6 @@ form.onsubmit = (e) => {
     state.noOfLifts = numLifts;
     initializeSimulation();
     form.style.display = "none";
-
   } else {
     alert(
       isDesktopDevice
