@@ -251,4 +251,35 @@
   height: 40px;
   transition: 2s ease;
 }
+
+@keyframes right-animation {
+  0%, 100% {
+    position: absolute;
+    right: 0;
+  }
+  50% {
+    position: absolute;
+    right: -20px;
+  }
+  75% {
+    position: absolute;
+    right: -20px;
+  }
+}
+
+@keyframes left-animation {
+  0%, 100% {
+    position: absolute;
+    left: 0;
+  }
+  50% {
+    position: absolute;
+    left: -20px;
+  }
+  75% {
+    position: absolute;
+    left: -20px;
+  }
+}
+
 }
