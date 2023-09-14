@@ -23,16 +23,16 @@ form.onsubmit = (e) => {
     return;
   }
 
+  if(!floorInput || !liftInput<0){
+        alert("Inputs cannot be");
+    return;
+  }
+
   const numFloors = parseInt(floorInput);
   const numLifts = parseInt(liftInput);
 
   if (isNaN(numFloors) || isNaN(numLifts)) {
     alert("Inputs must be valid numbers.");
-    return;
-  }
-
-   if (isNaN(numFloors) || isNaN(numLifts) || numFloors < 0 || numLifts < 0) {
-    alert("Inputs must be valid non-negative numbers.");
     return;
   }
 
@@ -43,8 +43,8 @@ form.onsubmit = (e) => {
     state.noOfFloors = numFloors;
     state.noOfLifts = numLifts;
     initializeSimulation();
-    const inputForm = document.querySelector(".input");
-    inputForm.style.display = "none";
+    form.style.display = "none";
+
   } else {
     alert(
       isDesktopDevice
@@ -127,6 +127,8 @@ function callLift(floor, isGoingDown = false) {
     availableLift.currentFloor = floor; // Set the current floor
 
     const liftElement = document.querySelector(`.lift-${availableLift.id}`);
+    const innerElement1 = liftElement.querySelector('.left-door');
+    const innerElement2 = liftElement.querySelector('.right-door');
 
     // Determine direction and target floor
     const floorDifference = Math.abs(floor - previousFloor)
@@ -138,17 +140,24 @@ function callLift(floor, isGoingDown = false) {
     // Move the lift to the target floor
     liftElement.style.transitionDuration = transitionDuration;
     liftElement.style.bottom = `${targetFloorPosition}px`;
-console.log(transitionDuration, floor - 1, floor)
+    console.log(transitionDuration, floor - 1, floor)
     // Wait for the lift to reach the target floor
 
     const doorOpenTimeout = parseInt(transitionDuration) * 1000
 
     setTimeout(() => {
       liftElement.classList.add("door-open");
+      innerElement1.classList.add("left-door-open")
+      innerElement2.classList.add("right-door-open")
     }, doorOpenTimeout);
     setTimeout(() => {
       console.log(1, "dusra")
-      liftElement.classList.remove("door-open");
+      // liftElement.classList.remove("door-open");
+      // innerElement1.classList.remove("left-door-open")
+      // innerElement2.classList.remove("right-door-open")
+
+      innerElement1.classList.add("left-door-close")
+      innerElement2.classList.add("right-door-close")
   
 },
 doorOpenTimeout + 1000);
@@ -163,6 +172,8 @@ doorOpenTimeout + 1000);
         callLift(nextRequest.floor, nextRequest.isGoingDown);
       }
     }, doorOpenTimeout + 2000);
+      innerElement1.classList.remove("left-door-open")
+      innerElement2.classList.remove("right-door-open")
   } else {
     // If all lifts are busy, add the request to the queue
     state.requests.push({ floor, isGoingDown });

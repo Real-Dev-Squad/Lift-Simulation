@@ -62,26 +62,95 @@
   margin: 2px;
 }
 
-.lift>span{
+
+.left-door {
   background-color: aqua;
   width: 30px;
   height: 60px;
-  transition: 2s ease;
-}
-
-.left-door {
-  /* Your styles for the first child span here */
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
-  /* Add any other styles you need */
+  border: 1px solid black;
+
 }
 
 .right-door {
-  /* Your styles for the first child span here */
-
-    border-top-right-radius: 8px;
+  background-color: aqua;
+  width: 30px;
+  height: 60px;
+  border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
-  /* Add any other styles you need */
+  border: 1px solid black;
+}
+
+.left-door-open {
+  background-color: red;
+  animation: left-animation 4s; 
+}
+
+.right-door-open {
+  background-color: red;
+  animation: right-animation 4s; 
+}
+
+
+.left-door-close {
+  background-color: red;
+}
+
+.right-door-close {
+  background-color: red;
+}
+
+/* @keyframes right-animation {
+  from {
+    position: absolute;
+    right: 0;
+  }
+  to {
+    position: absolute;
+    right: -30px;
+  }
+}
+
+@keyframes left-animation {
+  from {
+    position: absolute;
+    left: 0;
+  }
+  to {
+    position: absolute;
+    left: -30px; 
+  }
+} */
+
+@keyframes right-animation {
+  0%, 100% {
+    position: absolute;
+    right: 0;
+  }
+  50% {
+    position: absolute;
+    right: -30px;
+  }
+  75% {
+    position: absolute;
+    right: -30px;
+  }
+}
+
+@keyframes left-animation {
+  0%, 100% {
+    position: absolute;
+    left: 0;
+  }
+  50% {
+    position: absolute;
+    left: -30px;
+  }
+  75% {
+    position: absolute;
+    left: -30px;
+  }
 }
 
 
@@ -91,7 +160,11 @@
 
 
 
-.door-open{
+
+
+
+
+/* .door-open{
   gap: 50px;
   position: absolute;
   bottom: 0;
@@ -101,14 +174,12 @@
   height: 60px;
   background-color: #715050;
   border-radius: 8px;
-  /* transition: bottom 3s ease; */
-  /* animation-duration: 2.5s; */
   animation-timing-function: ease;
   animation-fill-mode: forwards;
   display: flex;
   margin: 2px;
   transition: 2s ease;
-}
+} */
 
 .input {
   display: flex;
