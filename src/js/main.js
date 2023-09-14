@@ -31,12 +31,12 @@ form.onsubmit = (e) => {
     return;
   }
 
-  if (numFloors < 0) {
-    alert("Inputs cannot be negative.");
+  if (numFloors <= 0) {
+    alert("Value of floor cannot be negative or 0.");
     return;
   }
-  if (numLifts < 0) {
-    alert("Inputs cannot be negative.");
+  if (numLifts <= 0) {
+    alert("Value of lift cannot be negative or 0.");
     return;
   }
 
