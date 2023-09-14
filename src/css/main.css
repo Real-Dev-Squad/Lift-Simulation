@@ -110,27 +110,40 @@
   transition: 2s ease;
 }
 
+.input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.input input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 200px;
+  font-size: 16px;
+}
+
+.input button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.input button:hover {
+  background-color: #0056b3;
+}
+
+
 /* .door-close {
   animation-name: doorClose;
 } */
-
-@keyframes doorOpen {
-  0% {
-    transform: translateX(-50%) scaleX(0);
-  }
-  100% {
-    transform: translateX(-50%) scaleX(1);
-  }
-}
-
-@keyframes doorClose {
-  0% {
-    transform: translateX(-50%) scaleX(1);
-  }
-  100% {
-    transform: translateX(-50%) scaleX(0);
-  }
-}
 
 @media (max-width: 768px) {
   .container {

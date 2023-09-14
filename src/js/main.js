@@ -31,6 +31,11 @@ form.onsubmit = (e) => {
     return;
   }
 
+   if (isNaN(numFloors) || isNaN(numLifts) || numFloors < 0 || numLifts < 0) {
+    alert("Inputs must be valid non-negative numbers.");
+    return;
+  }
+
   const isDesktopDevice = window.innerWidth > 768;
   const maxLifts = isDesktopDevice ? 8 : 6;
 
@@ -38,6 +43,8 @@ form.onsubmit = (e) => {
     state.noOfFloors = numFloors;
     state.noOfLifts = numLifts;
     initializeSimulation();
+    const inputForm = document.querySelector(".input");
+    inputForm.style.display = "none";
   } else {
     alert(
       isDesktopDevice
