@@ -1,7 +1,7 @@
 const state = {
   noOfFloors: 0,
   noOfLifts: 0,
-  heightOfEachFloor: 150,
+  heightOfEachFloor: 155,
   leftMarginEachLift: 150,
   requests: [],
   lifts: [],
@@ -86,7 +86,7 @@ function render() {
     };
 
     floor.append(floor_heading, floor_button_up, floor_button_down);
-    floor.style.height = `${state.heightOfEachFloor + 5}px`;
+    floor.style.height = `${state.heightOfEachFloor}px`;
     floorContainer.append(floor);
   }
 
@@ -135,7 +135,7 @@ function callLift(floor, isGoingDown = false) {
 
     // Determine direction and target floor
     const floorDifference = Math.abs(floor - previousFloor)
-    const targetFloorPosition = (floor - 1) * state.heightOfEachFloor + 30;
+    const targetFloorPosition = (floor - 1) * state.heightOfEachFloor+30;
     const transitionDuration = isGoingDown
       ? `${2 * floorDifference + 1}s`
       : `${2 * floorDifference + 1}s`;
