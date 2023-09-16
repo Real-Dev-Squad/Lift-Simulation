@@ -163,7 +163,7 @@ function callLift(floor, isGoingDown = false) {
       innerElement2.classList.add("right-door-close")
   
 },
-doorOpenTimeout + 1000);
+doorOpenTimeout + 2500);
     setTimeout(() => {
       availableLift.state = "free";
 
@@ -174,7 +174,7 @@ doorOpenTimeout + 1000);
         // Call the lift to the next requested floor
         callLift(nextRequest.floor, nextRequest.isGoingDown);
       }
-    }, doorOpenTimeout + 2000);
+    }, doorOpenTimeout + 3500);
       innerElement1.classList.remove("left-door-open")
       innerElement2.classList.remove("right-door-open")
   } else {
