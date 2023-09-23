@@ -42,8 +42,6 @@ section{
     width: 100%;
     border: 1px solid black;
 }
-
-
 .floors{
     border-bottom: 0.1rem black solid;
     display: flex;
@@ -51,9 +49,7 @@ section{
     justify-content: flex-start;
     height: 99px;
     z-index: 2;
-    
 }
-
 .lift{
    width: 50px;
    height: 80px;
@@ -70,10 +66,7 @@ section{
         flex-direction: row;
         background-color: #00b5b7
      }
-
-
 }
-
 .upAndDown{
     display: flex;
     flex-direction: column;
@@ -82,9 +75,6 @@ section{
     justify-content: space-around;
     width: 10%;
 }
-
-
-
 .liftContainer{
     width: 100%;
     display: flex;
@@ -92,11 +82,7 @@ section{
     justify-content: space-evenly;
     align-items: flex-end;
     background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);}
-/* */
-
-
 .floorName{
-    
     margin: 1rem;
     display: flex;
     flex-direction: column;
@@ -104,12 +90,10 @@ section{
     justify-content: center;
     width: 4rem;
     font-weight: 600;
-    
 }
 
 @media screen and (max-width:1000px) {
     .floorName{
-    
         margin: 1rem;
         display: flex;
         flex-direction: column;
@@ -117,11 +101,7 @@ section{
         justify-content: center;
         width: 1rem;
         font-size: 10px;
-
-
-        
     }
-    
 }
 
 .door-left{
@@ -135,18 +115,10 @@ section{
 
 
 .door-right{
-    /* border: 1px black solid; */
     width: 50%;
     height: 100%;
     background-color: #000;
-    /* animation: slideRight 4s ; */
-    /* background-color: blue; */
-    
-
 }
-
-
-
 .backbutton{
     width: 100%;
     display: flex;
@@ -175,8 +147,6 @@ button{
     background-color: #20262e;
     color: #fff;
 }
-
-
 .backbut{
     height: 2rem;
 }
