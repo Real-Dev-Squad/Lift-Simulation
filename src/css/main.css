@@ -1,0 +1,9 @@
+.flexClass{
+    margin: auto;
+    align-items: center;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    
+}
