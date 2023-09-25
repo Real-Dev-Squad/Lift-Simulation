@@ -310,7 +310,8 @@ const inputValidation = (floorCount, liftCount) => {
       } else if (floorCount % 1 !== 0 || liftCount % 1 !== 0) {
         alert("Numbers should be whole (non-decimal) values");
         return false;
-      } 
+      } else if (floorCount <= 0 || liftCount <= 0) {
+        alert("Numbers should be positive and also greater than zero");}
        else if (window.innerWidth <= 1000 && liftCount > 3) {
         alert("On mobile, for flawless experience, number of lifts should be 3 or less");
         return false;
