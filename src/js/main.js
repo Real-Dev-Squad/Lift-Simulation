@@ -304,25 +304,25 @@ function closeDoors(liftArray,l){
 
 
 const inputValidation = (floorCount, liftCount) => {
-  if (isNaN(floorCount) || isNaN(liftCount) || floorCount === "" || liftCount === "") {
-    alert("Input cannot be empty");
-    return false;
-  } else if (floorCount % 1 !== 0 || liftCount % 1 !== 0) {
-    alert("Numbers should be whole (non-decimal) values");
-    return false;
-  } 
-   else if (window.innerWidth <= 1000 && liftCount > 3) {
-    alert("On mobile, for flawless experience, number of lifts should be 3 or less");
-    return false;
-  }else if (window.innerWidth <= 1000 && floorCount > 5) {
-    alert("On mobile, for flawless experience, number of floors should be 5 or less");
-    return false;
-  } else if (window.innerWidth > 1000 && liftCount > 10) {
-    alert("On desktop,for flawless experience, number of lifts should be 10 or less");
-    return false;
-  } else {
-    return true;
-  }
+    if (isNaN(floorCount) || isNaN(liftCount) || floorCount === "" || liftCount === "") {
+        alert("Input cannot be empty");
+        return false;
+      } else if (floorCount % 1 !== 0 || liftCount % 1 !== 0) {
+        alert("Numbers should be whole (non-decimal) values");
+        return false;
+      } 
+       else if (window.innerWidth <= 1000 && liftCount > 3) {
+        alert("On mobile, for flawless experience, number of lifts should be 3 or less");
+        return false;
+      }else if (window.innerWidth <= 1000 && floorCount > 5) {
+        alert("On mobile, for flawless experience, number of floors should be 5 or less");
+        return false;
+      } else if (window.innerWidth > 1000 && liftCount > 10) {
+        alert("On desktop,for flawless experience, number of lifts should be 10 or less");
+        return false;
+      } else {
+        return true;
+      }
 };
 
 
