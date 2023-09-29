@@ -1,0 +1,286 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  background-color: #818181;
+  width: auto;
+  display: flex;
+  margin: 2rem;
+  display: grid;
+  grid-template-areas: "overflow";
+}
+
+.floor-container,
+.lift-container {
+  background-color: rgb(255, 255, 133);
+  width: 100%;
+  display: flex;
+  flex-direction: column-reverse;
+  position: relative;
+  min-height: max-content;
+  grid-area: overflow;
+  overflow: hidden; /* Prevent scrolling */
+}
+
+.lift-container {
+  background-color: transparent;
+}
+
+.floor-divider {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 0.5rem;
+  border: 2px solid #cdcdcd;
+  border-left: none;
+  border-right: none;
+}
+
+.floor-divider > button {
+  padding: 5px 8px;
+  z-index: 2;
+}
+
+.lift {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 60px;
+  background-color: #715050;
+  border-radius: 8px;
+  transition: bottom 3s ease;
+  animation-duration: 2.5s;
+  animation-timing-function: ease;
+  animation-fill-mode: forwards;
+  display: flex;
+  margin: 2px;
+  /* overflow: hidden; */
+}
+
+
+.left-door {
+  background-color: aqua;
+  width: 30px;
+  height: 60px;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+  border: 1px solid black;
+
+}
+
+.right-door {
+  background-color: aqua;
+  width: 30px;
+  height: 60px;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border: 1px solid black;
+}
+
+.left-door-open {
+  background-color: red;
+  animation: left-animation 4s; 
+}
+
+.right-door-open {
+  background-color: red;
+  animation: right-animation 4s; 
+}
+
+
+.left-door-close {
+  background-color: red;
+}
+
+.right-door-close {
+  background-color: red;
+}
+
+/* @keyframes right-animation {
+  from {
+    position: absolute;
+    right: 0;
+  }
+  to {
+    position: absolute;
+    right: -30px;
+  }
+}
+
+@keyframes left-animation {
+  from {
+    position: absolute;
+    left: 0;
+  }
+  to {
+    position: absolute;
+    left: -30px; 
+  }
+} */
+
+@keyframes right-animation {
+  0%, 100% {
+    position: absolute;
+    right: 0;
+  }
+  50% {
+    position: absolute;
+    right: -30px;
+  }
+  75% {
+    position: absolute;
+    right: -30px;
+  }
+}
+
+@keyframes left-animation {
+  0%, 100% {
+    position: absolute;
+    left: 0;
+  }
+  50% {
+    position: absolute;
+    left: -30px;
+  }
+  75% {
+    position: absolute;
+    left: -30px;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* .door-open{
+  gap: 50px;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 60px;
+  background-color: #715050;
+  border-radius: 8px;
+  animation-timing-function: ease;
+  animation-fill-mode: forwards;
+  display: flex;
+  margin: 2px;
+  transition: 2s ease;
+} */
+
+.input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.input input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 200px;
+  font-size: 16px;
+}
+
+.input button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.input button:hover {
+  background-color: #0056b3;
+}
+
+
+/* .door-close {
+  animation-name: doorClose;
+} */
+
+@media (max-width: 768px) {
+  .container {
+    margin: 1rem;
+  }
+
+  .floor-divider {
+    padding: 0.3rem;
+    display: flex;
+    justify-content: start;
+  }
+
+  .lift {
+    width: 40px; 
+    height: 40px;
+    left: 10%; 
+  }
+
+   .container {
+    margin: 1rem;
+  }
+
+  .floor-divider {
+    padding: 0.3rem;
+  }
+
+  .floor-divider button {
+    font-size: 10px;
+    padding: 3px 6px;
+  }
+  .lift>span{
+  background-color: aqua;
+  width: 20px;
+  height: 40px;
+  transition: 2s ease;
+}
+
+@keyframes right-animation {
+  0%, 100% {
+    position: absolute;
+    right: 0;
+  }
+  50% {
+    position: absolute;
+    right: -20px;
+  }
+  75% {
+    position: absolute;
+    right: -20px;
+  }
+}
+
+@keyframes left-animation {
+  0%, 100% {
+    position: absolute;
+    left: 0;
+  }
+  50% {
+    position: absolute;
+    left: -20px;
+  }
+  75% {
+    position: absolute;
+    left: -20px;
+  }
+}
+
+}
