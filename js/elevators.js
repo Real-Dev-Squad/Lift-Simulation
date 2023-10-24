@@ -63,7 +63,7 @@ function generateFloor(floorNumber, imageSource) {
 }
 
 // Generate a specific number of floors (e.g., 5 floors) with images
-const numberOfFloors = 5;
+const numberOfFloors = floors;
 for (let i = 1; i <= numberOfFloors; i++) {
   const imageSource = `/images/lift-image.jpg`; // Replace with the actual image URL
   generateFloor(i, imageSource);
