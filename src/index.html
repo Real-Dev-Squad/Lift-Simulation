@@ -1,11 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+<html>
+    <title>Lift-Simulator</title>
+    <link rel="stylesheet" href="/src/css/main.css">
 </head>
 <body>
+    <h1>Lift-Simulator</h1>
+    <p>Please provide the following information:</p>
     
+    <form id="elevatorForm">
+        <label for="floors">Number of Floors:</label>
+        <input type="number" id="floors" name="floors" required min="1" max="10"><br><br>
+
+        <label for="elevators">Number of Elevators Needed:</label>
+        <input type="number" id="elevators" name="elevators" min="1" max="1" required><br><br>
+
+        <input type="submit" value="Submit">
+    </form>
+    <script src="/src/js/main.js"></script>
 </body>
 </html>

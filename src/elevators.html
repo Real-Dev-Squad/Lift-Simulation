@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Elevators Page</title>
+    <link rel="stylesheet" href="/src/css/main.css">
+</head>
+<body>
+    <h1>Elevators Page</h1>
+    <div id="floorsDisplay"></div>
+    <div id="elevatorsDisplay"></div>
+    <h1>this part of the site is under construction</h1>
+
+    <script>
+        // Function to get query parameters from the URL
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                floors: params.get("floors"),
+                elevators: params.get("elevators")
+            };
+        }
+
+        // Get query parameters
+        const { floors, elevators } = getQueryParams();
+
+        // Display the values
+        document.getElementById('floorsDisplay').textContent = `Number of Floors: ${floors}`;
+        document.getElementById('elevatorsDisplay').textContent = `Number of Elevators Needed: ${elevators}`;
+    </script>
+</body>
+</html>
