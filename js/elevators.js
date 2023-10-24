@@ -40,12 +40,13 @@ function generateFloor(floorNumber, imageSource) {
   floorImages.appendChild(directionImage);
 
   // Add an <img> element to the floor
-  const floorImage = document.createElement("img");
-  floorImage.src = imageSource; // Provide the URL to your PNG image
-  floorImage.alt = `Floor ${floorNumber}`; // Accessibility text
-  // Append the image to the floor
-  floorImages.appendChild(floorImage);
-
+  if (floorNumber == 1) {
+    const floorImage = document.createElement("img");
+    floorImage.src = imageSource; // Provide the URL to your PNG image
+    floorImage.alt = `Floor ${floorNumber}`; // Accessibility text
+    // Append the image to the floor
+    floorImages.appendChild(floorImage);
+  }
   // Append the image to the floor
   floor.appendChild(floorImages);
 
@@ -63,8 +64,9 @@ function generateFloor(floorNumber, imageSource) {
 }
 
 // Generate a specific number of floors (e.g., 5 floors) with images
+
 const numberOfFloors = floors;
-for (let i = 1; i <= numberOfFloors; i++) {
+for (let i = numberOfFloors; i>=1; i--) {
   const imageSource = `/images/lift-image.jpg`; // Replace with the actual image URL
   generateFloor(i, imageSource);
 }
