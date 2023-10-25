@@ -4,10 +4,12 @@ body {
 .center {
   text-align: center;
 }
+
 .building {
     display: flex;
     flex:1;
 }
+
 .floor {
     display: flex;
     align-items: center;
@@ -18,12 +20,31 @@ body {
     font-size: 25px;
     font-weight: 600;
 }
+
 .floor img {
     max-width: 50px; /* Adjust the image dimensions as needed */
     max-height: 50px;
     margin-right: 10px; /* Add margin between images */
 }
-.floor-images{
+.floor-images {
     display: flex;
     gap: 55px;
+    position: relative;
+  overflow: hidden;
+}
+
+@keyframes openLift {
+  0% {
+    transform: scaleX(0);
+    transform-origin: bottom;
+    opacity: 0; /* Initially transparent */
+  }
+  100% {
+    transform: scaleX(1);
+    transform-origin: bottom;
+    opacity: 1; /* Fully opaque */
+  }
+}
+.floor-images img {
+  animation: openLift 2s ease-in forwards; /* Adjust the animation duration as needed */
 }
