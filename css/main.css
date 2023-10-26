@@ -22,15 +22,25 @@ body {
 }
 
 .floor img {
+    border: 2px solid blueviolet;
+    box-shadow:#f0f0f0;
     max-width: 50px; /* Adjust the image dimensions as needed */
     max-height: 50px;
     margin-right: 10px; /* Add margin between images */
+    box-shadow: inset;
 }
 .floor-images {
     display: flex;
     gap: 55px;
     position: relative;
   overflow: hidden;
+}
+
+.direction-image {
+  border: 4px solid black;
+  background-color: white;
+  padding: 2px;
+  border-radius: 35%;
 }
 
 @keyframes openLift {
@@ -46,5 +56,5 @@ body {
   }
 }
 .floor-images img {
-  animation: openLift 2s ease-in forwards; /* Adjust the animation duration as needed */
+  animation: openLift 1s ease-in forwards; /* Adjust the animation duration as needed */
 }

@@ -39,34 +39,52 @@ function generateFloor(floorNumber, imageSource) {
   const directionImage = document.createElement("img");
   directionImage.src = "/images/up-down.png"; // Provide the URL to your PNG image
 
+  directionImage.className = "direction-image";
+
   //experiment code to add lift on a certain floor
   directionImage.addEventListener("click", (event) => {
     // Check if the parent div already has a child with a class name 'lift-image'
     const existingLiftImage = floorImages.querySelector(".lift-image");
 
-    const currId = event.target.parentNode.parentNode.id;
-    // console.log('Parent ID: ' , event.target.parentNode.parentNode.id);
+    //getting the current floor id
+    const currFloorId = event.target.parentNode.parentNode.id;
+    // console.log("current floorId: ", event.target.parentNode.parentNode.id);
 
-    if (currId != 1 && existingLiftImage) {
-      // If a 'lift-image' child already exists, remove it from the current floor
-      alert("no more then one lift on this floor");
-    } else {
-      if (lastLiftFloor !== null) {
-        // console.log(lastLiftFloor);
-        const convertedNumber = floors - lastLiftFloor + 1;
-        const lastLiftFloorImages = document.querySelector(
-          `.floor:nth-child(${convertedNumber}) .floor-images`
-        );
-        // console.log(lastLiftFloorImages);
-        const existingLiftImage =
-          lastLiftFloorImages.querySelector(".lift-image");
-        if (existingLiftImage) {
-          lastLiftFloorImages.removeChild(existingLiftImage);
-        }
+    // Get the div element by its ID (you can use any other method to select the div)
+    var parentDiv = document.getElementById(`building`);
+    // console.log("parent div", parentDiv);
+
+    //use this because we are using numbering from bottom to top here.
+    const convertedNumber = floors - currFloorId;
+
+    // console.log(convertedNumber);
+
+    // Loop through child elements to find closest lift that isnt on the current floor
+    var foundLiftsOnOtherFloors = 0;
+    for (var i = 0; i < parentDiv.children.length; i++) {
+      if(i == convertedNumber) {
+        continue;
       }
-      // Update the lastLiftFloor to the current floor
-      lastLiftFloor = floorNumber;
+      var childElement = parentDiv.children[i];
 
+      // You can now access and manipulate each child element
+      // console.log("Child Element " + i + ": " , childElement);
+
+      // Check if the closest floor div has a child with a class name 'lift-image'
+      const existingLiftImage = childElement.querySelector(".floor-images").querySelector(".lift-image");
+      // console.log(existingLiftImage);
+
+      if (existingLiftImage) {
+        // console.log("Child Element " + i + ": " , childElement);
+          // console.log(childElement.querySelector(".floor-images"));
+          const existingLiftImage = childElement.querySelector(".floor-images").querySelector(".lift-image");
+          childElement.querySelector(".floor-images").removeChild(existingLiftImage);
+          foundLiftsOnOtherFloors=1;
+        break;
+      } 
+    }
+    if(foundLiftsOnOtherFloors==1) {
+        //creating the image element and inserting it in clicked floor
       // If no 'lift-image' child exists, create and append the image to the current floor
       const floorImage = document.createElement("img");
       floorImage.src = imageSource; // Provide the URL to your PNG image
@@ -74,6 +92,9 @@ function generateFloor(floorNumber, imageSource) {
       floorImage.className = "lift-image";
       // Append the image to the current floor
       floorImages.appendChild(floorImage);
+    }
+    else {
+      alert("maximum lift capacity for this floor is reached");
     }
   });
 
@@ -112,7 +133,6 @@ function generateFloor(floorNumber, imageSource) {
 }
 
 // Generate a specific number of floors (e.g., 5 floors) with images
-
 
 const numberOfFloors = floors;
 for (let i = numberOfFloors; i >= 1; i--) {
