@@ -24,6 +24,8 @@ document.getElementById(
 // Select the container where you want to generate the floors
 const buildingContainer = document.getElementById("building");
 
+var liftNumber = 1;
+
 // Function to generate a floor with an image
 function generateFloor(floorNumber, imageSource) {
   // Create a <div> element for the floor
@@ -43,100 +45,46 @@ function generateFloor(floorNumber, imageSource) {
 
   //experiment code to add lift on a certain floor
   directionImage.addEventListener("click", (event) => {
-    // Check if the parent div already has a child with a class name 'lift-image'
-    const existingLiftImage = floorImages.querySelector(".lift-image");
-
     //getting the current floor id
     const currFloorId = event.target.parentNode.id;
     // console.log("current floorId: ", currFloorId);
 
     // Get the div element by its ID (you can use any other method to select the div)
-    var selectedFloorImagesDiv = document.getElementById(`${currFloorId}`).querySelector(".floor-images");
+    var selectedFloorImagesDiv = document
+      .getElementById(`${currFloorId}`)
+      .querySelector(".floor-images");
     // console.log("parent div", selectedFloorImagesDiv.children);
 
-    var swapingColumnId=-1;
-    for(let j=0; j<selectedFloorImagesDiv.children.length; j++) {
-      // console.log("selected column = ",selectedFloorImagesDiv.children[j]);
-      var currFloorImagesDiv = selectedFloorImagesDiv.children[j];
-      var containsImage = currFloorImagesDiv.querySelector("img");
-      if(containsImage==null) {
-        swapingColumnId = selectedFloorImagesDiv.children[j].id;
-        // console.log(swapingColumnId);
-        break;
-      }
-    }
-    if(swapingColumnId==-1) {
-      alert("maxlifts"); return;
-    }
+    var LiftImage = document.getElementById(`liftImage${liftNumber}`);
+    const liftColumn = selectedFloorImagesDiv.children[liftNumber-1];
+    // console.log(liftColumn);
+    liftNumber += 1;
+    if(liftNumber > elevators) {liftNumber=1;}
+    // console.log("liftImage = " ,  firstLiftImage);
+    // console.log("liftNumber = ", liftNumber)
 
-    //use this because we are using numbering from bottom to top here.
-    var floorLevel = parseInt(currFloorId.match(/\d+/)?.[0]);
-    const convertedNumber = floors - floorLevel;
+    var howTop = 0;
 
-    // console.log("convertedNumber = ", convertedNumber, floor, currFloorId);
+    // const left = liftColumn.offsetLeft;
+    const top = liftColumn.offsetTop;
+    // console.log(left, top);
+    // LiftImage.style.left =  (howLeft*liftNumber) + "px";
+    LiftImage.style.top =  top + "px";
 
-    // Loop through child elements to find closest lift that isnt on the current floor
-    var foundLiftsOnOtherFloors = 0;
-    var existingLiftImage2;
-    const buildingDiv = document.getElementById("building");
-    for (var i = 0; i < buildingDiv.children.length; i++) {
-      // console.log(floorLevel);
-      if(i == convertedNumber) {
-        continue;
-      }
 
-      // console.log(buildingDiv.children[i].querySelector(".floor-images").children[swapingColumnId]);
-      // console.log(buildingDiv.children[i].querySelector(".floor-images").children.length);
-      const swapImage = buildingDiv.children[i].querySelector(".floor-images").children[swapingColumnId];
-      const containsImage = swapImage.querySelector("img");
-      if(containsImage){
-        // console.log("swapableimage = ",swapImage.querySelector("img"));
-        // console.log("selected floor= ", selectedFloorImagesDiv.children[swapingColumnId]);
-        selectedFloorImagesDiv.children[swapingColumnId].appendChild(swapImage.querySelector("img"));
-        swapImage.removeAttribute("img")
-        break;
-      }
-    }
-    // if(foundLiftsOnOtherFloors==1) {
-    //   // Append the image to the current floor
-    //   // console.log("removed = ", existingLiftImage2);
-    //   floorImages.appendChild(existingLiftImage2);
-    // }
-    // else {
-    //   alert("maximum lift capacity for this floor is reached");
-    // }
-  }
-  );
+  });
 
   // Append the image to the floor
   floor.appendChild(directionImage);
 
   // Add an <img> element to the floor
-  if(floorNumber==1) {
-    for (let i = 0; i < elevators; i++) {
-      const floorImageDiv = document.createElement("div");
-      floorImageDiv.id = i;
-      floorImageDiv.className = "floorimages-div";
-        const floorImage = document.createElement("img");
-        floorImage.src = imageSource; // Provide the URL to your PNG image
-        floorImage.alt = `Floor ${floorNumber}`; // Accessibility text
-        floorImage.id = `${i+1}`;
-        // Append the image to the floor
-        floorImage.className = "lift-image";
-        floorImageDiv.appendChild(floorImage);
-      floorImages.appendChild(floorImageDiv);
-    }
-  } 
-  else {
-    for (let i = 0; i < elevators; i++) {
-      const floorImageDiv = document.createElement("div");
-      floorImageDiv.className = "floorimages-div";
-      floorImageDiv.id = i;
-      floorImages.appendChild(floorImageDiv);
-    }
+  for (let i = 0; i < elevators; i++) {
+    const floorImageDiv = document.createElement("div");
+    floorImageDiv.className = "floorimages-div";
+    floorImageDiv.id = i;
+    floorImages.appendChild(floorImageDiv);
   }
-    
-    
+
   // Append the image to the floor
   floor.appendChild(floorImages);
 
@@ -145,7 +93,7 @@ function generateFloor(floorNumber, imageSource) {
 
   // Add content to the floor, such as floor number
   const floornumber = document.createElement("div");
-  floornumber.className = "floor-number"
+  floornumber.className = "floor-number";
   floornumber.textContent = `Floor ${floorNumber}`;
   // Append the floorname to the floor
   floor.appendChild(floorname);
@@ -158,11 +106,65 @@ function generateFloor(floorNumber, imageSource) {
   buildingContainer.appendChild(floor);
   lastLiftFloor = floorNumber;
 }
+function generateLifts(elevators) {
+  const firstFloor = document.getElementById("Floor 1"); // Corrected ID
+  const floorImages = firstFloor.querySelector(".floor-images");
 
-// Generate a specific number of floors (e.g., 5 floors) with images
+  for (let i = 0; i < elevators; i++) {
+    // Target div for the lift image
+    const targetDiv = floorImages.querySelector(`:nth-child(${i + 1})`);
+    const left = targetDiv.offsetLeft;
+    const top = targetDiv.offsetTop;
 
-const numberOfFloors = floors;
-for (let i = numberOfFloors; i >= 1; i--) {
-  const imageSource = `/images/lift-image.jpg`; // Replace with the actual image URL
-  generateFloor(i, imageSource);
+    // Create a new image element for the elevator
+    const liftImage = document.createElement("img");
+    liftImage.src = "/images/lift-image.jpg";
+    liftImage.className = "lift-image";
+    liftImage.id = `liftImage${i+1}`;
+    liftImage.style.position = "absolute";
+    liftImage.style.left = left + 65 + "px";
+    liftImage.style.top = top + 5 + "px";
+
+    // Append the elevator image to the floorImages container
+    building.appendChild(liftImage);
+  }
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Generate a specific number of floors (e.g., 5 floors) with images
+  const numberOfFloors = floors;
+  for (let i = numberOfFloors; i >= 1; i--) {
+    const imageSource = `/images/lift-image.jpg`; // Replace with the actual image URL
+    generateFloor(i, imageSource);
+  }
+  generateLifts(elevators);
+});
+
+// // Function to animate the image transfer
+// function animateImageTransfer(sourceDiv, destinationDiv) {
+//   const image = sourceDiv.querySelector("img");
+
+//   if (image) {
+//     // Add a CSS class to start the animation
+//     image.classList.add("transfer-animation");
+
+//     // Get the target position for the animation
+//     const xT = destinationDiv.offsetLeft;
+//     const yT = destinationDiv.offsetTop;
+
+//     // Set the image's position to its current position
+//     const xE = sourceDiv.offsetLeft;
+//     const yE = sourceDiv.offsetTop;
+
+//     // Use a `setTimeout` to remove the image from the source and append it to the destination
+//     setTimeout(() => {
+//       sourceDiv.removeChild(image);
+//       destinationDiv.appendChild(image);
+
+//       // Reset the CSS class and image position
+//       image.classList.remove("transfer-animation");
+//       image.style.left = "0px";
+//       image.style.top = "0px";
+//     }, 500); // Adjust the duration of the animation (in milliseconds) as needed
+//   }
+// }
