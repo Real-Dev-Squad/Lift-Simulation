@@ -24,7 +24,21 @@ document.getElementById(
 // Select the container where you want to generate the floors
 const buildingContainer = document.getElementById("building");
 
+var liftStates = {};
+for(let i=1; i<=elevators; i++) {
+  liftStates[`lift_${i}`] = 1;
+}
+
+const dataStore = {
+  username:"creator",
+  no_of_floor: floors,
+  no_of_elevators: elevators,
+  state_of_lifts: liftStates,
+};
+
 var liftNumber = 1;
+
+var divFloor = 0;
 
 // Function to generate a floor with an image
 function generateFloor(floorNumber, imageSource) {
@@ -56,22 +70,39 @@ function generateFloor(floorNumber, imageSource) {
     // console.log("parent div", selectedFloorImagesDiv.children);
 
     var LiftImage = document.getElementById(`liftImage${liftNumber}`);
-    const liftColumn = selectedFloorImagesDiv.children[liftNumber-1];
+    const liftColumn = selectedFloorImagesDiv.children[liftNumber - 1];
+    const lastFloor = LiftImage.getAttribute("floordetail");
+    // console.log("last Floor = ", lastFloor);
+
+    var animationTime = Math.abs(floorNumber - lastFloor) * 2;
+    // console.log(animationTime);
+
+    LiftImage.setAttribute("floorDetail", `${floorNumber}`); // Adding a custom attribute
+    const liftcurrfloornumber = LiftImage.getAttribute('floordetail');
+    const liftcurridnumber = LiftImage.getAttribute('liftid');
+    // console.log(LiftImage.getAttribute('floordetail'));
+    // console.log(LiftImage.getAttribute('liftid'))
+    //updating datastore for updated lift information
+    dataStore.state_of_lifts[`lift_${liftcurridnumber}`] = liftcurrfloornumber;
+    // console.log("updated datastore = ", dataStore);
+    // LiftImage.classList.add("transition-animation");
+    LiftImage.style.transition = `ease-in ${animationTime}s`;
+    // setTimeout(()=>{}, animationTime*1000)
     // console.log(liftColumn);
     liftNumber += 1;
-    if(liftNumber > elevators) {liftNumber=1;}
+    if (liftNumber > elevators) {
+      liftNumber = 1;
+    }
     // console.log("liftImage = " ,  firstLiftImage);
     // console.log("liftNumber = ", liftNumber)
 
-    var howTop = 0;
+    // var howTop = 0;
 
     // const left = liftColumn.offsetLeft;
     const top = liftColumn.offsetTop;
     // console.log(left, top);
     // LiftImage.style.left =  (howLeft*liftNumber) + "px";
-    LiftImage.style.top =  top + "px";
-
-
+    LiftImage.style.top = top + "px";
   });
 
   // Append the image to the floor
@@ -102,9 +133,9 @@ function generateFloor(floorNumber, imageSource) {
   //id
   floor.id = `Floor ${floorNumber}`;
 
+  floor.setAttribute("floorNumber", `${floorNumber}`); // Adding a custom attribute
   // Append the floor to the building container
   buildingContainer.appendChild(floor);
-  lastLiftFloor = floorNumber;
 }
 function generateLifts(elevators) {
   const firstFloor = document.getElementById("Floor 1"); // Corrected ID
@@ -120,7 +151,9 @@ function generateLifts(elevators) {
     const liftImage = document.createElement("img");
     liftImage.src = "/images/lift-image.jpg";
     liftImage.className = "lift-image";
-    liftImage.id = `liftImage${i+1}`;
+    liftImage.setAttribute("floorDetail", `${1}`); // Adding a custom attribute
+    liftImage.setAttribute("liftid", `${i+1}`); // Adding a custom attribute
+    liftImage.id = `liftImage${i + 1}`;
     liftImage.style.position = "absolute";
     liftImage.style.left = left + 65 + "px";
     liftImage.style.top = top + 5 + "px";
@@ -135,9 +168,11 @@ document.addEventListener("DOMContentLoaded", function () {
   const numberOfFloors = floors;
   for (let i = numberOfFloors; i >= 1; i--) {
     const imageSource = `/images/lift-image.jpg`; // Replace with the actual image URL
+    divFloor = elevators - i - 1;
     generateFloor(i, imageSource);
   }
   generateLifts(elevators);
+  console.log("data store = ", dataStore);
 });
 
 // // Function to animate the image transfer
