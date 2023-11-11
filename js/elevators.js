@@ -116,7 +116,7 @@ function generateFloor(floorNumber, imageSource) {
     }
 
     // Example: Open the doors after 2 seconds and close them after 5 seconds
-    setTimeout(openDoors, animationTime*1000);
+    setTimeout(openDoors, animationTime*1000+2500);
 
     // console.log(left, top);
     // LiftImage.style.left =  (howLeft*liftNumber) + "px";
