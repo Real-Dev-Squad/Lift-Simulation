@@ -68,8 +68,8 @@ function generateFloor(floorNumber, imageSource) {
       .getElementById(`${currFloorId}`)
       .querySelector(".floor-images");
     // console.log("parent div", selectedFloorImagesDiv.children);
-
     var LiftImage = document.getElementById(`liftImage${liftNumber}`);
+    // console.log(LiftImage.querySelector('#leftDoor'))
     const liftColumn = selectedFloorImagesDiv.children[liftNumber - 1];
     const lastFloor = LiftImage.getAttribute("floordetail");
     // console.log("last Floor = ", lastFloor);
@@ -100,6 +100,24 @@ function generateFloor(floorNumber, imageSource) {
 
     // const left = liftColumn.offsetLeft;
     const top = liftColumn.offsetTop;
+
+    const leftDoor = LiftImage.querySelector('#leftDoor');
+    const rightDoor = LiftImage.querySelector('#rightDoor');
+
+    function openDoors() {
+      leftDoor.style.transform = 'translateX(-100%)';
+      rightDoor.style.transform = 'translateX(100%)';
+      setTimeout(closeDoors, 2500);
+    }
+
+    function closeDoors() {
+      leftDoor.style.transform = 'translateX(0)';
+      rightDoor.style.transform = 'translateX(0)';
+    }
+
+    // Example: Open the doors after 2 seconds and close them after 5 seconds
+    setTimeout(openDoors, animationTime*1000);
+
     // console.log(left, top);
     // LiftImage.style.left =  (howLeft*liftNumber) + "px";
     LiftImage.style.top = top + "px";
@@ -148,8 +166,33 @@ function generateLifts(elevators) {
     const top = targetDiv.offsetTop;
 
     // Create a new image element for the elevator
-    const liftImage = document.createElement("img");
-    liftImage.src = "/images/lift-image.jpg";
+    // const liftImage = document.createElement("img");
+    // liftImage.src = "/images/lift-image.jpg";
+    // liftImage.className = "lift-image";
+    // liftImage.setAttribute("floorDetail", `${1}`); // Adding a custom attribute
+    // liftImage.setAttribute("liftid", `${i+1}`); // Adding a custom attribute
+    // liftImage.id = `liftImage${i + 1}`;
+    // liftImage.style.position = "absolute";
+    // liftImage.style.left = left + 65 + "px";
+    // liftImage.style.top = top + 5 + "px";
+
+    // Create a new image element for the elevator
+    const liftImage = document.createElement("div");
+    liftImage.classList.add("elevator");
+    // liftImage.src = "/images/lift-image.jpg";
+    liftImage.style.backgroundColor = "silver"
+    liftImage.style.overflow = "hidden";
+    const leftDoor = document.createElement("div");
+    leftDoor.id = "leftDoor";
+    leftDoor.classList.add("door");
+    leftDoor.style="background-color: blueviolet;"
+    const rightDoor = document.createElement("div");
+    rightDoor.id = "rightDoor";
+    rightDoor.classList.add("door");
+    rightDoor.style="background-color: pink;"
+    liftImage.appendChild(leftDoor);
+    liftImage.appendChild(rightDoor);
+    liftImage.style.border = "5px solid blue";
     liftImage.className = "lift-image";
     liftImage.setAttribute("floorDetail", `${1}`); // Adding a custom attribute
     liftImage.setAttribute("liftid", `${i+1}`); // Adding a custom attribute
@@ -172,34 +215,6 @@ document.addEventListener("DOMContentLoaded", function () {
     generateFloor(i, imageSource);
   }
   generateLifts(elevators);
-  console.log("data store = ", dataStore);
+  // console.log("data store = ", dataStore);
+  // console.log("simulator");
 });
-
-// // Function to animate the image transfer
-// function animateImageTransfer(sourceDiv, destinationDiv) {
-//   const image = sourceDiv.querySelector("img");
-
-//   if (image) {
-//     // Add a CSS class to start the animation
-//     image.classList.add("transfer-animation");
-
-//     // Get the target position for the animation
-//     const xT = destinationDiv.offsetLeft;
-//     const yT = destinationDiv.offsetTop;
-
-//     // Set the image's position to its current position
-//     const xE = sourceDiv.offsetLeft;
-//     const yE = sourceDiv.offsetTop;
-
-//     // Use a `setTimeout` to remove the image from the source and append it to the destination
-//     setTimeout(() => {
-//       sourceDiv.removeChild(image);
-//       destinationDiv.appendChild(image);
-
-//       // Reset the CSS class and image position
-//       image.classList.remove("transfer-animation");
-//       image.style.left = "0px";
-//       image.style.top = "0px";
-//     }, 500); // Adjust the duration of the animation (in milliseconds) as needed
-//   }
-// }

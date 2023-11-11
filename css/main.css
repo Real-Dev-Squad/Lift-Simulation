@@ -53,3 +53,29 @@ body {
 .transition-animation {
   transition : ease-in 5s; 
 }
+
+/* for the elevator open close animation  */
+
+.elevator {
+  position: relative;
+  width : 60px;
+  height: 75px;
+  display: flex;
+  overflow: hidden;
+}
+
+.door {
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  transition: transform 0.5s ease-in-out;
+}
+
+#leftDoor {
+  left: 0;
+  transform-origin: left;
+}
+#rightDoor {
+  right: 0;
+  transform-origin: right;
+}
