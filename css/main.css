@@ -1,14 +1,39 @@
 body {
-  margin-top: 5%;
+  font-family: "Karla", sans-serif;
+  margin: 5%;
+  background-image: url("../images/citybackground.jpg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
 }
+
 .center {
+  border: 5px solid skyblue;
+  padding: 5%;
+  margin-top: 15%;
+  margin-left: 25%;
+  margin-right: 25%;
+  margin-bottom: 15%;
   text-align: center;
+  backdrop-filter: blur(50px);
+  /* font-size: 25px; */
 }
 
 .building {
     display: flex;
     flex:1;
     justify-content: flex-start;
+    backdrop-filter: blur(50px);
+    border: 5px solid black;
+}
+
+.buildinginfo {
+  border: 5px solid skyblue;
+  margin-bottom:50px;
+  margin-left: 25%;
+  margin-right: 25%;
+  text-align: center;
+  backdrop-filter: blur(50px);
 }
 
 .floor {
@@ -19,6 +44,11 @@ body {
     font-size: 29px;
     font-weight: 600;
     height: 80px;
+    background-image: url("../images/bricktexture.jpg");
+    /* background-repeat: no-repeat; */
+    /* background-attachment: fixed; */
+    background-size: cover;
+    
 }
 .floor-images {
     margin-left: 40px;
@@ -38,9 +68,16 @@ body {
   background-color: white;
   padding: 2px;
   border-radius: 35%;
+  margin-bottom: 5px;
+
 }
 .floor-number{
   margin-left: auto;
+  border: 1px solid black;
+  padding-top: 10px;
+  background-color: skyblue;
+  border-radius: 15%;
+  margin-bottom: 5px;
 }
 .lift-image {
   width : 60px;
@@ -53,9 +90,7 @@ body {
 .transition-animation {
   transition : ease-in 5s; 
 }
-
 /* for the elevator open close animation  */
-
 .elevator {
   position: relative;
   width : 60px;
@@ -63,14 +98,12 @@ body {
   display: flex;
   overflow: hidden;
 }
-
 .door {
   position: absolute;
   width: 50%;
   height: 100%;
   transition: transform 0.5s ease-in-out;
 }
-
 #leftDoor {
   left: 0;
   transform-origin: left;
