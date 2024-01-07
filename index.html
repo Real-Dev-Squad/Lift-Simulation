@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lift-Simulator</title>
+    <link rel="stylesheet" href="/css/main.css" />
+  </head>
+  <body>
+    <div class="center">
+      <h1>Lift-Simulator</h1>
+      <p>Please provide the following information:</p>
+
+      <form id="elevatorForm">
+        <label for="floors">Number of Floors Needed:</label>
+        <input
+          type="number"
+          id="floors"
+          name="floors"
+          required
+          min="1"
+          max="50"
+        /> (Minimum 1 or Maximum 50 ) <br /><br />
+
+        <label for="elevators">Number of Elevators Needed:</label>
+        <input
+          type="number"
+          id="elevators"
+          name="elevators"
+          min="1"
+          max="5"
+          required
+        /> (Minimum 1 or Maximum 5 )<br /><br />
+
+        <input type="submit" value="Generate Ui" />
+      </form>
+    </div>
+
+    <script src="/js/main.js"></script>
+  </body>
+</html>

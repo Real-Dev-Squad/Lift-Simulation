@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Elevators Page</title>
+    <link rel="stylesheet" href="/css/main.css" />
+    <style>
+      /* Add your CSS styles for floors and image transitions here */
+      .floor {
+        /* Add your floor styling here */
+        border: 1px solid #333;
+        padding: 10px;
+        margin: 10px;
+        text-align: center;
+      }
+      img {
+        /* Add your image styling here */
+        max-width: 100px;
+        transition: top 1s;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="buildinginfo">
+      <h1>Elevators Page</h1>
+      <div id="floorsDisplay"></div>
+      <div id="elevatorsDisplay"></div>
+      <h1 style="margin-bottom:50px">Building with the Lifts</h1>
+    </div>
+
+    <div style="backdrop-filter: blur(50px)" id="building"></div>
+
+    <script src="/js/elevators.js"></script>
+  </body>
+</html>
