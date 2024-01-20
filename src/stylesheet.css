@@ -1,0 +1,97 @@
+* {
+    box-sizing: border-box;
+}
+
+.secondPage {
+    display: none;
+}
+
+/* .firstPage {
+    display: none;
+} */
+
+.break {
+    background-color: black;
+    height: 2px;
+}
+
+.floor-text {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.floor {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 40px;
+    width: 100%;
+    background-color: aqua;
+    /* margin-top: 10px; */
+    text-align: end;
+    height: 98px;
+    position: relative;
+}
+
+.lift {
+    height: 75px;
+    width: 50px;
+    background-color: black;
+    position: absolute;
+}
+
+
+.down {
+    position: absolute;
+}
+
+.lift1 {
+    top: -10px;
+    left: 10px;
+}
+
+.lift2 {
+    top: -10px;
+    left: 100px;
+}
+
+.lift3 {
+    top: -10px;
+    left: 200px;
+}
+
+.lift4 {
+    top: -10px;
+    left: 300px;
+}
+
+.baseBox {
+    height: 100px;
+    background-color: aquamarine;
+    position: relative;
+}
+
+.button {
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.up {
+    background-color: #04AA6D;
+    position: absolute;
+}
+
+/* Green */
+
+.down {
+    background-color: #008CBA;
+    position: absolute;
+}
+
+/* Blue */
